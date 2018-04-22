@@ -1,4 +1,4 @@
-from models.houseModel import House
+from models import *
 
 # %% Eengezinswoning test
 a = House("eengezinswoning")
