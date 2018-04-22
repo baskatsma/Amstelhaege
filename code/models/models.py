@@ -7,31 +7,43 @@ USAGE       to-do
 """
 
 # %% Initialize House class
-class House:
+class genericHouse:
     """
-    House class that contains 3 types
+    Generic House class that contains functions that all the subclasses use
     """
 
-    # Usage: newHouse = House("bungalow"), for example
-    def __init__(self, houseType):
-        self.houseType = houseType
-        self.houseDimensions = tuple()
+    def __init__(self, gridLength, gridDepth):
+        self.gridLength = gridLength
+        self.gridDepth = gridDepth
 
-    # Set dimensions based on the house type
-    def initializeHouseType(self):
+    # To do: add positional functions, get value, etc. etc. etc.
 
-        # Dimensions in (length, depth) tuple format
-        if self.houseType == "eengezinswoning":
-            self.houseDimensions = (8, 8)
+# %% Eengezinswoning
+class Eengezinswoning(genericHouse):
+    def __init__(self, gridLength, gridDepth):
+        self.houseType = "eengezinswoning"
+        self.houseDimensions = (8, 8)       # (length, depth) tuple
+        self.houseFreeArea = 2      # Vrijstand in meters
+        self.houseValue = 285000
+        self.houseValueIncrease = float(0.03)
 
-        elif self.houseType == "bungalow":
-            self.houseDimensions = (10, 7.5)
+# %% Bungalow
+class Bungalow(genericHouse):
+    def __init__(self, gridLength, gridDepth):
+        self.houseType = "bungalow"
+        self.houseDimensions = (10, 7.5)        # (length, depth) tuple
+        self.houseFreeArea = 3      # Vrijstand in meters
+        self.houseValue = 399000
+        self.houseValueIncrease = float(0.04)
 
-        elif self.houseType == "maison":
-            self.houseDimensions = (11, 10.5)
-
-        print("houseType is: " + self.houseType + " || dimensions: ", end="")
-        print(self.houseDimensions)
+# %% Maison
+class Maison(genericHouse):
+    def __init__(self, gridLength, gridDepth):
+        self.houseType = "maison"
+        self.houseDimensions = (11, 10.5)       # (length, depth) tuple
+        self.houseFreeArea = 6      # Vrijstand in meters
+        self.houseValue = 610000
+        self.houseValueIncrease = float(0.06)
 
 # %% Initialize Grid class
 class Grid:
