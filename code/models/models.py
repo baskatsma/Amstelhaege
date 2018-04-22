@@ -1,19 +1,20 @@
 """
-houseModel.py
+models.py
 
 CODERS      Bas Katsma
 
 USAGE       to-do
 """
 
+# %% Initialize House class
 class House:
     """
     House class that contains 3 types
     """
 
     # Usage: newHouse = House("bungalow"), for example
-    def __init__(self, type):
-        self.houseType = type
+    def __init__(self, houseType):
+        self.houseType = houseType
         self.houseDimensions = tuple()
 
     # Set dimensions based on the house type
@@ -31,3 +32,17 @@ class House:
 
         print("houseType is: " + self.houseType + " || dimensions: ", end="")
         print(self.houseDimensions)
+
+# %% Initialize Grid class
+class Grid:
+    """
+    Grid that contains all houses
+    """
+
+    def __init__(self, gridLength, gridDepth, maxHouses):
+        self.gridLength = gridLength
+        self.gridDepth = gridDepth
+        self.maxHouses = maxHouses
+        self.fractionEengezinswoningen = float(0.60)
+        self.fractionBungalows = float(0.25)
+        self.fractionMaisons = float(0.15)
