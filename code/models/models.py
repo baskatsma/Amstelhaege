@@ -22,6 +22,7 @@ class genericHouse:
         # Extra vrijstand * percentage
         totalIncreasePercentage = self.houseExtraFreeArea * self.houseValueIncrease
         newHouseValue = self.houseValue + (self.houseValue * totalIncreasePercentage)
+        print(newHouseValue)
         return newHouseValue
 
 
@@ -31,7 +32,7 @@ class Eengezinswoning(genericHouse):
         self.houseType = "eengezinswoning"
         self.houseDimensions = (8, 8)       # (length, depth) tuple
         self.houseFreeArea = 2      # Vrijstand in meters
-        self.houseExtraFreeArea = 0     # Extra vrijstand in meters
+        self.houseExtraFreeArea = 5     # Extra vrijstand in meters
         self.houseValue = 285000
         self.houseValueIncrease = float(0.03)
 
