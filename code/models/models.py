@@ -12,9 +12,8 @@ class genericHouse:
     Generic House class that contains functions that all the subclasses use
     """
 
-    def __init__(self, gridLength, gridDepth):
-        self.gridLength = gridLength
-        self.gridDepth = gridDepth
+    def __init__(self):
+        print("genericHouse is made.")
 
     # To do: add positional functions, get value, etc. etc. etc.
 
