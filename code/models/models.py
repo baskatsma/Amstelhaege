@@ -3,6 +3,7 @@ models.py
 
 CODERS      Bas Katsma
             Amy van der Gun
+            Feliz navidad
 
 USAGE       to-do
 """
