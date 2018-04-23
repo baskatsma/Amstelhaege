@@ -6,8 +6,8 @@ from functions import *
 maxHouses = 20
 
 # Grid dimensions in meters
-gridXLength = 10
-gridYLength = 10
+gridXLength = 18
+gridYLength = 16
 
 # Create grid instance
 gridField = Grid(gridXLength, gridYLength, maxHouses)
@@ -32,12 +32,15 @@ print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 # %% Test woonwijk
 residentialArea = []
 
+# Out of the 20 houses, add 0.60 * 20 eengezinswoningen
 for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
     residentialArea.append(Eengezinswoning(gridXLength, gridYLength))
 
+# Out of the 20 houses, add 0.25 * 20 bungalows
 for bungalow in range(gridField.totalAmountBungalows):
     residentialArea.append(Bungalow(gridXLength, gridYLength))
 
+# Out of the 20 houses, add 0.15 * 20 maisons
 for maison in range(gridField.totalAmountMaisons):
     residentialArea.append(Maison(gridXLength, gridYLength))
 
