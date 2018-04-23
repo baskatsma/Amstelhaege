@@ -13,13 +13,12 @@ gridYLength = 16
 gridField = Grid(gridXLength, gridYLength, maxHouses)
 print("maxHouses on grid is: " + str(gridField.maxHouses))
 print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
+createGrid(gridXLength, gridYLength)
 
 # %% Test houses
 a = Eengezinswoning(gridXLength, gridYLength)
 b = Bungalow(gridXLength, gridYLength)
 c = Maison(gridXLength, gridYLength)
-
-createGrid(gridXLength, gridYLength)
 
 print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
 print("De waarde van A is: " + str(a.value) + " euro")
@@ -47,5 +46,3 @@ for maison in range(gridField.totalAmountMaisons):
 # Print woonwijk huizen
 for i in range(len(residentialArea)):
     print(residentialArea[i].type)
-
-grid[0][0] = "E"
