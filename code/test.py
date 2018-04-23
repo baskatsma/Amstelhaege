@@ -19,7 +19,7 @@ a = Eengezinswoning(gridXLength, gridYLength)
 b = Bungalow(gridXLength, gridYLength)
 c = Maison(gridXLength, gridYLength)
 
-#createGrid(gridXLength, gridYLength)
+createGrid(gridXLength, gridYLength)
 
 print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
 print("De waarde van A is: " + str(a.value) + " euro")
@@ -46,3 +46,5 @@ for maison in range(gridField.totalAmountMaisons):
 
 for i in range(len(residentialArea)):
     print(residentialArea[i].type)
+
+grid[0][0] = "E"
