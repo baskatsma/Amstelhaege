@@ -18,6 +18,9 @@ b = Bungalow(gridLength, gridDepth)
 c = Maison(gridLength, gridDepth)
 
 print(a)
-print("a.houseType is: " + a.houseType + " || a.dimensions: ", end="")
-print(a.houseDimensions)
-print("a.houseValue is: " + str(a.houseValue) + " euro")
+print("A is een " + a.houseType + " met afmetingen: ", a.houseDimensions)
+print("De waarde is: " + str(a.houseValue) + " euro")
+
+print(b)
+print("B is een " + b.houseType + " met afmetingen: ", b.houseDimensions)
+print("De waarde is: " + str(b.houseValue) + " euro")
