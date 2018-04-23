@@ -1,6 +1,7 @@
 # %% Import classes
 from models.models import *
 from functions import *
+from random import randint
 
 # Residential area size (either 20, 40 or 60 houses at max)
 maxHouses = 20
@@ -29,7 +30,7 @@ print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
 print("De waarde van B is: " + str(b.value) + " euro")
 print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 
-# %% Create new woonwijk
+# %% Test woonwijk
 residentialArea = []
 
 # Out of the maxHouses houses, add 0.60 * maxHouses eengezinswoningen
@@ -44,8 +45,5 @@ for bungalow in range(gridField.totalAmountBungalows):
 for maison in range(gridField.totalAmountMaisons):
     residentialArea.append(Maison(gridXLength, gridYLength))
 
-# Print woonwijk huizen
 for i in range(len(residentialArea)):
     print(residentialArea[i].type)
-
-grid[0][0] = "E"
