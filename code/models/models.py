@@ -8,7 +8,7 @@ CODERS      Amy van der Gun
 USAGE       to-do
 """
 
-# %% Initialize House class
+# %% Initialize genericHouse class
 class genericHouse:
     """
     Generic House class that contains functions that all the subclasses use
