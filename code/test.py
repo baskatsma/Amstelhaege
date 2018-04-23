@@ -1,7 +1,6 @@
 # %% Import classes
 from models.models import *
 from functions import *
-from random import randint
 
 # Residential area size (either 20, 40 or 60 houses at max)
 maxHouses = 20
