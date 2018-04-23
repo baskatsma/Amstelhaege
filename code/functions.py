@@ -1,3 +1,4 @@
+# %% Initialize grid
 def createGrid(gridXlength, gridYlength):
 
     grid = []

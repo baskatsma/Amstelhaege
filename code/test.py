@@ -19,7 +19,7 @@ a = Eengezinswoning(gridXLength, gridYLength)
 b = Bungalow(gridXLength, gridYLength)
 c = Maison(gridXLength, gridYLength)
 
-#createGrid(gridXLength, gridYLength)
+createGrid(gridXLength, gridYLength)
 
 print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
 print("De waarde van A is: " + str(a.value) + " euro")
@@ -29,7 +29,7 @@ print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
 print("De waarde van B is: " + str(b.value) + " euro")
 print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 
-# %% Test woonwijk
+# %% Create new woonwijk
 residentialArea = []
 
 # Out of the maxHouses houses, add 0.60 * maxHouses eengezinswoningen
@@ -44,5 +44,6 @@ for bungalow in range(gridField.totalAmountBungalows):
 for maison in range(gridField.totalAmountMaisons):
     residentialArea.append(Maison(gridXLength, gridYLength))
 
+# Print woonwijk huizen
 for i in range(len(residentialArea)):
     print(residentialArea[i].type)
