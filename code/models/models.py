@@ -20,40 +20,41 @@ class genericHouse:
     # To do: add positional functions, get value, etc. etc. etc.
     def calculateNewValue(self):
         # Extra vrijstand * percentage
-        totalIncreasePercentage = self.houseExtraFreeArea * self.houseValueIncrease
-        newHouseValue = self.houseValue + (self.houseValue * totalIncreasePercentage)
+        totalIncreasePercentage = self.extraFreeArea * self.valueIncrease
+        newHouseValue = self.value + (self.value * totalIncreasePercentage)
+        print(newHouseValue)
         return newHouseValue
 
 
 # %% Eengezinswoning
 class Eengezinswoning(genericHouse):
     def __init__(self, gridLength, gridDepth):
-        self.houseType = "eengezinswoning"
+        self.type = "eengezinswoning"
         self.houseDimensions = (8, 8)       # (length, depth) tuple
-        self.houseFreeArea = 2      # Vrijstand in meters
-        self.houseExtraFreeArea = 5     # Extra vrijstand in meters
-        self.houseValue = 285000
-        self.houseValueIncrease = float(0.03)
+        self.freeArea = 2      # Vrijstand in meters
+        self.extraFreeArea = 5     # Extra vrijstand in meters
+        self.value = 285000
+        self.valueIncrease = float(0.03)
 
 # %% Bungalow
 class Bungalow(genericHouse):
     def __init__(self, gridLength, gridDepth):
-        self.houseType = "bungalow"
+        self.type = "bungalow"
         self.houseDimensions = (10, 7.5)        # (length, depth) tuple
-        self.houseFreeArea = 3      # Vrijstand in meters
-        self.houseExtraFreeArea = 0     # Extra vrijstand in meters
-        self.houseValue = 399000
-        self.houseValueIncrease = float(0.04)
+        self.freeArea = 3      # Vrijstand in meters
+        self.extraFreeArea = 0     # Extra vrijstand in meters
+        self.value = 399000
+        self.valueIncrease = float(0.04)
 
 # %% Maison
 class Maison(genericHouse):
     def __init__(self, gridLength, gridDepth):
-        self.houseType = "maison"
+        self.type = "maison"
         self.houseDimensions = (11, 10.5)       # (length, depth) tuple
-        self.houseFreeArea = 6      # Vrijstand in meters
-        self.houseExtraFreeArea = 0     # Extra vrijstand in meters
-        self.houseValue = 610000
-        self.houseValueIncrease = float(0.06)
+        self.freeArea = 6      # Vrijstand in meters
+        self.extraFreeArea = 0     # Extra vrijstand in meters
+        self.value = 610000
+        self.valueIncrease = float(0.06)
 
 # %% Initialize Grid class
 class Grid:
