@@ -21,8 +21,9 @@ class genericHouse:
     def calculateNewValue(self):
         # Extra vrijstand * percentage
         totalIncreasePercentage = self.extraFreeArea * self.valueIncrease
+
+        # Base price + (base price * total percentage)
         newHouseValue = self.value + (self.value * totalIncreasePercentage)
-        print(newHouseValue)
         return newHouseValue
 
 

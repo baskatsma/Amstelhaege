@@ -20,6 +20,7 @@ c = Maison(gridLength, gridDepth)
 
 print("A is een " + a.type + " met afmetingen: ", a.houseDimensions)
 print("De waarde is: " + str(a.value) + " euro")
+print("De nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
 
 print("B is een " + b.type + " met afmetingen: ", b.houseDimensions)
 print("De waarde is: " + str(b.value) + " euro")
