@@ -1,7 +1,8 @@
 """
 models.py
 
-CODERS      Amy van der Gun
+CODERS      Bas Katsma
+            Amy van der Gun
 
 USAGE       to-do
 """
