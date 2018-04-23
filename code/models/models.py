@@ -31,7 +31,7 @@ class genericHouse:
 
 # %% Eengezinswoning
 class Eengezinswoning(genericHouse):
-    def __init__(self, gridLength, gridDepth):
+    def __init__(self, gridXlength, gridYlength):
         self.type = "eengezinswoning"
         self.houseDimensions = (8, 8)       # (length, depth) tuple
         self.freeArea = 2      # Vrijstand in meters
@@ -41,7 +41,7 @@ class Eengezinswoning(genericHouse):
 
 # %% Bungalow
 class Bungalow(genericHouse):
-    def __init__(self, gridLength, gridDepth):
+    def __init__(self, gridXlength, gridYlength):
         self.type = "bungalow"
         self.houseDimensions = (10, 7.5)        # (length, depth) tuple
         self.freeArea = 3      # Vrijstand in meters
@@ -51,7 +51,7 @@ class Bungalow(genericHouse):
 
 # %% Maison
 class Maison(genericHouse):
-    def __init__(self, gridLength, gridDepth):
+    def __init__(self, gridXlength, gridYlength):
         self.type = "maison"
         self.houseDimensions = (11, 10.5)       # (length, depth) tuple
         self.freeArea = 6      # Vrijstand in meters
@@ -65,9 +65,9 @@ class Grid:
     Grid that contains all houses
     """
 
-    def __init__(self, gridLength, gridDepth, maxHouses):
-        self.gridLength = gridLength
-        self.gridDepth = gridDepth
+    def __init__(self, gridXlength, gridYlength, maxHouses):
+        self.gridXlength = gridXlength
+        self.gridYlength = gridYlength
         self.maxHouses = maxHouses
         self.fractionEengezinswoningen = float(0.60)
         self.fractionBungalows = float(0.25)
