@@ -18,6 +18,12 @@ class genericHouse:
         print("genericHouse is made.")
 
     # To do: add positional functions, get value, etc. etc. etc.
+    def calculateNewValue(self):
+        # Extra vrijstand * percentage
+        totalIncreasePercentage = self.houseExtraFreeArea * self.houseValueIncrease
+        newHouseValue = self.houseValue + (self.houseValue * totalIncreasePercentage)
+        return newHouseValue
+
 
 # %% Eengezinswoning
 class Eengezinswoning(genericHouse):
@@ -25,6 +31,7 @@ class Eengezinswoning(genericHouse):
         self.houseType = "eengezinswoning"
         self.houseDimensions = (8, 8)       # (length, depth) tuple
         self.houseFreeArea = 2      # Vrijstand in meters
+        self.houseExtraFreeArea = 0     # Extra vrijstand in meters
         self.houseValue = 285000
         self.houseValueIncrease = float(0.03)
 
@@ -34,6 +41,7 @@ class Bungalow(genericHouse):
         self.houseType = "bungalow"
         self.houseDimensions = (10, 7.5)        # (length, depth) tuple
         self.houseFreeArea = 3      # Vrijstand in meters
+        self.houseExtraFreeArea = 0     # Extra vrijstand in meters
         self.houseValue = 399000
         self.houseValueIncrease = float(0.04)
 
@@ -43,6 +51,7 @@ class Maison(genericHouse):
         self.houseType = "maison"
         self.houseDimensions = (11, 10.5)       # (length, depth) tuple
         self.houseFreeArea = 6      # Vrijstand in meters
+        self.houseExtraFreeArea = 0     # Extra vrijstand in meters
         self.houseValue = 610000
         self.houseValueIncrease = float(0.06)
 
