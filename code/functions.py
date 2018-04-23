@@ -2,7 +2,7 @@
 def createGrid(gridXlength, gridYlength):
 
     grid = []
-    dot = "."
+    dot = 0
     for i in range(gridXlength):
         row = []
         grid.append(row)
