@@ -6,20 +6,20 @@ from functions import *
 maxHouses = 20
 
 # Grid dimensions in meters
-gridXlength = 10
-gridYlength = 10
+gridXLength = 10
+gridYLength = 10
 
 # Create grid instance
-gridField = Grid(gridXlength, gridYlength, maxHouses)
+gridField = Grid(gridXLength, gridYLength, maxHouses)
 print("maxHouses on grid is: " + str(gridField.maxHouses))
 print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
 
 # %% Test houses
-a = Eengezinswoning(gridXlength, gridYlength)
-b = Bungalow(gridXlength, gridYlength)
-c = Maison(gridXlength, gridYlength)
+a = Eengezinswoning(gridXLength, gridYLength)
+b = Bungalow(gridXLength, gridYLength)
+c = Maison(gridXLength, gridYLength)
 
-createGrid(gridXlength, gridYlength)
+createGrid(gridXLength, gridYLength)
 
 print("A is een " + a.type + " met afmetingen: ", a.houseDimensions)
 print("De waarde van A is: " + str(a.value) + " euro")
@@ -33,13 +33,13 @@ print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 residentialArea = []
 
 for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
-    residentialArea.append(Eengezinswoning(gridLength, gridDepth))
+    residentialArea.append(Eengezinswoning(gridXLength, gridYLength))
 
 for bungalow in range(gridField.totalAmountBungalows):
-    residentialArea.append(Bungalow(gridLength, gridDepth))
+    residentialArea.append(Bungalow(gridXLength, gridYLength))
 
 for maison in range(gridField.totalAmountMaisons):
-    residentialArea.append(Maison(gridLength, gridDepth))
+    residentialArea.append(Maison(gridXLength, gridYLength))
 
 for i in range(len(residentialArea)):
     print(residentialArea[i].type)
