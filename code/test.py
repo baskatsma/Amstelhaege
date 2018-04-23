@@ -10,13 +10,14 @@ gridDepth = 160
 # Create grid instance
 gridField = Grid(gridLength, gridDepth, maxHouses)
 print("maxHouses on grid is: " + str(gridField.maxHouses))
-print("fraction eengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
+print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
 
 # %% Test houses
 a = Eengezinswoning(gridLength, gridDepth)
 b = Bungalow(gridLength, gridDepth)
 c = Maison(gridLength, gridDepth)
 
+print(a)
 print("a.houseType is: " + a.houseType + " || a.dimensions: ", end="")
 print(a.houseDimensions)
 print("a.houseValue is: " + str(a.houseValue) + " euro")
