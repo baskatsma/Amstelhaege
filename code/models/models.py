@@ -1,9 +1,9 @@
 """
 models.py
 
-CODERS      Bas Katsma
-            Amy van der Gun
-            Feliz navidad
+CODERS      Amy van der Gun
+            Bas Katsma
+            Felicia van Gastel
 
 USAGE       to-do
 """
