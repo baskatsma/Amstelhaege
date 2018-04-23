@@ -72,3 +72,6 @@ class Grid:
         self.fractionEengezinswoningen = float(0.60)
         self.fractionBungalows = float(0.25)
         self.fractionMaisons = float(0.15)
+        self.totalAmountEengezinswoningen = int(self.maxHouses * self.fractionEengezinswoningen)
+        self.totalAmountBungalows = int(self.maxHouses * self.fractionBungalows)
+        self.totalAmountMaisons = int(self.maxHouses * self.fractionMaisons)

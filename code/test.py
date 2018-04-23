@@ -19,8 +19,24 @@ b = Bungalow(gridLength, gridDepth)
 c = Maison(gridLength, gridDepth)
 
 print("A is een " + a.type + " met afmetingen: ", a.houseDimensions)
-print("De waarde is: " + str(a.value) + " euro")
-print("De nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
+print("De waarde van A is: " + str(a.value) + " euro")
+print("A nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
 
 print("B is een " + b.type + " met afmetingen: ", b.houseDimensions)
-print("De waarde is: " + str(b.value) + " euro")
+print("De waarde van B is: " + str(b.value) + " euro")
+print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
+
+# %% Test woonwijk
+residentialArea = []
+
+for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
+    residentialArea.append(Eengezinswoning(gridLength, gridDepth))
+
+for bungalow in range(gridField.totalAmountBungalows):
+    residentialArea.append(Bungalow(gridLength, gridDepth))
+
+for maison in range(gridField.totalAmountMaisons):
+    residentialArea.append(Maison(gridLength, gridDepth))
+
+for i in range(len(residentialArea)):
+    print(residentialArea[i].type)
