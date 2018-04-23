@@ -18,8 +18,10 @@ class genericHouse:
         print("genericHouse is made.")
 
     # To do: add positional functions, get value, etc. etc. etc.
+
+    # Calculates the new price of the property, based on the extra free area
     def calculateNewValue(self):
-        # Extra vrijstand * percentage
+        # Extra vrijstand * base percentage
         totalIncreasePercentage = self.extraFreeArea * self.valueIncrease
 
         # Base price + (base price * total percentage)
