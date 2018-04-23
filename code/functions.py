@@ -18,11 +18,7 @@ def createGrid(gridXlength, gridYlength):
 
     # grid[0][0] is linksboven
     # grid[Y]grid[X] scheme
-<<<<<<< HEAD
     grid[randint(0,17)][randint(0,15)] = 1
-=======
-    grid[randint(0,15)][randint(0,17)] = 1
->>>>>>> 0d18b5d1dcd04560ca4a19dc9848e964fe81c230
     # grid[randint(0,15)][randint(0,17)] = 2
     # grid[randint(0,15)][randint(0,17)] = 3
     for element in grid:
