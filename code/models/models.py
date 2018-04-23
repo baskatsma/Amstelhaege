@@ -22,7 +22,6 @@ class genericHouse:
         # Extra vrijstand * percentage
         totalIncreasePercentage = self.houseExtraFreeArea * self.houseValueIncrease
         newHouseValue = self.houseValue + (self.houseValue * totalIncreasePercentage)
-        print(newHouseValue)
         return newHouseValue
 
 

@@ -18,20 +18,9 @@ a = Eengezinswoning(gridLength, gridDepth)
 b = Bungalow(gridLength, gridDepth)
 c = Maison(gridLength, gridDepth)
 
-<<<<<<< HEAD
-print(a)
 print("A is een " + a.houseType + " met afmetingen: ", a.houseDimensions)
 print("De waarde is: " + str(a.houseValue) + " euro")
+print("De nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
 
-print(b)
 print("B is een " + b.houseType + " met afmetingen: ", b.houseDimensions)
 print("De waarde is: " + str(b.houseValue) + " euro")
-=======
-print("a.houseType is: " + a.houseType + " || a.dimensions: ", end="")
-print(a.houseDimensions)
-print("a.houseValue is: " + str(a.houseValue) + " euro")
-<<<<<<< HEAD
-print(a.calculateNewValue)
-=======
->>>>>>> e094e239fc9e5bbfdf307e9576e76d24d3518183
->>>>>>> a947b065d486a0de8bb2c2b49bebf320431e10ad
