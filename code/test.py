@@ -47,3 +47,5 @@ for maison in range(gridField.totalAmountMaisons):
 # Print woonwijk huizen
 for i in range(len(residentialArea)):
     print(residentialArea[i].type)
+
+grid[0][0] = "E"
