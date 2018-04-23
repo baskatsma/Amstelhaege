@@ -32,15 +32,15 @@ print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 # %% Test woonwijk
 residentialArea = []
 
-# Out of the 20 houses, add 0.60 * 20 eengezinswoningen
+# Out of the maxHouses houses, add 0.60 * maxHouses eengezinswoningen
 for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
     residentialArea.append(Eengezinswoning(gridXLength, gridYLength))
 
-# Out of the 20 houses, add 0.25 * 20 bungalows
+# Out of the maxHouses houses, add 0.25 * maxHouses bungalows
 for bungalow in range(gridField.totalAmountBungalows):
     residentialArea.append(Bungalow(gridXLength, gridYLength))
 
-# Out of the 20 houses, add 0.15 * 20 maisons
+# Out of the maxHouses houses, add 0.15 * maxHouses maisons
 for maison in range(gridField.totalAmountMaisons):
     residentialArea.append(Maison(gridXLength, gridYLength))
 
