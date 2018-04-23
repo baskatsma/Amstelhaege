@@ -19,13 +19,13 @@ a = Eengezinswoning(gridXLength, gridYLength)
 b = Bungalow(gridXLength, gridYLength)
 c = Maison(gridXLength, gridYLength)
 
-createGrid(gridXLength, gridYLength)
+#createGrid(gridXLength, gridYLength)
 
-print("A is een " + a.type + " met afmetingen: ", a.houseDimensions)
+print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
 print("De waarde van A is: " + str(a.value) + " euro")
 print("A nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
 
-print("B is een " + b.type + " met afmetingen: ", b.houseDimensions)
+print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
 print("De waarde van B is: " + str(b.value) + " euro")
 print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 
