@@ -1,9 +1,9 @@
 """
 models.py
 
-CODERS      Amy van der Gun
-            Bas Katsma
-            Felicia van Gastel
+CODERS      Amy van der Gun     10791760
+            Bas Katsma          10787690
+            Felicia van Gastel  1
 
 USAGE       to-do
 """
