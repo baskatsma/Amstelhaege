@@ -10,6 +10,7 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 * De wijk moet voor **20%** uit oppervlaktewater bestaan, opgedeeld in **niet meer dan vier lichamen** die rechthoekig of ovaal van vorm zijn
 * Deze lichamen hebben hoogte-breedteverhoudingen die **tussen de 1:1 en 1:4** liggen
 
+
 ## Status
 - [x] Datastructures geïnitialiseerd
 - [x] Basale functies toegevoegd
@@ -18,15 +19,18 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 - [ ] Random algoritme optimaliseren
 - [ ] Nieuwe algoritmes toepassen
 
+
 ## Benodigdheden
-> * **Atom 1.2x** of andere soortgelijke texteditor
+> * **[Atom 1.2x](https://atom.io/)** of andere soortgelijke texteditor
 
-> * **Python 3.x**
+> * **[Python 3.x](https://www.python.org/downloads/)**
 
-> * **macOS, Windows or Linux**
+> * **macOS, Windows** or **Linux**
+
 
 ## Gebruik
 `python3 test.py`
+
 
 ## Acknowledgements
 Wij willen graag onze assistent Nicole Silverio bedanken voor de assistentie, hulp en mentale support!
