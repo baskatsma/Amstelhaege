@@ -21,7 +21,7 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 
 
 ## Benodigdheden
-> * **[Atom 1.2x](https://atom.io/)** of andere soortgelijke texteditor
+> * **[Atom 1.2x](https://atom.io/)** of een andere soortgelijke texteditor
 
 > * **[Python 3.x](https://www.python.org/downloads/)**
 
