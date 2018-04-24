@@ -1,5 +1,6 @@
+# %% Hydrogen run
 import sys
-from random import randint
+#from random import randint
 
 # %% Define residential area size (either 20, 40 or 60 houses at max)
 def defineMaxHouses():
@@ -29,25 +30,12 @@ def defineMaxHouses():
 
     return maxHouses
 
-# %% Initialize grid
-def createGrid(gridXlength, gridYlength):
 
-    # Create empty grid and initialize dot
-    grid = []
-    dot = 0
 
-    # iterate Xlength times and add empty array
-    for i in range(gridXlength):
-        row = []
-        grid.append(row)
 
-        # add Ylength times a dot per array
-        for j in range(gridYlength):
-            row.append(dot)
 
-    # grid[0][0] is linksboven
-    # grid[Y]grid[X] scheme
 
+<<<<<<< HEAD
     placeOnGrid(grid)
 
     for element in grid:
@@ -84,3 +72,41 @@ def placeOnGrid(grid):
     # elif locationBungalow == locationMaison:
     #     locationBungalow = [randint(-1,17)][randint(-1,15)]
     # else:
+=======
+# # %% Initialize grid
+# def createGrid(gridXLength, gridYLength):
+#
+#     # Create empty grid and initialize dot
+#     grid = []
+#     dot = 0
+#
+#     # iterate Xlength times and add empty array
+#     for i in range(gridXlength):
+#         row = []
+#         grid.append(row)
+#
+#         # add Ylength times a dot per array
+#         for j in range(gridYlength):
+#             row.append(dot)
+#
+#     # grid[0][0] is linksboven
+#     # grid[Y]grid[X] scheme
+#
+#     placeOnGrid(grid)
+#
+#     for element in grid:
+#         print(element)
+#
+#     return grid
+#
+# # %% Place on grid function
+# def placeOnGrid(grid):
+#
+#     eengezinswoning = 1
+#     bungalow = 2
+#     maison = 3
+#
+#     grid[randint(-1,17)][randint(-1,15)] = eengezinswoning
+#     grid[randint(-1,17)][randint(-1,15)] = bungalow
+#     grid[randint(-1,17)][randint(-1,15)] = maison
+>>>>>>> c94f482750193406ae1087c8f2c5e2dc430b44bf

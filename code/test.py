@@ -11,22 +11,12 @@ gridYLength = 16
 
 # Create grid instance
 gridField = Grid(gridXLength, gridYLength, maxHouses)
-# print("maxHouses on grid is: " + str(gridField.maxHouses))
-# print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
-createGrid(gridXLength, gridYLength)
+gridArray = gridField.drawGrid()
 
 # %% Test houses
 a = Eengezinswoning(gridXLength, gridYLength)
 b = Bungalow(gridXLength, gridYLength)
 c = Maison(gridXLength, gridYLength)
-
-print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
-print("De waarde van A is: " + str(a.value) + " euro")
-print("A nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
-
-print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
-print("De waarde van B is: " + str(b.value) + " euro")
-print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 
 # %% Test woonwijk
 residentialArea = []
@@ -42,6 +32,19 @@ for bungalow in range(gridField.totalAmountBungalows):
 # Out of the maxHouses houses, add 0.15 * maxHouses maisons
 for maison in range(gridField.totalAmountMaisons):
     residentialArea.append(Maison(gridXLength, gridYLength))
+
+# PRINT TESTS
+
+# print("maxHouses on grid is: " + str(gridField.maxHouses))
+# print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
+
+# print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
+# print("De waarde van A is: " + str(a.value) + " euro")
+# print("A nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
+#
+# print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
+# print("De waarde van B is: " + str(b.value) + " euro")
+# print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 
 # for i in range(len(residentialArea)):
 #     print(residentialArea[i].type)
