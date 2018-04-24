@@ -16,9 +16,6 @@ def createGrid(gridXlength, gridYlength):
         for j in range(gridYlength):
             row.append(dot)
 
-# for x in range(10):
-#   print (randint(1,21))
-
     # grid[0][0] is linksboven
     # grid[Y]grid[X] scheme
     grid[randint(0,15)][randint(0,17)] = 1

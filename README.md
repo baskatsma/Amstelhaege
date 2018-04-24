@@ -25,12 +25,12 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 
 > * **[Python 3.x](https://www.python.org/downloads/)**
 
-> * **macOS, Windows** or **Linux**
+> * **macOS, Windows** of **Linux**
 
 
 ## Gebruik
 `python3 test.py`
 
 
-## Acknowledgements
+## Dankwoord
 Wij willen graag onze assistent Nicole Silverio bedanken voor de assistentie, hulp en mentale support!
