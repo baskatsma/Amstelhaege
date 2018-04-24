@@ -11,8 +11,8 @@ gridYLength = 16
 
 # Create grid instance
 gridField = Grid(gridXLength, gridYLength, maxHouses)
-print("maxHouses on grid is: " + str(gridField.maxHouses))
-print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
+# print("maxHouses on grid is: " + str(gridField.maxHouses))
+# print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
 createGrid(gridXLength, gridYLength)
 
 # %% Test houses
@@ -43,5 +43,5 @@ for bungalow in range(gridField.totalAmountBungalows):
 for maison in range(gridField.totalAmountMaisons):
     residentialArea.append(Maison(gridXLength, gridYLength))
 
-for i in range(len(residentialArea)):
-    print(residentialArea[i].type)
+# for i in range(len(residentialArea)):
+#     print(residentialArea[i].type)
