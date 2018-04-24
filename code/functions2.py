@@ -1,6 +1,6 @@
 # %% Hydrogen run
 import sys
-from random import randint
+#from random import randint
 
 # %% Define residential area size (either 20, 40 or 60 houses at max)
 def defineMaxHouses():
@@ -29,7 +29,12 @@ def defineMaxHouses():
             print("sys.argv is an invalid number, maxHouses = 20 by default")
 
     return maxHouses
-#
+
+
+
+
+
+
 # # %% Initialize grid
 # def createGrid(gridXLength, gridYLength):
 #
