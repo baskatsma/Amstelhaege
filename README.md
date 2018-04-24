@@ -33,9 +33,10 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 `python3 test.py`
 
 #### Advanced (20-, 40- of 60-huizenvariant)
-`python3 test.py 40`
-
-`python3 test.py 60`
+```
+python3 test.py 40
+python3 test.py 60
+```
 
 ## Dankwoord
 Wij willen graag onze assistent Nicole Silverio bedanken voor de assistentie, hulp en mentale support!
