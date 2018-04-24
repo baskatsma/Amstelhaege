@@ -3,7 +3,7 @@ models.py
 
 CODERS      Amy van der Gun     10791760
             Bas Katsma          10787690
-            Felicia van Gastel  1
+            Felicia van Gastel  11096187
 
 USAGE       to-do
 """
