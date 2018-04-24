@@ -60,6 +60,27 @@ def placeOnGrid(grid):
     bungalow = 2
     maison = 3
 
-    grid[randint(-1,17)][randint(-1,15)] = eengezinswoning
-    grid[randint(-1,17)][randint(-1,15)] = bungalow
-    grid[randint(-1,17)][randint(-1,15)] = maison
+    location1Y = randint(-1,17)
+    location1X = randint(-1,15)
+    location2Y = randint(-1,17)
+    location2X = randint(-1,15)
+    location3Y = randint(-1,17)
+    location3X = randint(-1,15)
+
+    grid[location1Y][location1X] = eengezinswoning
+    grid[location2Y][location2X] = bungalow
+    grid[location3Y][location3X] = maison
+
+    if not grid[location1Y][location1X] == grid[location2Y][location2X]:
+        grid[location1Y][location1X] = eengezinswoning
+        grid[location2Y][location2X] = bungalow
+        grid[location3Y][location3X] = maison
+
+# while True:
+    # if locationEengezins == locationBungalow:
+    #     locationEengezins = [randint(-1,17)][randint(-1,15)]
+    # elif locationEengezins == locationMaison:
+    #     locationEengezins = [randint(-1,17)][randint(-1,15)]
+    # elif locationBungalow == locationMaison:
+    #     locationBungalow = [randint(-1,17)][randint(-1,15)]
+    # else:
