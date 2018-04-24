@@ -1,9 +1,28 @@
 # %% Import classes
+import sys
 from models.models import *
 from functions import *
 
 # Residential area size (either 20, 40 or 60 houses at max)
+# 20 by default, unless specified
 maxHouses = 20
+
+if len(sys.argv) == 1:
+    print("1 argument is used (only test.py)")
+    print("maxHouses remains 20")
+
+elif len(sys.argv) == 2:
+    if str(sys.argv[1]) == "20":
+        print("sys.argv = 20, maxHouses remains 20")
+    elif str(sys.argv[1]) == "40":
+        maxHouses = 40
+        print("sys.argv = 40, maxHouses = 40")
+    elif str(sys.argv[1]) == "60":
+        maxHouses = 60
+        print("sys.argv = 60, maxHouses = 60")
+    else:
+        maxHouses = 20
+        print("sys.argv is an invalid number, maxHouses = 20 by default")
 
 # Grid dimensions in meters
 gridXLength = 18
