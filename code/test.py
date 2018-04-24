@@ -11,7 +11,7 @@ gridYLength = 16
 
 # Create grid instance
 gridField = Grid(gridXLength, gridYLength, maxHouses)
-gridArray = gridField.drawGrid(gridXLength, gridYLength)
+gridArray = gridField.drawGrid()
 
 # %% Test houses
 a = Eengezinswoning(gridXLength, gridYLength)

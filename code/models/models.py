@@ -18,8 +18,6 @@ class genericHouse:
     def __init__(self):
         print("genericHouse is made.")
 
-    # To do: add positional functions, get value, etc. etc. etc.
-
     # Calculates the new price of the property, based on the extra free area
     def calculateNewValue(self):
         # Extra vrijstand * base percentage
@@ -84,27 +82,29 @@ class Grid:
         self.totalAmountMaisons = int(self.maxHouses * self.fractionMaisons)
 
     # %%
-    def drawGrid(self, gridXLength, gridYLength):
+    def drawGrid(self):
         """
         grid[0][0]          is linksboven
         grid[Y]grid[X]      coordinate system
         """
 
-        # Create empty grid and initialize dot
+        # Create empty grid and initialize fill
         grid = []
         fillNumber = 0
 
-        # iterate XLength times and add empty array
-        for i in range(gridXLength):
+        # Iterate XLength times and add empty array
+        for i in range(self.gridXLength):
             row = []
             grid.append(row)
 
-            # add YLength times a dot per array
-            for j in range(gridYLength):
+            # Add YLength times a fillNumber per array
+            for j in range(self.gridYLength):
                 row.append(fillNumber)
 
+        # Random place function
         self.placeOnGrid(grid)
 
+        # Print whole grid
         for element in grid:
             print(element)
 
