@@ -1,7 +1,7 @@
 # %% Import classes
 import sys
 from models.models import *
-from functions import *
+from functions2 import *
 
 # Residential area size (either 20, 40 or 60 houses at max)
 # 20 by default, unless specified

@@ -25,5 +25,11 @@ def createGrid(gridXlength, gridYlength):
         print(element)
 
 def placeOnGrid(grid):
-    grid[randint(0,15)][randint(0,17)] = 1
-    grid[randint(0,17)][randint(0,15)] = 2
+
+    eengezinswoning = 1
+    bungalow = 2
+    maison = 3
+
+    grid[randint(-1,17)][randint(-1,15)] = eengezinswoning
+    grid[randint(-1,17)][randint(-1,15)] = bungalow
+    grid[randint(-1,17)][randint(-1,15)] = maison
