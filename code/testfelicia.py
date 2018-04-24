@@ -13,21 +13,20 @@ gridYLength = 16
 gridField = Grid(gridXLength, gridYLength, maxHouses)
 # print("maxHouses on grid is: " + str(gridField.maxHouses))
 # print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
-
-gridArray = gridField.drawGrid(gridXLength, gridYLength)
+createGrid(gridXLength, gridYLength)
 
 # %% Test houses
 a = Eengezinswoning(gridXLength, gridYLength)
 b = Bungalow(gridXLength, gridYLength)
 c = Maison(gridXLength, gridYLength)
 
-# print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
-# print("De waarde van A is: " + str(a.value) + " euro")
-# print("A nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
-#
-# print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
-# print("De waarde van B is: " + str(b.value) + " euro")
-# print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
+print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
+print("De waarde van A is: " + str(a.value) + " euro")
+print("A nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
+
+print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
+print("De waarde van B is: " + str(b.value) + " euro")
+print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
 
 # %% Test woonwijk
 residentialArea = []
