@@ -34,10 +34,10 @@ for maison in range(gridField.totalAmountMaisons):
     residentialArea.append(Maison(gridXLength, gridYLength))
 
 # PRINT TESTS
-
+# 
 # print("maxHouses on grid is: " + str(gridField.maxHouses))
 # print("fractionEengezinswoningen is: " + str(gridField.fractionEengezinswoningen))
-
+#
 # print("A is een " + a.type + " met afmetingen:", a.houseDimensions)
 # print("De waarde van A is: " + str(a.value) + " euro")
 # print("A nieuwe waarde met extra vrijstand is:", a.calculateNewValue())
@@ -45,6 +45,6 @@ for maison in range(gridField.totalAmountMaisons):
 # print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
 # print("De waarde van B is: " + str(b.value) + " euro")
 # print("B nieuwe waarde met extra vrijstand is:", b.calculateNewValue())
-
+#
 # for i in range(len(residentialArea)):
 #     print(residentialArea[i].type)
