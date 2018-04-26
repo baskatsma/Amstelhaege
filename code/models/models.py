@@ -7,9 +7,10 @@ CODERS      Amy van der Gun     10791760
 
 USAGE       to-do
 """
+# %%
 from random import randint
 
-# %% Initialize genericHouse class
+# Initialize genericHouse class
 class genericHouse:
     """
     Generic House class that contains functions that all the subclasses use
@@ -28,7 +29,7 @@ class genericHouse:
 
         return newHouseValue
 
-# %% Eengezinswoning
+# Eengezinswoning
 class Eengezinswoning(genericHouse):
     def __init__(self, gridXLength, gridYLength):
         self.type = "eengezinswoning"
@@ -40,7 +41,7 @@ class Eengezinswoning(genericHouse):
         self.positionX = 0
         self.positionY = 0
 
-# %% Bungalow
+# Bungalow
 class Bungalow(genericHouse):
     def __init__(self, gridXLength, gridYLength):
         self.type = "bungalow"
@@ -52,7 +53,7 @@ class Bungalow(genericHouse):
         self.positionX = 0
         self.positionY = 0
 
-# %% Maison
+# Maison
 class Maison(genericHouse):
     def __init__(self, gridXLength, gridYLength):
         self.type = "maison"
@@ -64,7 +65,7 @@ class Maison(genericHouse):
         self.positionX = 0
         self.positionY = 0
 
-# %% Initialize Grid class
+# Initialize Grid class
 class Grid:
     """
     Grid that contains all houses
@@ -81,7 +82,7 @@ class Grid:
         self.totalAmountBungalows = int(self.maxHouses * self.fractionBungalows)
         self.totalAmountMaisons = int(self.maxHouses * self.fractionMaisons)
 
-    # %%
+    # Visualize grid with arrays
     def drawGrid(self):
         """
         grid[0][0]          is linksboven
@@ -110,7 +111,7 @@ class Grid:
 
         return grid
 
-    # %% Place on grid function
+    # Place on grid function
     def placeOnGrid(self, grid):
 
         eengezinswoning = 1
