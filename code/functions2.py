@@ -30,12 +30,6 @@ def defineMaxHouses():
 
     return maxHouses
 
-
-
-
-
-
-<<<<<<< HEAD
     placeOnGrid(grid)
 
     for element in grid:
@@ -72,7 +66,7 @@ def placeOnGrid(grid):
     # elif locationBungalow == locationMaison:
     #     locationBungalow = [randint(-1,17)][randint(-1,15)]
     # else:
-=======
+
 # # %% Initialize grid
 # def createGrid(gridXLength, gridYLength):
 #
@@ -109,4 +103,3 @@ def placeOnGrid(grid):
 #     grid[randint(-1,17)][randint(-1,15)] = eengezinswoning
 #     grid[randint(-1,17)][randint(-1,15)] = bungalow
 #     grid[randint(-1,17)][randint(-1,15)] = maison
->>>>>>> c94f482750193406ae1087c8f2c5e2dc430b44bf
