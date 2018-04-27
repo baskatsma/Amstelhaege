@@ -10,6 +10,7 @@ USAGE       to-do
 # %%
 from random import randint
 
+# Define House class
 class House(object):
     """
     Contains all house properties and functions
@@ -30,7 +31,7 @@ class House(object):
 
     # Calculates the new price of the property, based on the extra free area
     def calculateNewValue(self):
-        
+
         # Extra vrijstand * base percentage
         totalIncreasePercentage = self.extraFreeArea * self.valueIncrease
 
@@ -39,7 +40,7 @@ class House(object):
 
         return newHouseValue
 
-# Initialize Grid class
+# Define Grid class
 class Grid(object):
     """
     Grid that contains all houses
