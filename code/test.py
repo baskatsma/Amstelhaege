@@ -1,4 +1,5 @@
 # %% Import classes
+import numpy as np
 from models.models import *
 from functions2 import *
 
@@ -49,6 +50,10 @@ maisonTemplate = {"type": "maison",
 # Create grid instance
 gridField = Grid(gridXLength, gridYLength, maxHouses)
 gridArray = gridField.drawGrid()
+
+# Create numpy grid (vertical, horizontal)
+d = np.zeros( (16,18) )
+# print(d)
 
 # %% Test woonwijk
 residentialArea = []

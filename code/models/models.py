@@ -68,13 +68,13 @@ class Grid(object):
         grid = []
         fillNumber = 0
 
-        # Iterate XLength times and add empty array
-        for i in range(self.gridXLength):
+        # Iterate YLength times and add empty array
+        for i in range(self.gridYLength):
             row = []
             grid.append(row)
 
-            # Add YLength times a fillNumber per array
-            for j in range(self.gridYLength):
+            # Add XLength times a fillNumber per array
+            for j in range(self.gridXLength):
                 row.append(fillNumber)
 
         # Random place function
@@ -93,9 +93,9 @@ class Grid(object):
         bungalow = 2
         maison = 3
 
-        grid[randint(-1,17)][randint(-1,15)] = eengezinswoning
-        grid[randint(-1,17)][randint(-1,15)] = bungalow
-        grid[randint(-1,17)][randint(-1,15)] = maison
+        grid[randint(-1,15)][randint(-1,17)] = eengezinswoning
+        grid[randint(-1,15)][randint(-1,17)] = bungalow
+        grid[randint(-1,15)][randint(-1,17)] = maison
 
 
 

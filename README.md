@@ -27,6 +27,12 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 
 > * **macOS, Windows** of **Linux**
 
+> * **numpy** package
+
+```
+pip3 install numpy
+```
+
 
 ## Gebruik
 #### Basic (20 huizenvariant)
