@@ -42,6 +42,8 @@ class House(object):
         return newHouseValue
 
     def getBeginCoordinates(self):
+
+        # To-do: Remove -5 and correctly work with borders
         self.positionX = rd.randrange(self.gridYLength - 5)
         self.positionY = rd.randrange(self.gridXLength - 5)
         beginCoordinates = (self.positionY, self.positionX)
@@ -50,7 +52,7 @@ class House(object):
 
     def drawOnGrid(self, buildingSite, currentHouse):
 
-        # Define numpy visuals
+        # Define number that numpy will draw
         if currentHouse.type == "eengezinswoning":
             drawNumber = 2
         elif currentHouse.type == "bungalow":
@@ -94,9 +96,12 @@ class House(object):
 
     def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite, currentHouse):
 
-        print("Checking buildingSite [",xCoordinateBegin,"tot",xCoordinateEnd,end="")
-        print(" ,",yCoordinateBegin,"tot",yCoordinateEnd,"]")
-        if np.any(buildingSite[xCoordinateBegin:xCoordinateEnd, yCoordinateBegin:yCoordinateEnd] != 0):
+        # Print statements
+        print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",yCoordinateEnd,end="")
+        print(" ,",xCoordinateBegin,"tot",xCoordinateEnd,"]")
+
+        # Check house dimension area starting at the begin coordinates
+        if np.any(buildingSite[yCoordinateBegin:yCoordinateEnd, xCoordinateBegin:xCoordinateEnd] != 0):
             print("ALL should be 0. drawOnGrid again...")
             print("")
             print("")

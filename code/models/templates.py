@@ -1,6 +1,8 @@
 # Grid dimensions in meters
 # gridXLength = 18
 # gridYLength = 16
+
+# Testing purposes
 gridXLength = 23
 gridYLength = 20
 
@@ -9,7 +11,7 @@ eengezinswoningTemplate = {"type": "eengezinswoning",
                             # "houseDimensions": (8, 8),
                             "houseDimensions": (3, 2),
                             "freeArea": 2,
-                            "extraFreeArea": 5,
+                            "extraFreeArea": 0,
                             "value": 285000,
                             "valueIncrease": float(0.03),
                             "positionX": 0,

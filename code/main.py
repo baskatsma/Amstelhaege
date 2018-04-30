@@ -15,6 +15,7 @@ def main():
 
     # Create numpy grid (verticalY, horizontalX)
     buildingSite = np.zeros( (gridYLength,gridXLength) )
+    buildingSite[0:2,4:7] = 6
 
     # Test woonwijk
     residentialArea = []
@@ -66,13 +67,7 @@ def main():
 
         print(row)
         rowCounter += 1
-
-    # X, Y row
-    # if np.any(buildingSite[1, :] == 2):
-    #     print("2 is found on ANY of the X-rows: 1")
-    #
-    # if np.any(buildingSite[0:2, :] == 2):
-    #     print("2 is found on ANY of the X-rows: 0, 1 and 2")
+    print("")
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
