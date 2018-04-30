@@ -42,9 +42,9 @@ class House(object):
         return newHouseValue
 
     def getBeginCoordinates(self):
-        newY = rd.randrange(self.gridYLength - 5)
-        newX = rd.randrange(self.gridXLength - 5)
-        beginCoordinates = (newY, newX)
+        self.positionX = rd.randrange(self.gridYLength - 5)
+        self.positionY = rd.randrange(self.gridXLength - 5)
+        beginCoordinates = (self.positionY, self.positionX)
 
         return beginCoordinates
 
@@ -94,8 +94,8 @@ class House(object):
 
     def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite, currentHouse):
 
-        print("checking buildingSite [",xCoordinateBegin,":",xCoordinateEnd,end="")
-        print(" , ",yCoordinateBegin,":",yCoordinateEnd," ]")
+        print("Checking buildingSite [",xCoordinateBegin,"tot",xCoordinateEnd,end="")
+        print(" ,",yCoordinateBegin,"tot",yCoordinateEnd,"]")
         if np.any(buildingSite[xCoordinateBegin:xCoordinateEnd, yCoordinateBegin:yCoordinateEnd] != 0):
             print("ALL should be 0. drawOnGrid again...")
             print("")

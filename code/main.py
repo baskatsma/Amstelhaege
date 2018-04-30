@@ -55,15 +55,24 @@ def main():
             currentHouse.drawOnGrid(buildingSite, currentHouse)
 
     # Print build
+    rowCounter = 0
+    print("      X ---->")
+    print("  Y ")
     for row in buildingSite:
+        if rowCounter < 10:
+            print(".",rowCounter," ", end="")
+        else:
+            print("",rowCounter," ", end="")
+
         print(row)
+        rowCounter += 1
 
     # X, Y row
-    if np.any(buildingSite[1, :] == 2):
-        print("2 is found on ANY of the X-rows: 1")
-
-    if np.any(buildingSite[0:2, :] == 2):
-        print("2 is found on ANY of the X-rows: 0, 1 and 2")
+    # if np.any(buildingSite[1, :] == 2):
+    #     print("2 is found on ANY of the X-rows: 1")
+    #
+    # if np.any(buildingSite[0:2, :] == 2):
+    #     print("2 is found on ANY of the X-rows: 0, 1 and 2")
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
