@@ -59,6 +59,7 @@ def main():
 
     # Print buildingSite with some fancy thaaangs
     rowCounter = 0
+    print("")
     print("      X ---->")
     print("  Y ")
     for row in buildingSite:

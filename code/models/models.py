@@ -82,7 +82,6 @@ class House(object):
         print("endCoordinates(Y, X): ",endCoordinates)
         # print("YLength is: ",houseYLength, end="")
         # print("  ||  XLength is: ",houseXLength)
-        print("")
 
         # Check for overlap
         if self.noOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite, currentHouse) == True:
@@ -92,6 +91,7 @@ class House(object):
 
         # Else start over
         else:
+            print("Fetching new coordinates, because of overlap")
             self.drawOnGrid(buildingSite, currentHouse)
 
     def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite, currentHouse):
@@ -99,18 +99,13 @@ class House(object):
         # Print statements
         print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",yCoordinateEnd,end="")
         print(" ,",xCoordinateBegin,"tot",xCoordinateEnd,"]")
+        print("")
 
         # Check house dimension area starting at the begin coordinates
         if np.any(buildingSite[yCoordinateBegin:yCoordinateEnd, xCoordinateBegin:xCoordinateEnd] != 0):
-            print("ALL should be 0. drawOnGrid again...")
-            print("")
-            print("")
             return False
 
         else:
-            print("No overlap found! Placing...")
-            print("")
-            print("")
             return True
 
 # Define Grid class
