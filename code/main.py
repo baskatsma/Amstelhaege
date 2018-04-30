@@ -40,26 +40,30 @@ def main():
         if residentialArea[house].type == "eengezinswoning":
             currentHouse = residentialArea[house]
 
-            drawNumber = 2
-            currentHouse.drawOnGrid(buildingSite, drawNumber)
+            currentHouse.drawOnGrid(buildingSite, currentHouse)
 
         # Draw all bungalows on grid
         elif residentialArea[house].type == "bungalow":
             currentHouse = residentialArea[house]
 
-            drawNumber = 3
-            currentHouse.drawOnGrid(buildingSite, drawNumber)
+            currentHouse.drawOnGrid(buildingSite, currentHouse)
 
         # Draw all maisons on grid
         elif residentialArea[house].type == "maison":
             currentHouse = residentialArea[house]
 
-            drawNumber = 4
-            currentHouse.drawOnGrid(buildingSite, drawNumber)
+            currentHouse.drawOnGrid(buildingSite, currentHouse)
 
     # Print build
     for row in buildingSite:
         print(row)
+
+    # X, Y row
+    if np.any(buildingSite[1, :] == 2):
+        print("2 is found on ANY of the X-rows: 1")
+
+    if np.any(buildingSite[0:2, :] == 2):
+        print("2 is found on ANY of the X-rows: 0, 1 and 2")
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):

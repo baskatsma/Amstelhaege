@@ -9,6 +9,7 @@ USAGE       to-do
 """
 # %%
 import random as rd
+import numpy as np
 
 # Define House class
 class House(object):
@@ -40,18 +41,31 @@ class House(object):
 
         return newHouseValue
 
-    def drawOnGrid(self, buildingSite, drawNumber):
+    def getBeginCoordinates(self):
+        newY = rd.randrange(self.gridYLength - 5)
+        newX = rd.randrange(self.gridXLength - 5)
+        beginCoordinates = (newY, newX)
 
-        # Get begin coordinates randomly
-        self.positionY = rd.randrange(self.gridYLength - 5)
-        self.positionX = rd.randrange(self.gridXLength - 5)
-        beginCoordinates = (self.positionY, self.positionX)
+        return beginCoordinates
+
+    def drawOnGrid(self, buildingSite, currentHouse):
+
+        # Define numpy visuals
+        if currentHouse.type == "eengezinswoning":
+            drawNumber = 2
+        elif currentHouse.type == "bungalow":
+            drawNumber = 3
+        elif currentHouse.type == "maison":
+            drawNumber = 4
+
+        # Get begin coordinates (tuple) randomly
+        beginCoordinates = self.getBeginCoordinates()
 
         # Extract house dimension values
         houseXLength = self.houseDimensions[0]
         houseYLength = self.houseDimensions[1]
 
-        # Calculate end coordinates
+        # Define end coordinates (tuple)
         endCoordinates = (beginCoordinates[0] + houseYLength, beginCoordinates[1] + houseXLength)
 
         # Define new coordinates
@@ -61,15 +75,38 @@ class House(object):
         xCoordinateEnd = endCoordinates[1]
 
         # Print tests
-        print("beginCoordinates: ",beginCoordinates)
-        print("endCoordinates: ",endCoordinates)
-        print("YLength is: ",houseYLength, end="")
-        print("  ||  XLength is: ",houseXLength)
+        print("This is a",currentHouse.type,"with uniqueID:",currentHouse.uniqueID)
+        print("beginCoordinates(Y, X): ",beginCoordinates)
+        print("endCoordinates(Y, X): ",endCoordinates)
+        # print("YLength is: ",houseYLength, end="")
+        # print("  ||  XLength is: ",houseXLength)
         print("")
 
-        # Update grid
-        buildingSite[yCoordinateBegin:yCoordinateEnd,xCoordinateBegin:xCoordinateEnd] = drawNumber
+        # Check for overlap
+        if self.noOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite, currentHouse) == True:
 
+            # Field is clear, update grid
+            buildingSite[yCoordinateBegin:yCoordinateEnd,xCoordinateBegin:xCoordinateEnd] = drawNumber
+
+        # Else start over
+        else:
+            self.drawOnGrid(buildingSite, currentHouse)
+
+    def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite, currentHouse):
+
+        print("checking buildingSite [",xCoordinateBegin,":",xCoordinateEnd,end="")
+        print(" , ",yCoordinateBegin,":",yCoordinateEnd," ]")
+        if np.any(buildingSite[xCoordinateBegin:xCoordinateEnd, yCoordinateBegin:yCoordinateEnd] != 0):
+            print("ALL should be 0. drawOnGrid again...")
+            print("")
+            print("")
+            return False
+
+        else:
+            print("No overlap found! Placing...")
+            print("")
+            print("")
+            return True
 
 # Define Grid class
 class Grid(object):
