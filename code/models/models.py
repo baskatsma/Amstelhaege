@@ -44,8 +44,8 @@ class House(object):
     def getBeginCoordinates(self):
 
         # To-do: Remove -5 and correctly work with borders
-        self.positionX = rd.randrange(self.gridYLength - 5)
-        self.positionY = rd.randrange(self.gridXLength - 5)
+        self.positionY = rd.randrange(self.gridYLength - 5)
+        self.positionX = rd.randrange(self.gridXLength - 5)
         beginCoordinates = (self.positionY, self.positionX)
 
         return beginCoordinates
@@ -64,8 +64,8 @@ class House(object):
         beginCoordinates = self.getBeginCoordinates()
 
         # Extract house dimension values
-        houseXLength = self.houseDimensions[0]
         houseYLength = self.houseDimensions[1]
+        houseXLength = self.houseDimensions[0]
 
         # Define end coordinates (tuple)
         endCoordinates = (beginCoordinates[0] + houseYLength, beginCoordinates[1] + houseXLength)
@@ -84,17 +84,17 @@ class House(object):
         # print("  ||  XLength is: ",houseXLength)
 
         # Check for overlap
-        if self.noOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite, currentHouse) == True:
+        if self.noOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite) == True:
 
             # Field is clear, update grid
             buildingSite[yCoordinateBegin:yCoordinateEnd,xCoordinateBegin:xCoordinateEnd] = drawNumber
 
-        # Else start over
+        # Start over with drawOnGrid for this specific house
         else:
             print("Fetching new coordinates, because of overlap")
             self.drawOnGrid(buildingSite, currentHouse)
 
-    def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite, currentHouse):
+    def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite):
 
         # Print statements
         print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",yCoordinateEnd,end="")
