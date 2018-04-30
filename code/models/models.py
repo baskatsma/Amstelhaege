@@ -40,13 +40,36 @@ class House(object):
 
         return newHouseValue
 
-    def getNewCoordinates(self):
-        self.positionY = rd.randrange(self.gridYLength)
-        self.positionX = rd.randrange(self.gridXLength)
+    def drawOnGrid(self, buildingSite, drawNumber):
 
-        newCoordinates = (self.positionY, self.positionX)
+        # Get begin coordinates randomly
+        self.positionY = rd.randrange(self.gridYLength - 5)
+        self.positionX = rd.randrange(self.gridXLength - 5)
+        beginCoordinates = (self.positionY, self.positionX)
 
-        return newCoordinates
+        # Extract house dimension values
+        houseXLength = self.houseDimensions[0]
+        houseYLength = self.houseDimensions[1]
+
+        # Calculate end coordinates
+        endCoordinates = (beginCoordinates[0] + houseYLength, beginCoordinates[1] + houseXLength)
+
+        # Define new coordinates
+        yCoordinateBegin = beginCoordinates[0]
+        yCoordinateEnd = endCoordinates[0]
+        xCoordinateBegin = beginCoordinates[1]
+        xCoordinateEnd = endCoordinates[1]
+
+        # Print tests
+        print("beginCoordinates: ",beginCoordinates)
+        print("endCoordinates: ",endCoordinates)
+        print("YLength is: ",houseYLength, end="")
+        print("  ||  XLength is: ",houseXLength)
+        print("")
+
+        # Update grid
+        buildingSite[yCoordinateBegin:yCoordinateEnd,xCoordinateBegin:xCoordinateEnd] = drawNumber
+
 
 # Define Grid class
 class Grid(object):
@@ -64,105 +87,3 @@ class Grid(object):
         self.totalAmountEengezinswoningen = int(self.maxHouses * self.fractionEengezinswoningen)
         self.totalAmountBungalows = int(self.maxHouses * self.fractionBungalows)
         self.totalAmountMaisons = int(self.maxHouses * self.fractionMaisons)
-
-    # # Visualize grid with arrays
-    # def drawGrid(self):
-    #     """
-    #     grid[0][0]          is linksboven
-    #     grid[Y]grid[X]      coordinate system
-    #     """
-    #
-    #     # Create empty grid and initialize fill
-    #     grid = []
-    #     fillNumber = 0
-    #
-    #     # Iterate YLength times and add empty array
-    #     for i in range(self.gridYLength):
-    #         row = []
-    #         grid.append(row)
-    #
-    #         # Add XLength times a fillNumber per array
-    #         for j in range(self.gridXLength):
-    #             row.append(fillNumber)
-    #
-    #     # Random place function
-    #     self.placeOnGrid(grid)
-    #
-    #     # Print whole grid
-    #     for element in grid:
-    #         print(element)
-    #
-    #     return grid
-    #
-    # # Place on grid function
-    # def placeOnGrid(self, grid):
-    #
-    #     eengezinswoning = 1
-    #     bungalow = 2
-    #     maison = 3
-    #
-    #     grid[randint(-1,15)][randint(-1,17)] = eengezinswoning
-    #     grid[randint(-1,15)][randint(-1,17)] = bungalow
-    #     grid[randint(-1,15)][randint(-1,17)] = maison
-
-
-
-
-
-
-
-
-# # Initialize genericHouse class
-# class genericHouse:
-#     """
-#     Generic House class that contains functions that all the subclasses use
-#     """
-#
-#     def __init__(self):
-#         print("genericHouse is made.")
-#
-#     # Calculates the new price of the property, based on the extra free area
-#     def calculateNewValue(self):
-#         # Extra vrijstand * base percentage
-#         totalIncreasePercentage = self.extraFreeArea * self.valueIncrease
-#
-#         # Base price + (base price * total percentage)
-#         newHouseValue = self.value + (self.value * totalIncreasePercentage)
-#
-#         return newHouseValue
-#
-# # Eengezinswoning
-# class Eengezinswoning(genericHouse):
-#     def __init__(self, gridXLength, gridYLength):
-#         self.type = "eengezinswoning"
-#         self.houseDimensions = (8, 8)       # (length, depth) tuple
-#         self.freeArea = 2      # Vrijstand in meters
-#         self.extraFreeArea = 5     # Extra vrijstand in meters
-#         self.value = 285000
-#         self.valueIncrease = float(0.03)
-#         self.positionX = 0
-#         self.positionY = 0
-#
-# # Bungalow
-# class Bungalow(genericHouse):
-#     def __init__(self, gridXLength, gridYLength):
-#         self.type = "bungalow"
-#         self.houseDimensions = (10, 7.5)        # (length, depth) tuple
-#         self.freeArea = 3      # Vrijstand in meters
-#         self.extraFreeArea = 0     # Extra vrijstand in meters
-#         self.value = 399000
-#         self.valueIncrease = float(0.04)
-#         self.positionX = 0
-#         self.positionY = 0
-#
-# # Maison
-# class Maison(genericHouse):
-#     def __init__(self, gridXLength, gridYLength):
-#         self.type = "maison"
-#         self.houseDimensions = (11, 10.5)       # (length, depth) tuple
-#         self.freeArea = 6      # Vrijstand in meters
-#         self.extraFreeArea = 0     # Extra vrijstand in meters
-#         self.value = 610000
-#         self.valueIncrease = float(0.06)
-#         self.positionX = 0
-#         self.positionY = 0

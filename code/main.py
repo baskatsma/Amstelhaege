@@ -12,13 +12,9 @@ def main():
 
     # Create grid instance
     gridField = Grid(gridXLength, gridYLength, maxHouses)
-    #gridArray = gridField.drawGrid()
 
-    # Access tuple values
-    # print(maisonTemplate["houseDimensions"][1])
-
-    # Create numpy grid (vertical, horizontal)
-    d = np.zeros( (gridYLength,gridXLength) )
+    # Create numpy grid (verticalY, horizontalX)
+    buildingSite = np.zeros( (gridYLength,gridXLength) )
 
     # Test woonwijk
     residentialArea = []
@@ -39,33 +35,35 @@ def main():
 
     # Loop over all houses
     for house in range(len(residentialArea)):
+
+        # Draw all eengezinswoningen on grid
         if residentialArea[house].type == "eengezinswoning":
             currentHouse = residentialArea[house]
-            coordinates = currentHouse.getNewCoordinates()
 
-            d[coordinates] = 2
+            drawNumber = 2
+            currentHouse.drawOnGrid(buildingSite, drawNumber)
 
+        # Draw all bungalows on grid
         elif residentialArea[house].type == "bungalow":
             currentHouse = residentialArea[house]
-            coordinates = currentHouse.getNewCoordinates()
 
-            d[coordinates] = 3
+            drawNumber = 3
+            currentHouse.drawOnGrid(buildingSite, drawNumber)
 
+        # Draw all maisons on grid
         elif residentialArea[house].type == "maison":
             currentHouse = residentialArea[house]
-            coordinates = currentHouse.getNewCoordinates()
 
-            d[coordinates] = 4
-        else:
-            print("Wtf jongons")
+            drawNumber = 4
+            currentHouse.drawOnGrid(buildingSite, drawNumber)
 
-    for row in d:
+    # Print build
+    for row in buildingSite:
         print(row)
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
     #     print(residentialArea[i].type, "|| uniqueID is:", residentialArea[i].uniqueID)
-
 
     # # Print test extra House functions
     # b = House(**eengezinswoningTemplate)
