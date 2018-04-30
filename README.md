@@ -15,7 +15,11 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 - [x] Datastructures geïnitialiseerd
 - [x] Basale functies toegevoegd
 - [x] Random grid X, Y functie
-- [ ] Implementeren van place on grid, add vrijstand, etc., en alles correct scalen
+- [x] Huizen kunnen op het grid worden geplaatst
+- [x] Huizen worden correct gescaled
+- [x] Anti-overlap functie toegevoegd
+- [ ] Vrijstand toegevoegd
+- [ ] Water toegevoegd
 - [ ] Random algoritme optimaliseren
 - [ ] Nieuwe algoritmes toepassen
 
