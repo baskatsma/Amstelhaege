@@ -60,14 +60,14 @@ class House(object):
         elif currentHouse.type == "maison":
             drawNumber = 4
 
-        # Get begin coordinates (tuple) randomly
+        # Get begin coordinates (y, x tuple) randomly
         beginCoordinates = self.getBeginCoordinates()
 
         # Extract house dimension values
         houseYLength = self.houseDimensions[1]
         houseXLength = self.houseDimensions[0]
 
-        # Define end coordinates (tuple)
+        # Define end coordinates (y, x tuple)
         endCoordinates = (beginCoordinates[0] + houseYLength, beginCoordinates[1] + houseXLength)
 
         # Define new coordinates
@@ -78,8 +78,8 @@ class House(object):
 
         # Print tests
         print("This is a",currentHouse.type,"with uniqueID:",currentHouse.uniqueID)
-        print("beginCoordinates(Y, X): ",beginCoordinates)
-        print("endCoordinates(Y, X): ",endCoordinates)
+        # print("beginCoordinates(Y, X): ",beginCoordinates)
+        # print("endCoordinates(Y, X): ",endCoordinates)
         # print("YLength is: ",houseYLength, end="")
         # print("  ||  XLength is: ",houseXLength)
 
@@ -97,9 +97,9 @@ class House(object):
     def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite):
 
         # Print statements
-        print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",yCoordinateEnd,end="")
-        print(" ,",xCoordinateBegin,"tot",xCoordinateEnd,"]")
-        print("")
+        # print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",yCoordinateEnd,end="")
+        # print(" ,",xCoordinateBegin,"tot",xCoordinateEnd,"]")
+        # print("")
 
         # Check house dimension area starting at the begin coordinates
         if np.any(buildingSite[yCoordinateBegin:yCoordinateEnd, xCoordinateBegin:xCoordinateEnd] != 0):
