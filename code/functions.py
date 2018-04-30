@@ -28,4 +28,5 @@ def defineMaxHouses():
 
     # Testing purposes
     maxHouses = 16
+    
     return maxHouses

@@ -41,13 +41,13 @@ pip3 install numpy
 ## Gebruik
 #### Basic (20 huizenvariant)
 ```
-python3 test.py
+python3 main.py
 ```
 
 #### Advanced (20-, 40- of 60-huizenvariant)
 ```
-python3 test.py 40
-python3 test.py 60
+python3 main.py 40
+python3 main.py 60
 ```
 
 ## Dankwoord

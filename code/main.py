@@ -60,11 +60,12 @@ def main():
     # Print buildingSite with some fancy thaaangs
     rowCounter = 0
     print("")
-    print("      X ---->")
+    print("      X →")
     print("  Y ")
+    print("  ↓")
     for row in buildingSite:
         if rowCounter < 10:
-            print(".",rowCounter," ", end="")
+            print(" ",rowCounter," ", end="")
         else:
             print("",rowCounter," ", end="")
 
