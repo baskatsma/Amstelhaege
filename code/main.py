@@ -16,9 +16,6 @@ def main():
     # Create numpy grid (verticalY, horizontalX)
     buildingSite = np.zeros( (gridYLength,gridXLength) )
 
-    # Testing purposes
-    buildingSite[0:2,4:7] = 6
-
     # Create woonwijk
     residentialArea = []
 
@@ -60,17 +57,25 @@ def main():
     # Print buildingSite with some fancy thaaangs
     rowCounter = 0
     print("")
-    print("      X →")
-    print("  Y ")
-    print("  ↓")
+    print("")
+    print("        X →")
+    print("        ",end="")
+    for i in range(gridXLength):
+        if i < 10:
+            print(i," ",end="")
+        else:
+            print(i,"",end="")
+    print("")
+    print("  ↓ Y")
     for row in buildingSite:
         if rowCounter < 10:
-            print(" ",rowCounter," ", end="")
+            print("   ",rowCounter," ", end="")
         else:
-            print("",rowCounter," ", end="")
+            print("  ",rowCounter," ", end="")
 
         print(row)
         rowCounter += 1
+    print("")
     print("")
 
     # # Print test woonwijk
