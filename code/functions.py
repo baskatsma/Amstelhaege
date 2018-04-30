@@ -10,7 +10,6 @@ def defineMaxHouses():
 
     # Check if a number is entered in the CLI
     if len(sys.argv) == 1:
-        print("1 argument is used (only main.py)")
         print("maxHouses remains 20")
 
     # Check if the number is valid (either 20, 40 or 60)
@@ -28,35 +27,37 @@ def defineMaxHouses():
             maxHouses = 20
             print("sys.argv is an invalid number, maxHouses = 20 by default")
 
+    # Testing purposes
+    maxHouses = 10
     return maxHouses
 
-    placeOnGrid(grid)
+    # placeOnGrid(grid)
+    #
+    # for element in grid:
+    #     print(element)
 
-    for element in grid:
-        print(element)
-
-# %% Place on grid function
-def placeOnGrid(grid):
-
-    eengezinswoning = 1
-    bungalow = 2
-    maison = 3
-
-    location1Y = randint(-1,17)
-    location1X = randint(-1,15)
-    location2Y = randint(-1,17)
-    location2X = randint(-1,15)
-    location3Y = randint(-1,17)
-    location3X = randint(-1,15)
-
-    grid[location1Y][location1X] = eengezinswoning
-    grid[location2Y][location2X] = bungalow
-    grid[location3Y][location3X] = maison
-
-    if not grid[location1Y][location1X] == grid[location2Y][location2X]:
-        grid[location1Y][location1X] = eengezinswoning
-        grid[location2Y][location2X] = bungalow
-        grid[location3Y][location3X] = maison
+# # %% Place on grid function
+# def placeOnGrid(grid):
+#
+#     eengezinswoning = 1
+#     bungalow = 2
+#     maison = 3
+#
+#     location1Y = randint(-1,17)
+#     location1X = randint(-1,15)
+#     location2Y = randint(-1,17)
+#     location2X = randint(-1,15)
+#     location3Y = randint(-1,17)
+#     location3X = randint(-1,15)
+#
+#     grid[location1Y][location1X] = eengezinswoning
+#     grid[location2Y][location2X] = bungalow
+#     grid[location3Y][location3X] = maison
+#
+#     if not grid[location1Y][location1X] == grid[location2Y][location2X]:
+#         grid[location1Y][location1X] = eengezinswoning
+#         grid[location2Y][location2X] = bungalow
+#         grid[location3Y][location3X] = maison
 
 # while True:
     # if locationEengezins == locationBungalow:

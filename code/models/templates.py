@@ -4,7 +4,8 @@ gridYLength = 16
 
 # Define house templates (in dictionary format) to create class instances
 eengezinswoningTemplate = {"type": "eengezinswoning",
-                            "houseDimensions": (8, 8),
+                            # "houseDimensions": (8, 8),
+                            "houseDimensions": (2, 2),
                             "freeArea": 2,
                             "extraFreeArea": 5,
                             "value": 285000,
@@ -16,7 +17,8 @@ eengezinswoningTemplate = {"type": "eengezinswoning",
                             "uniqueID": 0}
 
 bungalowTemplate = {"type": "bungalow",
-                    "houseDimensions": (10, 7.5),
+                    # "houseDimensions": (10, 7.5),
+                    "houseDimensions": (3, 3),
                     "freeArea": 3,
                     "extraFreeArea": 0,
                     "value": 399000,
@@ -28,7 +30,8 @@ bungalowTemplate = {"type": "bungalow",
                     "uniqueID": 0}
 
 maisonTemplate = {"type": "maison",
-                    "houseDimensions": (11, 10.5),
+                    # "houseDimensions": (11, 10.5),
+                    "houseDimensions": (4, 4),
                     "freeArea": 6,
                     "extraFreeArea": 0,
                     "value": 610000,

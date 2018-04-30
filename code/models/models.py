@@ -8,7 +8,7 @@ CODERS      Amy van der Gun     10791760
 USAGE       to-do
 """
 # %%
-from random import randint
+import random as rd
 
 # Define House class
 class House(object):
@@ -40,6 +40,14 @@ class House(object):
 
         return newHouseValue
 
+    def getNewCoordinates(self):
+        self.positionY = rd.randrange(self.gridYLength)
+        self.positionX = rd.randrange(self.gridXLength)
+
+        newCoordinates = (self.positionY, self.positionX)
+
+        return newCoordinates
+
 # Define Grid class
 class Grid(object):
     """
@@ -57,45 +65,45 @@ class Grid(object):
         self.totalAmountBungalows = int(self.maxHouses * self.fractionBungalows)
         self.totalAmountMaisons = int(self.maxHouses * self.fractionMaisons)
 
-    # Visualize grid with arrays
-    def drawGrid(self):
-        """
-        grid[0][0]          is linksboven
-        grid[Y]grid[X]      coordinate system
-        """
-
-        # Create empty grid and initialize fill
-        grid = []
-        fillNumber = 0
-
-        # Iterate YLength times and add empty array
-        for i in range(self.gridYLength):
-            row = []
-            grid.append(row)
-
-            # Add XLength times a fillNumber per array
-            for j in range(self.gridXLength):
-                row.append(fillNumber)
-
-        # Random place function
-        self.placeOnGrid(grid)
-
-        # Print whole grid
-        for element in grid:
-            print(element)
-
-        return grid
-
-    # Place on grid function
-    def placeOnGrid(self, grid):
-
-        eengezinswoning = 1
-        bungalow = 2
-        maison = 3
-
-        grid[randint(-1,15)][randint(-1,17)] = eengezinswoning
-        grid[randint(-1,15)][randint(-1,17)] = bungalow
-        grid[randint(-1,15)][randint(-1,17)] = maison
+    # # Visualize grid with arrays
+    # def drawGrid(self):
+    #     """
+    #     grid[0][0]          is linksboven
+    #     grid[Y]grid[X]      coordinate system
+    #     """
+    #
+    #     # Create empty grid and initialize fill
+    #     grid = []
+    #     fillNumber = 0
+    #
+    #     # Iterate YLength times and add empty array
+    #     for i in range(self.gridYLength):
+    #         row = []
+    #         grid.append(row)
+    #
+    #         # Add XLength times a fillNumber per array
+    #         for j in range(self.gridXLength):
+    #             row.append(fillNumber)
+    #
+    #     # Random place function
+    #     self.placeOnGrid(grid)
+    #
+    #     # Print whole grid
+    #     for element in grid:
+    #         print(element)
+    #
+    #     return grid
+    #
+    # # Place on grid function
+    # def placeOnGrid(self, grid):
+    #
+    #     eengezinswoning = 1
+    #     bungalow = 2
+    #     maison = 3
+    #
+    #     grid[randint(-1,15)][randint(-1,17)] = eengezinswoning
+    #     grid[randint(-1,15)][randint(-1,17)] = bungalow
+    #     grid[randint(-1,15)][randint(-1,17)] = maison
 
 
 
