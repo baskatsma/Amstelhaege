@@ -10,7 +10,7 @@ def defineMaxHouses():
 
     # Check if a number is entered in the CLI
     if len(sys.argv) == 1:
-        print("1 argument is used (only test.py)")
+        print("1 argument is used (only main.py)")
         print("maxHouses remains 20")
 
     # Check if the number is valid (either 20, 40 or 60)
