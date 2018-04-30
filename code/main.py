@@ -15,9 +15,11 @@ def main():
 
     # Create numpy grid (verticalY, horizontalX)
     buildingSite = np.zeros( (gridYLength,gridXLength) )
+
+    # Testing purposes
     buildingSite[0:2,4:7] = 6
 
-    # Test woonwijk
+    # Create woonwijk
     residentialArea = []
 
     # Create new houses based on the grid requirements
@@ -55,7 +57,7 @@ def main():
 
             currentHouse.drawOnGrid(buildingSite, currentHouse)
 
-    # Print build
+    # Print buildingSite with some fancy thaaangs
     rowCounter = 0
     print("      X ---->")
     print("  Y ")
