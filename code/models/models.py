@@ -35,20 +35,9 @@ class House(object):
         self.gridYLength = gridYLength
         self.uniqueID = uniqueID
 
-    # Calculates the new price of the property, based on the extra free area
-    def calculateNewValue(self):
-
-        # Extra vrijstand * base percentage
-        totalIncreasePercentage = self.extraFreeArea * self.valueIncrease
-
-        # Base price + (base price * total percentage)
-        newHouseValue = self.value + (self.value * totalIncreasePercentage)
-
-        return newHouseValue
-
     def getBeginCoordinates(self):
 
-        # To-do: Remove -5 and correctly work with borders
+        # Set new begin coordinates and save them in self
         self.yBegin = rd.randrange(self.gridYLength)
         self.xBegin = rd.randrange(self.gridXLength)
         beginCoordinates = (self.yBegin, self.xBegin)
@@ -80,21 +69,16 @@ class House(object):
         # Check whether houses are in the grid
         if self.yEnd > self.gridYLength or self.xEnd > self.gridXLength:
             self.drawOnGrid(numpyGrid)
+
         else:
-            # Print tests
-            print("This is a",self.type,"with uniqueID:",self.uniqueID)
-            # print("beginCoordinates(Y, X): ",beginCoordinates)
-            # print("endCoordinates(Y, X): ",endCoordinates)
-            # print("YLength is: ",houseYLength, end="")
-            # print("  ||  XLength is: ",houseXLength)
 
             # Check for overlap
             if self.checkOverlap(self.yBegin, self.yEnd, self.xBegin,
-                              self.xEnd, numpyGrid) == True:
+                                 self.xEnd, numpyGrid) == True:
 
                 # Field is clear, update grid
                 numpyGrid[self.yBegin:self.yEnd,
-                             self.xBegin:self.xEnd] = drawNumber
+                          self.xBegin:self.xEnd] = drawNumber
 
             # Start over with drawOnGrid for this specific house
             else:
@@ -103,12 +87,6 @@ class House(object):
 
     def checkOverlap(self, yBegin, yEnd, xBegin, xEnd, numpyGrid):
 
-        # Print statements
-        # print("Checking numpyGrid[Y,X]   [",self.yBegin,"tot",
-        # self.yEnd,end="")
-        # print(" ,",self.xBegin,"tot",self.xEnd,"]")
-        # print("")
-
         # Check house dimension area starting at the begin coordinates
         if np.any(numpyGrid[self.yBegin:self.yEnd,self.xBegin:self.xEnd] != 0):
             return False
@@ -116,10 +94,10 @@ class House(object):
         else:
             return True
 
-    # calculate and return score per house
+    # Calculate and return score per house
     def calculateScore(self):
 
-        scoreHouse = self.value + self.valueIncrease * self.extraFreeArea
+        scoreHouse = self.value + (self.valueIncrease * self.extraFreeArea)
 
         return scoreHouse
 

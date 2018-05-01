@@ -47,7 +47,7 @@ def main():
         currentHouse.drawOnGrid(numpyGrid)
         totalScore += currentHouse.calculateScore()
 
-    print("The total score is:" , totalScore)
+    print("The total score is:", totalScore)
 
     # # Print numpyGrid with some fancy thaaangs
     # rowCounter = 0
@@ -73,6 +73,7 @@ def main():
     # print("")
     # print("")
 
+    # Initialize matplotlib
     plt.figure()
 
     xGridList = [0, gridXLength, gridXLength, 0, 0]
@@ -90,23 +91,13 @@ def main():
 
         plt.plot(xCoordinates, yCoordinates)
 
+    # Show matplotlib
     plt.show()
-
-    a = (10, 7.5)
-    print((a[0] * 2, a[1] * 2))
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
     #     print(residentialArea[i].type, "|| uniqueID is:",
     #     residentialArea[i].uniqueID)
-
-    # # Print test extra House functions
-    # b = House(**eengezinswoningTemplate)
-    # print("")
-    # print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
-    # print("De waarde van B is: " + str(b.value) + " euro")
-    # print("B nieuwe waarde met extra vrijstand (", b.extraFreeArea, "meter )
-    # is:", b.calculateNewValue())
 
 # %%
 if __name__ == "__main__":
