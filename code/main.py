@@ -82,9 +82,9 @@ def main():
         rowCounter += 1
     print("")
     print("")
-
-    plt.matshow(buildingSite)
-    plt.show()
+    
+    # plt.matshow(buildingSite)
+    # plt.show()
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
