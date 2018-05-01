@@ -35,7 +35,7 @@ def main():
     for house in range(len(residentialArea)):
 
         # Update uniqueIDs
-        residentialArea[house].uniqueID = house
+        residentialArea[house].uniqueID = house + 1
 
         # Place houses on grid
         currentHouse = residentialArea[house]
@@ -100,10 +100,10 @@ def main():
 
     plt.show()
 
-    # # Print test woonwijk
-    # for i in range(len(residentialArea)):
-    #     print(residentialArea[i].type, "|| uniqueID is:",
-    #     residentialArea[i].uniqueID)
+    # Print test woonwijk
+    for i in range(len(residentialArea)):
+        print(residentialArea[i].type, "|| uniqueID is:",
+        residentialArea[i].uniqueID)
 
     # # Print test extra House functions
     # b = House(**eengezinswoningTemplate)

@@ -70,12 +70,6 @@ class House(object):
         endCoordinates = (beginCoordinates[0] + houseYLength,
                           beginCoordinates[1] + houseXLength)
 
-        # # Define new coordinates
-        # self.yBegin = beginCoordinates[0]
-        # self.yEnd = endCoordinates[0]
-        # self.xBegin = beginCoordinates[1]
-        # self.xEnd = endCoordinates[1]
-
         # Update coordinates
         self.yBegin = beginCoordinates[0]
         self.yEnd = endCoordinates[0]
