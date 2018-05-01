@@ -1,5 +1,6 @@
 # %% Import classes
 import numpy as np
+import matplotlib.pyplot as plt
 from models.models import *
 from models.templates import *
 from functions import *
@@ -36,7 +37,7 @@ def main():
         # Place houses on grid
         currentHouse = residentialArea[house]
         currentHouse.drawOnGrid(buildingSite, currentHouse)
-    
+
     # # Loop over all houses
     # for house in range(len(residentialArea)):
     #
@@ -81,6 +82,9 @@ def main():
         rowCounter += 1
     print("")
     print("")
+
+    plt.matshow(buildingSite)
+    plt.show()
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
