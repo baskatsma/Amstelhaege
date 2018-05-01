@@ -1,15 +1,12 @@
 # %% Import classes
 import numpy as np
+import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 from models.models import *
 from models.templates import *
 from functions import *
-import matplotlib.patches as patches
 
-<<<<<<< HEAD
-=======
 # Starting point
->>>>>>> 607b2c3386c2adca8e8b774c3486d2c479e67aed
 def main():
 
     # Get maxHouses
@@ -25,14 +22,14 @@ def main():
     residentialArea = []
 
     # Create new houses based on the grid requirements
-    for maison in range(gridField.totalAmountMaisons):
-        residentialArea.append(House(**maisonTemplate))
+    for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
+        residentialArea.append(House(**eengezinswoningTemplate))
 
     for bungalow in range(gridField.totalAmountBungalows):
         residentialArea.append(House(**bungalowTemplate))
-
-    for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
-        residentialArea.append(House(**eengezinswoningTemplate))
+        
+    for maison in range(gridField.totalAmountMaisons):
+        residentialArea.append(House(**maisonTemplate))
 
     # Loop over all houses
     for house in range(len(residentialArea)):
@@ -43,27 +40,6 @@ def main():
         # Place houses on grid
         currentHouse = residentialArea[house]
         currentHouse.drawOnGrid(buildingSite, currentHouse)
-
-    # # Loop over all houses
-    # for house in range(len(residentialArea)):
-    #
-    #     # Draw all eengezinswoningen on grid
-    #     if residentialArea[house].type == "eengezinswoning":
-    #         currentHouse = residentialArea[house]
-    #
-    #         currentHouse.drawOnGrid(buildingSite, currentHouse)
-    #
-    #     # Draw all bungalows on grid
-    #     elif residentialArea[house].type == "bungalow":
-    #         currentHouse = residentialArea[house]
-    #
-    #         currentHouse.drawOnGrid(buildingSite, currentHouse)
-    #
-    #     # Draw all maisons on grid
-    #     elif residentialArea[house].type == "maison":
-    #         currentHouse = residentialArea[house]
-    #
-    #         currentHouse.drawOnGrid(buildingSite, currentHouse)
 
     # Print buildingSite with some fancy thaaangs
     rowCounter = 0
