@@ -41,11 +41,7 @@ def main():
 
         # Place houses on grid and calculate total score
         currentHouse = residentialArea[house]
-<<<<<<< HEAD
-        currentHouse.drawOnGrid(buildingSite, currentHouse)
-=======
         currentHouse.drawOnGrid(numpyGrid, currentHouse)
->>>>>>> 526294b272659b81df4aed01f7f347bf6b31b9af
         totalScore += currentHouse.calculateScore()
 
     print("The total score equals" , totalScore)
