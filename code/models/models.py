@@ -111,6 +111,7 @@ class House(object):
         else:
             return True
 
+    # calculate and return score per house
     def calculateScore(self):
 
         scoreHouse = self.value + self.valueIncrease * self.extraFreeArea
