@@ -53,12 +53,13 @@ class House(object):
     def drawOnGrid(self, buildingSite, currentHouse):
 
         # Define number that numpy will draw
-        if currentHouse.type == "eengezinswoning":
-            drawNumber = 2
-        elif currentHouse.type == "bungalow":
-            drawNumber = 3
-        elif currentHouse.type == "maison":
-            drawNumber = 4
+        drawNumber = currentHouse.uniqueID
+        # if currentHouse.type == "eengezinswoning":
+        #     drawNumber = 2
+        # elif currentHouse.type == "bungalow":
+        #     drawNumber = 3
+        # elif currentHouse.type == "maison":
+        #     drawNumber = 4
 
         # Get begin coordinates (y, x tuple) randomly
         beginCoordinates = self.getBeginCoordinates()
