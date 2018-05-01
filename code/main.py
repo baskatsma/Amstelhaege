@@ -14,7 +14,7 @@ def main():
     gridField = Grid(gridXLength, gridYLength, maxHouses)
 
     # Create numpy grid (verticalY, horizontalX)
-    buildingSite = np.zeros( (gridYLength,gridXLength),dtype=object)
+    buildingSite = np.zeros((gridYLength,gridXLength),dtype=object)
 
     # Create woonwijk
     residentialArea = []

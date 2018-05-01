@@ -53,7 +53,7 @@ class House(object):
 
     def drawOnGrid(self, buildingSite, currentHouse):
 
-        # Define number that numpy will draw
+        # Use uniqueID number to visualize
         drawNumber = currentHouse.uniqueID
         # if currentHouse.type == "eengezinswoning":
         #     drawNumber = 2
@@ -70,8 +70,8 @@ class House(object):
         houseXLength = self.houseDimensions[0]
 
         # Define end coordinates (y, x tuple)
-        endCoordinates = (beginCoordinates[0] + houseYLength, beginCoordinates[1]
-        + houseXLength)
+        endCoordinates = (beginCoordinates[0] + houseYLength,
+                          beginCoordinates[1] + houseXLength)
 
         # Define new coordinates
         yCoordinateBegin = beginCoordinates[0]
@@ -88,10 +88,11 @@ class House(object):
 
         # Check for overlap
         if self.noOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
-        xCoordinateEnd, buildingSite) == True:
+                          xCoordinateEnd, buildingSite) == True:
 
             # Field is clear, update grid
-            buildingSite[yCoordinateBegin:yCoordinateEnd,xCoordinateBegin:xCoordinateEnd] = drawNumber
+            buildingSite[yCoordinateBegin:yCoordinateEnd,
+                         xCoordinateBegin:xCoordinateEnd] = drawNumber
 
         # Start over with drawOnGrid for this specific house
         else:
@@ -99,7 +100,7 @@ class House(object):
             self.drawOnGrid(buildingSite, currentHouse)
 
     def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
-    xCoordinateEnd, buildingSite):
+                  xCoordinateEnd, buildingSite):
 
         # Print statements
         # print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",
