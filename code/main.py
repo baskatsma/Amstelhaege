@@ -13,7 +13,7 @@ def main():
     maxHouses = defineMaxHouses()
 
     # Create grid instance
-    gridField = Grid(gridXLength, gridYLength, maxHouses)
+    grindInformation = GridInformation(gridXLength, gridYLength, maxHouses)
 
     # Create numpy grid (verticalY, horizontalX)
     numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)

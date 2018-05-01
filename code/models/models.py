@@ -101,10 +101,10 @@ class House(object):
 
         return scoreHouse
 
-# Define Grid class
-class Grid(object):
+# Define GridInformation class
+class GridInformation(object):
     """
-    Grid that contains all houses
+    Class that contains all information about the grid
     """
 
     def __init__(self, gridXLength, gridYLength, maxHouses):
