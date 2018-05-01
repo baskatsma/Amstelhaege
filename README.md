@@ -16,7 +16,7 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 - [x] Basale functies toegevoegd
 - [x] Random grid X, Y functie
 - [x] Huizen kunnen op het grid worden geplaatst
-- [x] Huizen worden correct gescaled
+- [x] Grid en huizen worden correct gescaled
 - [x] Anti-overlap functie toegevoegd
 - [ ] Vrijstand toegevoegd
 - [ ] Water toegevoegd
@@ -25,16 +25,23 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 
 
 ## Vereisten
-> * **[Atom 1.2x](https://atom.io/)** of een andere soortgelijke texteditor
-
-> * **[Python 3.x](https://www.python.org/downloads/)**
 
 > * **macOS, Windows** of **Linux**
 
-> * **numpy** package
+> * **[Atom 1.2x](https://atom.io/)** of een andere soortgelijke texteditor
+
+> * **[Python 3.6.x](https://www.python.org/downloads/)**
+
+> * **[numpy 1.14.2](http://www.numpy.org/)**
 
 ```
 pip3 install numpy
+```
+
+> * **[matplotlib 2.2.2](https://matplotlib.org/index.html/)**
+
+```
+python3 -mpip install matplotlib
 ```
 
 
