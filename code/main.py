@@ -16,7 +16,7 @@ def main():
     gridField = Grid(gridXLength, gridYLength, maxHouses)
 
     # Create numpy grid (verticalY, horizontalX)
-    buildingSite = np.zeros((gridYLength,gridXLength),dtype=object)
+    numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)
 
     # Create woonwijk
     residentialArea = []
@@ -36,17 +36,21 @@ def main():
     # Loop over all houses
     for house in range(len(residentialArea)):
 
-        # Update uniqueIDs
-        residentialArea[house].uniqueID = house
+        # Update uniqueIDs (starting at 10)
+        residentialArea[house].uniqueID = house + 10
 
         # Place houses on grid
         currentHouse = residentialArea[house]
+<<<<<<< HEAD
         currentHouse.drawOnGrid(buildingSite, currentHouse)
         totalScore += currentHouse.calculateScore()
 
     print("The total score equals" , totalScore)
+=======
+        currentHouse.drawOnGrid(numpyGrid)
+>>>>>>> 0332728c31128c4b1e7977cbbb55e4c267ae0467
 
-    # Print buildingSite with some fancy thaaangs
+    # Print numpyGrid with some fancy thaaangs
     rowCounter = 0
     print("")
     print("")
@@ -59,7 +63,7 @@ def main():
             print(i,"",end="")
     print("")
     print("  ↓ Y")
-    for row in buildingSite:
+    for row in numpyGrid:
         if rowCounter < 10:
             print("   ",rowCounter," ", end="")
         else:
@@ -105,10 +109,10 @@ def main():
 
     plt.show()
 
-    # # Print test woonwijk
-    # for i in range(len(residentialArea)):
-    #     print(residentialArea[i].type, "|| uniqueID is:",
-    #     residentialArea[i].uniqueID)
+    # Print test woonwijk
+    for i in range(len(residentialArea)):
+        print(residentialArea[i].type, "|| uniqueID is:",
+        residentialArea[i].uniqueID)
 
     # # Print test extra House functions
     # b = House(**eengezinswoningTemplate)
