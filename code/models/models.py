@@ -18,15 +18,17 @@ class House(object):
     """
 
     def __init__(self, type, houseDimensions, freeArea, extraFreeArea, value,
-    valueIncrease, positionX, positionY, gridXLength, gridYLength, uniqueID):
+    valueIncrease, xBegin, xEnd, yBegin, yEnd, gridXLength, gridYLength, uniqueID):
         self.type = type
         self.houseDimensions = houseDimensions
         self.freeArea = freeArea
         self.extraFreeArea = extraFreeArea
         self.value = value
         self.valueIncrease = valueIncrease
-        self.positionX = positionX
-        self.positionY = positionY
+        self.xBegin = xBegin
+        self.xEnd = xEnd
+        self.yBegin = yBegin
+        self.yEnd = yEnd
         self.gridXLength = gridXLength
         self.gridYLength = gridYLength
         self.uniqueID = uniqueID
@@ -45,9 +47,9 @@ class House(object):
     def getBeginCoordinates(self):
 
         # To-do: Remove -5 and correctly work with borders
-        self.positionY = rd.randrange(self.gridYLength - 5)
-        self.positionX = rd.randrange(self.gridXLength - 5)
-        beginCoordinates = (self.positionY, self.positionX)
+        self.yBegin = rd.randrange(self.gridYLength - 5)
+        self.xBegin = rd.randrange(self.gridXLength - 5)
+        beginCoordinates = (self.yBegin, self.xBegin)
 
         return beginCoordinates
 
@@ -87,7 +89,7 @@ class House(object):
         # print("  ||  XLength is: ",houseXLength)
 
         # Check for overlap
-        if self.noOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
+        if self.checkOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
                           xCoordinateEnd, buildingSite) == True:
 
             # Field is clear, update grid
@@ -99,7 +101,7 @@ class House(object):
             print("Fetching new coordinates, because of overlap")
             self.drawOnGrid(buildingSite, currentHouse)
 
-    def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
+    def checkOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
                   xCoordinateEnd, buildingSite):
 
         # Print statements
