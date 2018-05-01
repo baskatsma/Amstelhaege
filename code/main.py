@@ -30,8 +30,10 @@ def main():
     for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
         residentialArea.append(House(**eengezinswoningTemplate))
 
-    # Update uniqueIDs
+    # Loop over all houses
     for house in range(len(residentialArea)):
+
+        # Update uniqueIDs
         residentialArea[house].uniqueID = house
 
         # Place houses on grid
@@ -82,9 +84,6 @@ def main():
         rowCounter += 1
     print("")
     print("")
-    
-    # plt.matshow(buildingSite)
-    # plt.show()
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
