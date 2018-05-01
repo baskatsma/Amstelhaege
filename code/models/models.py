@@ -97,9 +97,9 @@ class House(object):
     # Calculate and return score per house
     def calculateScore(self):
 
-        scoreHouse = self.value + (self.valueIncrease * self.extraFreeArea)
+        scoreHouse = self.value + self.value * (self.valueIncrease * self.extraFreeArea)
 
-        return scoreHouse
+        return int(scoreHouse)
 
 # Define GridInformation class
 class GridInformation(object):
