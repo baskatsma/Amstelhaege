@@ -1,24 +1,11 @@
-* TODO:
-# Afmetingen correct plotten (nog geen vrijstand)
-# Matplotlib gebruiken
-# numpy grid
-# Huizen een unieke ID meegeven
-# Eerst vrijstand zonder ronde hoeken, daarna pythagoras
-# vrijstand mag overlappen
-
-# loopen vanaf begincoordinaat dat je kiest in de lengte en breedte (van huis)
-# checken of je NIKS anders ziet dan 0
-# dan plaatsen
-# dan weer random etc.
-
-# eerst proberen te plaatsen (zonder restricties)
-# daarna rekening houden met andere huizen
-# daarna met vrijstand rekening houden
-
-
 # TODO voor komende week:
-# Vrijstand (mag overlappen, de huizen niet!)
+# Vrijstand toevoegen (mag overlappen, de huizen niet!)
 # Score functie
 # Hillclimber implementeren
 # Matplotlib gebruiken (X)
-# Verhoudingen kloppend maken
+# Afmetingen kloppend maken
+
+# Daarna TODO:
+# Water toevoegen
+# Pythagoras hoeken implementeren in vrijstand
+# Optimale score?
