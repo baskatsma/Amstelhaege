@@ -24,7 +24,7 @@ class House(object):
         self.houseDimensions = (int(houseDimensions[0] * 2),
                                 int(houseDimensions[1] * 2))
         self.freeArea = freeArea * 2
-        self.extraFreeArea = extraFreeArea
+        self.extraFreeArea = extraFreeArea * 2
         self.value = value
         self.valueIncrease = valueIncrease
         self.xBegin = xBegin
@@ -101,10 +101,10 @@ class House(object):
 
         return scoreHouse
 
-# Define Grid class
-class Grid(object):
+# Define GridInformation class
+class GridInformation(object):
     """
-    Grid that contains all houses
+    Class that contains all information about the grid
     """
 
     def __init__(self, gridXLength, gridYLength, maxHouses):
