@@ -119,6 +119,12 @@ class House(object):
         else:
             return True
 
+    def calculateScore(self):
+
+        scoreHouse = self.value + self.valueIncrease * self.extraFreeArea
+
+        return scoreHouse
+
 # Define Grid class
 class Grid(object):
     """

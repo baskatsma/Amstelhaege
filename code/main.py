@@ -27,9 +27,11 @@ def main():
 
     for bungalow in range(gridField.totalAmountBungalows):
         residentialArea.append(House(**bungalowTemplate))
-        
+
     for maison in range(gridField.totalAmountMaisons):
         residentialArea.append(House(**maisonTemplate))
+
+    totalScore = 0
 
     # Loop over all houses
     for house in range(len(residentialArea)):
@@ -40,6 +42,9 @@ def main():
         # Place houses on grid
         currentHouse = residentialArea[house]
         currentHouse.drawOnGrid(buildingSite, currentHouse)
+        totalScore += currentHouse.calculateScore()
+
+    print("The total score equals" , totalScore)
 
     # Print buildingSite with some fancy thaaangs
     rowCounter = 0
