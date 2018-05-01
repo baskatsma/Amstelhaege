@@ -24,7 +24,7 @@ class House(object):
         self.houseDimensions = (int(houseDimensions[0] * 2),
                                 int(houseDimensions[1] * 2))
         self.freeArea = freeArea * 2
-        self.extraFreeArea = extraFreeArea
+        self.extraFreeArea = extraFreeArea * 2
         self.value = value
         self.valueIncrease = valueIncrease
         self.xBegin = xBegin
