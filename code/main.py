@@ -6,6 +6,10 @@ from models.templates import *
 from functions import *
 import matplotlib.patches as patches
 
+<<<<<<< HEAD
+=======
+# Starting point
+>>>>>>> 607b2c3386c2adca8e8b774c3486d2c479e67aed
 def main():
 
     # Get maxHouses
@@ -30,8 +34,10 @@ def main():
     for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
         residentialArea.append(House(**eengezinswoningTemplate))
 
-    # Update uniqueIDs
+    # Loop over all houses
     for house in range(len(residentialArea)):
+
+        # Update uniqueIDs
         residentialArea[house].uniqueID = house
 
         # Place houses on grid
@@ -82,6 +88,41 @@ def main():
         rowCounter += 1
     print("")
     print("")
+
+    plt.figure()
+
+    # These coordinates together plot the outline of the neighbourhood
+    xCoordinateList = [0, gridXLength, gridXLength, 0, 0]
+    yCoordinateList = [0, 0, gridYLength, gridYLength, 0]
+    plt.plot(xCoordinateList, yCoordinateList)
+
+    for house in residentialArea:
+
+        houseYLength = house.houseDimensions[1]
+        houseXLength = house.houseDimensions[0]
+
+        beginCoordinates = (house.yBegin, house.xBegin)
+
+        # Define end coordinates (y, x tuple)
+        endCoordinates = (beginCoordinates[0] + houseYLength,
+                          beginCoordinates[1] + houseXLength)
+
+        # Define new coordinates
+        yCoordinateBegin = beginCoordinates[0]
+        yCoordinateEnd = endCoordinates[0]
+        xCoordinateBegin = beginCoordinates[1]
+        xCoordinateEnd = endCoordinates[1]
+
+        # By plotting these lists, all corners will be connected by a line
+        xCoordinateList = [xCoordinateBegin, xCoordinateEnd,
+        xCoordinateEnd, xCoordinateBegin, xCoordinateBegin]
+
+        yCoordinateList = [yCoordinateBegin, yCoordinateBegin,
+        yCoordinateEnd, yCoordinateEnd, yCoordinateBegin]
+
+        plt.plot(xCoordinateList, yCoordinateList)
+
+    plt.show()
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
