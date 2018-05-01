@@ -16,7 +16,7 @@ def main():
     gridField = Grid(gridXLength, gridYLength, maxHouses)
 
     # Create numpy grid (verticalY, horizontalX)
-    buildingSite = np.zeros((gridYLength,gridXLength),dtype=object)
+    numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)
 
     # Create woonwijk
     residentialArea = []
@@ -34,14 +34,14 @@ def main():
     # Loop over all houses
     for house in range(len(residentialArea)):
 
-        # Update uniqueIDs
-        residentialArea[house].uniqueID = house + 1
+        # Update uniqueIDs (starting at 10)
+        residentialArea[house].uniqueID = house + 10
 
         # Place houses on grid
         currentHouse = residentialArea[house]
-        currentHouse.drawOnGrid(buildingSite)
+        currentHouse.drawOnGrid(numpyGrid)
 
-    # Print buildingSite with some fancy thaaangs
+    # Print numpyGrid with some fancy thaaangs
     rowCounter = 0
     print("")
     print("")
@@ -54,7 +54,7 @@ def main():
             print(i,"",end="")
     print("")
     print("  ↓ Y")
-    for row in buildingSite:
+    for row in numpyGrid:
         if rowCounter < 10:
             print("   ",rowCounter," ", end="")
         else:

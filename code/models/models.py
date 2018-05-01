@@ -54,7 +54,7 @@ class House(object):
 
         return beginCoordinates
 
-    def drawOnGrid(self, buildingSite):
+    def drawOnGrid(self, numpyGrid):
 
         # Use uniqueID number to visualize
         drawNumber = self.uniqueID
@@ -85,27 +85,27 @@ class House(object):
 
         # Check for overlap
         if self.checkOverlap(self.yBegin, self.yEnd, self.xBegin,
-                          self.xEnd, buildingSite) == True:
+                          self.xEnd, numpyGrid) == True:
 
             # Field is clear, update grid
-            buildingSite[self.yBegin:self.yEnd,
+            numpyGrid[self.yBegin:self.yEnd,
                          self.xBegin:self.xEnd] = drawNumber
 
         # Start over with drawOnGrid for this specific house
         else:
             print("Fetching new coordinates, because of overlap")
-            self.drawOnGrid(buildingSite)
+            self.drawOnGrid(numpyGrid)
 
-    def checkOverlap(self, yBegin, yEnd, xBegin, xEnd, buildingSite):
+    def checkOverlap(self, yBegin, yEnd, xBegin, xEnd, numpyGrid):
 
         # Print statements
-        # print("Checking buildingSite[Y,X]   [",self.yBegin,"tot",
+        # print("Checking numpyGrid[Y,X]   [",self.yBegin,"tot",
         # self.yEnd,end="")
         # print(" ,",self.xBegin,"tot",self.xEnd,"]")
         # print("")
 
         # Check house dimension area starting at the begin coordinates
-        if np.any(buildingSite[self.yBegin:self.yEnd,self.xBegin:self.xEnd] != 0):
+        if np.any(numpyGrid[self.yBegin:self.yEnd,self.xBegin:self.xEnd] != 0):
             return False
 
         else:
