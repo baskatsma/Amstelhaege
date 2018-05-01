@@ -26,7 +26,4 @@ def defineMaxHouses():
             maxHouses = 20
             print("sys.argv is an invalid number, maxHouses = 20 by default")
 
-    # Testing purposes
-    maxHouses = 16
-
     return maxHouses

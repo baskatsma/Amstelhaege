@@ -31,6 +31,7 @@ def main():
     for maison in range(gridField.totalAmountMaisons):
         residentialArea.append(House(**maisonTemplate))
 
+    # Initialize total score
     totalScore = 0
 
     # Loop over all houses
@@ -44,71 +45,55 @@ def main():
         currentHouse.drawOnGrid(numpyGrid)
         totalScore += currentHouse.calculateScore()
 
-    print("The total score equals" , totalScore)
+    print("The total score is:" , totalScore)
 
-    # Print numpyGrid with some fancy thaaangs
-    rowCounter = 0
-    print("")
-    print("")
-    print("        X →")
-    print("        ",end="")
-    for i in range(gridXLength):
-        if i < 10:
-            print(i," ",end="")
-        else:
-            print(i,"",end="")
-    print("")
-    print("  ↓ Y")
-    for row in numpyGrid:
-        if rowCounter < 10:
-            print("   ",rowCounter," ", end="")
-        else:
-            print("  ",rowCounter," ", end="")
-
-        print(row)
-        rowCounter += 1
-    print("")
-    print("")
+    # # Print numpyGrid with some fancy thaaangs
+    # rowCounter = 0
+    # print("")
+    # print("")
+    # print("        X →")
+    # print("        ",end="")
+    # for i in range(gridXLength):
+    #     if i < 10:
+    #         print(i," ",end="")
+    #     else:
+    #         print(i,"",end="")
+    # print("")
+    # print("  ↓ Y")
+    # for row in numpyGrid:
+    #     if rowCounter < 10:
+    #         print("   ",rowCounter," ", end="")
+    #     else:
+    #         print("  ",rowCounter," ", end="")
+    #
+    #     print(row)
+    #     rowCounter += 1
+    # print("")
+    # print("")
 
     plt.figure()
 
-    # These coordinates together plot the outline of the neighbourhood
-    xCoordinateList = [0, gridXLength, gridXLength, 0, 0]
-    yCoordinateList = [0, 0, gridYLength, gridYLength, 0]
-    plt.plot(xCoordinateList, yCoordinateList)
+    xGridList = [0, gridXLength, gridXLength, 0, 0]
+    yGridList = [0, 0, gridYLength, gridYLength, 0]
+    plt.plot(xGridList, yGridList)
 
+    # Loop over all houses
     for house in residentialArea:
 
-        houseYLength = house.houseDimensions[1]
-        houseXLength = house.houseDimensions[0]
+        xCoordinates = [house.xBegin, house.xEnd,
+        house.xEnd, house.xBegin, house.xBegin]
 
-        beginCoordinates = (house.yBegin, house.xBegin)
+        yCoordinates = [house.yBegin, house.yBegin,
+        house.yEnd, house.yEnd, house.yBegin]
 
-        # Define end coordinates (y, x tuple)
-        endCoordinates = (beginCoordinates[0] + houseYLength,
-                          beginCoordinates[1] + houseXLength)
-
-        # Define new coordinates
-        yCoordinateBegin = beginCoordinates[0]
-        yCoordinateEnd = endCoordinates[0]
-        xCoordinateBegin = beginCoordinates[1]
-        xCoordinateEnd = endCoordinates[1]
-
-        # By plotting these lists, all corners will be connected by a line
-        xCoordinateList = [xCoordinateBegin, xCoordinateEnd,
-        xCoordinateEnd, xCoordinateBegin, xCoordinateBegin]
-
-        yCoordinateList = [yCoordinateBegin, yCoordinateBegin,
-        yCoordinateEnd, yCoordinateEnd, yCoordinateBegin]
-
-        plt.plot(xCoordinateList, yCoordinateList)
+        plt.plot(xCoordinates, yCoordinates)
 
     plt.show()
 
-    # Print test woonwijk
-    for i in range(len(residentialArea)):
-        print(residentialArea[i].type, "|| uniqueID is:",
-        residentialArea[i].uniqueID)
+    # # Print test woonwijk
+    # for i in range(len(residentialArea)):
+    #     print(residentialArea[i].type, "|| uniqueID is:",
+    #     residentialArea[i].uniqueID)
 
     # # Print test extra House functions
     # b = House(**eengezinswoningTemplate)
