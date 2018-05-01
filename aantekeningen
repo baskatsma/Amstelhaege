@@ -1,10 +1,11 @@
-* TODO:
-# Eerst vrijstand zonder ronde hoeken, daarna pythagoras
-# vrijstand mag overlappen
-
 # TODO voor komende week:
-# Vrijstand (mag overlappen, de huizen niet!)
-# Score functie
+# Vrijstand toevoegen: mag overlappen, de huizen niet!
+# Score functie: eerst zonder vrijstand, daarna met
 # Hillclimber implementeren
 # Matplotlib gebruiken (X)
-# Verhoudingen kloppend maken
+# Afmetingen kloppend maken (X)
+
+# Daarna TODO:
+# Water toevoegen
+# Pythagoras hoeken implementeren in vrijstand
+# Optimale score?
