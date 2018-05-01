@@ -89,7 +89,17 @@ def main():
         yCoordinates = [house.yBegin, house.yBegin,
         house.yEnd, house.yEnd, house.yBegin]
 
-        plt.plot(xCoordinates, yCoordinates)
+        if house.type == "eengezinswoning":
+            ePlot = plt.plot(xCoordinates, yCoordinates)
+            ePlot[0].set_color('r')
+
+        elif house.type == "bungalow":
+            bPlot = plt.plot(xCoordinates, yCoordinates)
+            bPlot[0].set_color('g')
+
+        elif house.type == "maison":
+            mPlot = plt.plot(xCoordinates, yCoordinates)
+            mPlot[0].set_color('y')
 
     # Show matplotlib
     plt.show()
