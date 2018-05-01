@@ -9,3 +9,11 @@
 # Water toevoegen
 # Pythagoras hoeken implementeren in vrijstand
 # Optimale score?
+
+
+# Werking (stochastische) Hillclimber:
+# Random begin bij situatie, bepaal de score
+# Breng kleine wijzigingen aan (bijv. switch random 2 nummers) en bepaal nieuwe score
+# Beter? Houden. Slechter? Weggooien!
+# Stabiliseert na verloop van tijd.
+# --> Lokaal optimum. Goede oplossing, maar niet de beste.
