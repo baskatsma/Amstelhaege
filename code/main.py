@@ -20,39 +20,43 @@ def main():
     residentialArea = []
 
     # Create new houses based on the grid requirements
-    for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
-        residentialArea.append(House(**eengezinswoningTemplate))
+    for maison in range(gridField.totalAmountMaisons):
+        residentialArea.append(House(**maisonTemplate))
 
     for bungalow in range(gridField.totalAmountBungalows):
         residentialArea.append(House(**bungalowTemplate))
 
-    for maison in range(gridField.totalAmountMaisons):
-        residentialArea.append(House(**maisonTemplate))
+    for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
+        residentialArea.append(House(**eengezinswoningTemplate))
 
     # Update uniqueIDs
     for house in range(len(residentialArea)):
         residentialArea[house].uniqueID = house
 
-    # Loop over all houses
-    for house in range(len(residentialArea)):
-
-        # Draw all eengezinswoningen on grid
-        if residentialArea[house].type == "eengezinswoning":
-            currentHouse = residentialArea[house]
-
-            currentHouse.drawOnGrid(buildingSite, currentHouse)
-
-        # Draw all bungalows on grid
-        elif residentialArea[house].type == "bungalow":
-            currentHouse = residentialArea[house]
-
-            currentHouse.drawOnGrid(buildingSite, currentHouse)
-
-        # Draw all maisons on grid
-        elif residentialArea[house].type == "maison":
-            currentHouse = residentialArea[house]
-
-            currentHouse.drawOnGrid(buildingSite, currentHouse)
+        # Place houses on grid
+        currentHouse = residentialArea[house]
+        currentHouse.drawOnGrid(buildingSite, currentHouse)
+    
+    # # Loop over all houses
+    # for house in range(len(residentialArea)):
+    #
+    #     # Draw all eengezinswoningen on grid
+    #     if residentialArea[house].type == "eengezinswoning":
+    #         currentHouse = residentialArea[house]
+    #
+    #         currentHouse.drawOnGrid(buildingSite, currentHouse)
+    #
+    #     # Draw all bungalows on grid
+    #     elif residentialArea[house].type == "bungalow":
+    #         currentHouse = residentialArea[house]
+    #
+    #         currentHouse.drawOnGrid(buildingSite, currentHouse)
+    #
+    #     # Draw all maisons on grid
+    #     elif residentialArea[house].type == "maison":
+    #         currentHouse = residentialArea[house]
+    #
+    #         currentHouse.drawOnGrid(buildingSite, currentHouse)
 
     # Print buildingSite with some fancy thaaangs
     rowCounter = 0
