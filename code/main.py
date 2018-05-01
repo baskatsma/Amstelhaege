@@ -27,7 +27,7 @@ def main():
 
     for bungalow in range(gridField.totalAmountBungalows):
         residentialArea.append(House(**bungalowTemplate))
-        
+
     for maison in range(gridField.totalAmountMaisons):
         residentialArea.append(House(**maisonTemplate))
 
@@ -39,7 +39,7 @@ def main():
 
         # Place houses on grid
         currentHouse = residentialArea[house]
-        currentHouse.drawOnGrid(buildingSite, currentHouse)
+        currentHouse.drawOnGrid(buildingSite)
 
     # Print buildingSite with some fancy thaaangs
     rowCounter = 0

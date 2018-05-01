@@ -48,72 +48,70 @@ class House(object):
     def getBeginCoordinates(self):
 
         # To-do: Remove -5 and correctly work with borders
-        self.yBegin = rd.randrange(self.gridYLength - 5)
-        self.xBegin = rd.randrange(self.gridXLength - 5)
+        self.yBegin = rd.randrange(self.gridYLength)
+        self.xBegin = rd.randrange(self.gridXLength)
         beginCoordinates = (self.yBegin, self.xBegin)
 
         return beginCoordinates
 
-    def drawOnGrid(self, buildingSite, currentHouse):
+    def drawOnGrid(self, buildingSite):
 
         # Use uniqueID number to visualize
-        drawNumber = currentHouse.uniqueID
-        # if currentHouse.type == "eengezinswoning":
-        #     drawNumber = 2
-        # elif currentHouse.type == "bungalow":
-        #     drawNumber = 3
-        # elif currentHouse.type == "maison":
-        #     drawNumber = 4
-
-        # Get begin coordinates (y, x tuple) randomly
-        beginCoordinates = self.getBeginCoordinates()
+        drawNumber = self.uniqueID
 
         # Extract house dimension values
         houseYLength = self.houseDimensions[1]
         houseXLength = self.houseDimensions[0]
 
+        # Get begin coordinates (y, x tuple) randomly
+        beginCoordinates = self.getBeginCoordinates()
+
         # Define end coordinates (y, x tuple)
         endCoordinates = (beginCoordinates[0] + houseYLength,
                           beginCoordinates[1] + houseXLength)
 
-        # Define new coordinates
-        yCoordinateBegin = beginCoordinates[0]
-        yCoordinateEnd = endCoordinates[0]
-        xCoordinateBegin = beginCoordinates[1]
-        xCoordinateEnd = endCoordinates[1]
+        # # Define new coordinates
+        # self.yBegin = beginCoordinates[0]
+        # self.yEnd = endCoordinates[0]
+        # self.xBegin = beginCoordinates[1]
+        # self.xEnd = endCoordinates[1]
+
+        # Update coordinates
+        self.yBegin = beginCoordinates[0]
+        self.yEnd = endCoordinates[0]
+        self.xBegin = beginCoordinates[1]
+        self.xEnd = endCoordinates[1]
 
         # Print tests
-        print("This is a",currentHouse.type,"with uniqueID:",currentHouse.uniqueID)
+        print("This is a",self.type,"with uniqueID:",self.uniqueID)
         # print("beginCoordinates(Y, X): ",beginCoordinates)
         # print("endCoordinates(Y, X): ",endCoordinates)
         # print("YLength is: ",houseYLength, end="")
         # print("  ||  XLength is: ",houseXLength)
 
         # Check for overlap
-        if self.checkOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
-                          xCoordinateEnd, buildingSite) == True:
+        if self.checkOverlap(self.yBegin, self.yEnd, self.xBegin,
+                          self.xEnd, buildingSite) == True:
 
             # Field is clear, update grid
-            buildingSite[yCoordinateBegin:yCoordinateEnd,
-                         xCoordinateBegin:xCoordinateEnd] = drawNumber
+            buildingSite[self.yBegin:self.yEnd,
+                         self.xBegin:self.xEnd] = drawNumber
 
         # Start over with drawOnGrid for this specific house
         else:
             print("Fetching new coordinates, because of overlap")
-            self.drawOnGrid(buildingSite, currentHouse)
+            self.drawOnGrid(buildingSite)
 
-    def checkOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
-                  xCoordinateEnd, buildingSite):
+    def checkOverlap(self, yBegin, yEnd, xBegin, xEnd, buildingSite):
 
         # Print statements
-        # print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",
-        # yCoordinateEnd,end="")
-        # print(" ,",xCoordinateBegin,"tot",xCoordinateEnd,"]")
+        # print("Checking buildingSite[Y,X]   [",self.yBegin,"tot",
+        # self.yEnd,end="")
+        # print(" ,",self.xBegin,"tot",self.xEnd,"]")
         # print("")
 
         # Check house dimension area starting at the begin coordinates
-        if np.any(buildingSite[yCoordinateBegin:yCoordinateEnd,
-        xCoordinateBegin:xCoordinateEnd] != 0):
+        if np.any(buildingSite[self.yBegin:self.yEnd,self.xBegin:self.xEnd] != 0):
             return False
 
         else:
