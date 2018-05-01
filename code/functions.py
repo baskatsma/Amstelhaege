@@ -30,3 +30,9 @@ def defineMaxHouses():
     maxHouses = 16
 
     return maxHouses
+
+def calculateScore():
+
+    scoreEengezins = 285000 + 0.03
+    scoreBungalow = 399000 + 0.04*
+    scoreMaison = 610000 + 0.06

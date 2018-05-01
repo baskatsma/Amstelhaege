@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from models.models import *
 from models.templates import *
 from functions import *
+import matplotlib.patches as patches
 
-#
 def main():
 
     # Get maxHouses
@@ -37,7 +37,7 @@ def main():
         # Place houses on grid
         currentHouse = residentialArea[house]
         currentHouse.drawOnGrid(buildingSite, currentHouse)
-    
+
     # # Loop over all houses
     # for house in range(len(residentialArea)):
     #

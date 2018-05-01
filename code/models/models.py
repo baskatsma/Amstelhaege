@@ -10,6 +10,7 @@ USAGE       to-do
 # %%
 import random as rd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Define House class
 class House(object):
