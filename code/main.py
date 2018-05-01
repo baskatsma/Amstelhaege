@@ -12,7 +12,7 @@ def main():
     maxHouses = defineMaxHouses()
 
     # Create grid instance
-    grindInformation = GridInformation(gridXLength, gridYLength, maxHouses)
+    gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
 
     # Create numpy grid (verticalY, horizontalX)
     numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)
@@ -21,13 +21,13 @@ def main():
     residentialArea = []
 
     # Create new houses based on the grid requirements
-    for eengezinswoning in range(gridField.totalAmountEengezinswoningen):
+    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
         residentialArea.append(House(**eengezinswoningTemplate))
 
-    for bungalow in range(gridField.totalAmountBungalows):
+    for bungalow in range(gridInformation.totalAmountBungalows):
         residentialArea.append(House(**bungalowTemplate))
 
-    for maison in range(gridField.totalAmountMaisons):
+    for maison in range(gridInformation.totalAmountMaisons):
         residentialArea.append(House(**maisonTemplate))
 
     # Initialize total score
