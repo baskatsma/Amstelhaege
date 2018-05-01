@@ -1,9 +1,9 @@
 # TODO voor komende week:
-# Vrijstand toevoegen (mag overlappen, de huizen niet!)
-# Score functie
+# Vrijstand toevoegen: mag overlappen, de huizen niet!
+# Score functie: eerst zonder vrijstand, daarna met
 # Hillclimber implementeren
 # Matplotlib gebruiken (X)
-# Afmetingen kloppend maken
+# Afmetingen kloppend maken (X)
 
 # Daarna TODO:
 # Water toevoegen
