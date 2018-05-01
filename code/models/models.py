@@ -17,7 +17,8 @@ class House(object):
     Contains all house properties and functions
     """
 
-    def __init__(self, type, houseDimensions, freeArea, extraFreeArea, value, valueIncrease, positionX, positionY, gridXLength, gridYLength, uniqueID):
+    def __init__(self, type, houseDimensions, freeArea, extraFreeArea, value,
+    valueIncrease, positionX, positionY, gridXLength, gridYLength, uniqueID):
         self.type = type
         self.houseDimensions = houseDimensions
         self.freeArea = freeArea
@@ -69,7 +70,8 @@ class House(object):
         houseXLength = self.houseDimensions[0]
 
         # Define end coordinates (y, x tuple)
-        endCoordinates = (beginCoordinates[0] + houseYLength, beginCoordinates[1] + houseXLength)
+        endCoordinates = (beginCoordinates[0] + houseYLength, beginCoordinates[1]
+        + houseXLength)
 
         # Define new coordinates
         yCoordinateBegin = beginCoordinates[0]
@@ -85,7 +87,8 @@ class House(object):
         # print("  ||  XLength is: ",houseXLength)
 
         # Check for overlap
-        if self.noOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite) == True:
+        if self.noOverlap(yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
+        xCoordinateEnd, buildingSite) == True:
 
             # Field is clear, update grid
             buildingSite[yCoordinateBegin:yCoordinateEnd,xCoordinateBegin:xCoordinateEnd] = drawNumber
@@ -95,15 +98,18 @@ class House(object):
             print("Fetching new coordinates, because of overlap")
             self.drawOnGrid(buildingSite, currentHouse)
 
-    def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin, xCoordinateEnd, buildingSite):
+    def noOverlap(self, yCoordinateBegin, yCoordinateEnd, xCoordinateBegin,
+    xCoordinateEnd, buildingSite):
 
         # Print statements
-        # print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",yCoordinateEnd,end="")
+        # print("Checking buildingSite[Y,X]   [",yCoordinateBegin,"tot",
+        # yCoordinateEnd,end="")
         # print(" ,",xCoordinateBegin,"tot",xCoordinateEnd,"]")
         # print("")
 
         # Check house dimension area starting at the begin coordinates
-        if np.any(buildingSite[yCoordinateBegin:yCoordinateEnd, xCoordinateBegin:xCoordinateEnd] != 0):
+        if np.any(buildingSite[yCoordinateBegin:yCoordinateEnd,
+        xCoordinateBegin:xCoordinateEnd] != 0):
             return False
 
         else:
@@ -122,6 +128,7 @@ class Grid(object):
         self.fractionEengezinswoningen = float(0.60)
         self.fractionBungalows = float(0.25)
         self.fractionMaisons = float(0.15)
-        self.totalAmountEengezinswoningen = int(self.maxHouses * self.fractionEengezinswoningen)
+        self.totalAmountEengezinswoningen = int(self.maxHouses *
+        self.fractionEengezinswoningen)
         self.totalAmountBungalows = int(self.maxHouses * self.fractionBungalows)
         self.totalAmountMaisons = int(self.maxHouses * self.fractionMaisons)

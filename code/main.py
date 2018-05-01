@@ -80,14 +80,16 @@ def main():
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):
-    #     print(residentialArea[i].type, "|| uniqueID is:", residentialArea[i].uniqueID)
+    #     print(residentialArea[i].type, "|| uniqueID is:",
+    #     residentialArea[i].uniqueID)
 
     # # Print test extra House functions
     # b = House(**eengezinswoningTemplate)
     # print("")
     # print("B is een " + b.type + " met afmetingen:", b.houseDimensions)
     # print("De waarde van B is: " + str(b.value) + " euro")
-    # print("B nieuwe waarde met extra vrijstand (", b.extraFreeArea, "meter ) is:", b.calculateNewValue())
+    # print("B nieuwe waarde met extra vrijstand (", b.extraFreeArea, "meter )
+    # is:", b.calculateNewValue())
 
 # %%
 if __name__ == "__main__":
