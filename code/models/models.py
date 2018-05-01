@@ -76,25 +76,29 @@ class House(object):
         self.xBegin = beginCoordinates[1]
         self.xEnd = endCoordinates[1]
 
-        # Print tests
-        print("This is a",self.type,"with uniqueID:",self.uniqueID)
-        # print("beginCoordinates(Y, X): ",beginCoordinates)
-        # print("endCoordinates(Y, X): ",endCoordinates)
-        # print("YLength is: ",houseYLength, end="")
-        # print("  ||  XLength is: ",houseXLength)
-
-        # Check for overlap
-        if self.checkOverlap(self.yBegin, self.yEnd, self.xBegin,
-                          self.xEnd, numpyGrid) == True:
-
-            # Field is clear, update grid
-            numpyGrid[self.yBegin:self.yEnd,
-                         self.xBegin:self.xEnd] = drawNumber
-
-        # Start over with drawOnGrid for this specific house
-        else:
-            print("Fetching new coordinates, because of overlap")
+        # Check whether houses are in the grid
+        if self.yEnd > self.gridYLength or self.xEnd > self.gridXLength:
             self.drawOnGrid(numpyGrid)
+        else:
+            # Print tests
+            print("This is a",self.type,"with uniqueID:",self.uniqueID)
+            # print("beginCoordinates(Y, X): ",beginCoordinates)
+            # print("endCoordinates(Y, X): ",endCoordinates)
+            # print("YLength is: ",houseYLength, end="")
+            # print("  ||  XLength is: ",houseXLength)
+
+            # Check for overlap
+            if self.checkOverlap(self.yBegin, self.yEnd, self.xBegin,
+                              self.xEnd, numpyGrid) == True:
+
+                # Field is clear, update grid
+                numpyGrid[self.yBegin:self.yEnd,
+                             self.xBegin:self.xEnd] = drawNumber
+
+            # Start over with drawOnGrid for this specific house
+            else:
+                print("Fetching new coordinates, because of overlap")
+                self.drawOnGrid(numpyGrid)
 
     def checkOverlap(self, yBegin, yEnd, xBegin, xEnd, numpyGrid):
 
