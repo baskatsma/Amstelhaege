@@ -21,8 +21,9 @@ class House(object):
     def __init__(self, type, houseDimensions, freeArea, extraFreeArea, value,
     valueIncrease, xBegin, xEnd, yBegin, yEnd, gridXLength, gridYLength, uniqueID):
         self.type = type
-        self.houseDimensions = houseDimensions
-        self.freeArea = freeArea
+        self.houseDimensions = (int(houseDimensions[0] * 2),
+                                int(houseDimensions[1] * 2))
+        self.freeArea = freeArea * 2
         self.extraFreeArea = extraFreeArea
         self.value = value
         self.valueIncrease = valueIncrease

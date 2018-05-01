@@ -37,11 +37,13 @@ def main():
     # Loop over all houses
     for house in range(len(residentialArea)):
 
+        # Give the current house an easy variable
+        currentHouse = residentialArea[house]
+
         # Update uniqueIDs (starting at 10)
-        residentialArea[house].uniqueID = house + 10
+        currentHouse.uniqueID = house + 10
 
         # Place houses on grid and calculate total score
-        currentHouse = residentialArea[house]
         currentHouse.drawOnGrid(numpyGrid)
         totalScore += currentHouse.calculateScore()
 
@@ -89,6 +91,9 @@ def main():
         plt.plot(xCoordinates, yCoordinates)
 
     plt.show()
+
+    a = (10, 7.5)
+    print((a[0] * 2, a[1] * 2))
 
     # # Print test woonwijk
     # for i in range(len(residentialArea)):

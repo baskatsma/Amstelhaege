@@ -3,8 +3,8 @@
 # gridYLength = 16
 
 # Testing purposes
-gridXLength = 180
-gridYLength = 160
+gridXLength = 180 * 2
+gridYLength = 160 * 2
 
 # Define house templates (in dictionary format) to create class instances
 eengezinswoningTemplate = {"type": "eengezinswoning",
@@ -23,8 +23,8 @@ eengezinswoningTemplate = {"type": "eengezinswoning",
                             "uniqueID": 0}
 
 bungalowTemplate = {"type": "bungalow",
-                    # "houseDimensions": (10, 7.5),
-                    "houseDimensions": (4, 3),
+                    "houseDimensions": (10, 7.5),
+                    # "houseDimensions": (4, 3),
                     "freeArea": 3,
                     "extraFreeArea": 0,
                     "value": 399000,
@@ -38,8 +38,8 @@ bungalowTemplate = {"type": "bungalow",
                     "uniqueID": 0}
 
 maisonTemplate = {"type": "maison",
-                    # "houseDimensions": (11, 10.5),
-                    "houseDimensions": (5, 4),
+                    "houseDimensions": (11, 10.5),
+                    # "houseDimensions": (5, 4),
                     "freeArea": 6,
                     "extraFreeArea": 0,
                     "value": 610000,
