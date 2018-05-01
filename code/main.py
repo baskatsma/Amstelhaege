@@ -1,6 +1,5 @@
 # %% Import classes
 import numpy as np
-import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 from models.models import *
 from models.templates import *
