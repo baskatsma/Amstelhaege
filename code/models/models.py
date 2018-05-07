@@ -12,6 +12,20 @@ import random as rd
 import numpy as np
 import matplotlib.pyplot as plt
 
+class Water(object):
+    """
+    Contains all water properties and functions
+    """
+
+    def __init__(self, totalSquareArea, amountOfWater, waterDimensions):
+        self.totalSquareArea = 0.2 * gridXLength * gridYLength
+        self.amountOfWater = rd.randint(1,4)
+        self.waterDimensions = (int(waterDimensions[0]), int(waterDimensions[1]))
+
+
+
+
+
 # Define House class
 class House(object):
     """
