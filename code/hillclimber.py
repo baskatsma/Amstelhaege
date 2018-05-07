@@ -1,6 +1,6 @@
 # %% Import classes
-import numpy as np
 import matplotlib.pyplot as plt
+import random as rd
 from models.models import *
 from models.templates import *
 from functions import *
@@ -29,8 +29,9 @@ def main():
     for maison in range(gridInformation.totalAmountMaisons):
         residentialArea.append(House(**maisonTemplate))
 
-    # Initialize total score
-    totalScore = 0
+    # Initialize current and new score
+    currentScore = 0
+    newScore = 0
 
     # Loop over all houses
     for house in range(len(residentialArea)):
@@ -43,33 +44,32 @@ def main():
 
         # Place houses on grid and calculate total score
         currentHouse.drawOnGrid(numpyGrid)
-        totalScore += currentHouse.calculateScore()
+        currentScore += currentHouse.calculateScore()
 
-    print("The total score is:", totalScore)
+    print("The current score is:", currentScore)
 
-    # # Print numpyGrid with some fancy thaaangs
-    # rowCounter = 0
-    # print("")
-    # print("")
-    # print("        X →")
-    # print("        ",end="")
-    # for i in range(gridXLength):
-    #     if i < 10:
-    #         print(i," ",end="")
-    #     else:
-    #         print(i,"",end="")
-    # print("")
-    # print("  ↓ Y")
-    # for row in numpyGrid:
-    #     if rowCounter < 10:
-    #         print("   ",rowCounter," ", end="")
-    #     else:
-    #         print("  ",rowCounter," ", end="")
-    #
-    #     print(row)
-    #     rowCounter += 1
-    # print("")
-    # print("")
+    randomHouse1 = residentialArea[rd.randint(0,len(residentialArea))]
+    randomHouse2 = residentialArea[rd.randint(0,len(residentialArea))]
+
+    coordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
+    coordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
+
+    randomHouse1.yBegin = coordinates2[0]
+    randomHouse1.xBegin = coordinates2[1]
+    randomHouse2.yBegin = coordinates1[0]
+    randomHouse2.xBegin = coordinates1[1]
+
+    randomHouse1.drawOnGrid(numpyGrid)
+    randomHouse2.drawOnGrid(numpyGrid)
+
+    for house in range(len(residentialArea)):
+        newScore = currentHouse.calculateScore()
+
+    print("The new score is:", newScore)
+
+    # if currentScore > newScore:
+
+
 
     # Initialize matplotlib
     plt.figure()
@@ -101,11 +101,6 @@ def main():
 
     # Show matplotlib
     plt.show()
-
-    # # Print test woonwijk
-    # for i in range(len(residentialArea)):
-    #     print(residentialArea[i].type, "|| uniqueID is:",
-    #     residentialArea[i].uniqueID)
 
 # %%
 if __name__ == "__main__":
