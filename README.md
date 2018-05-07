@@ -17,8 +17,9 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 - [x] Random grid X, Y functie
 - [x] Huizen kunnen op het grid worden geplaatst
 - [x] Grid en huizen worden correct gescaled
-- [x] Anti-overlap functie toegevoegd
-- [ ] Vrijstand toegevoegd
+- [x] Anti-overlap functies toegevoegd
+- [x] Verplichte vrijstand toegevoegd (zonder pythagoras)
+- [ ] Extra vrijstand functie toegevoegd
 - [ ] Water toegevoegd
 - [ ] Random algoritme optimaliseren
 - [ ] Nieuwe algoritmes toepassen
@@ -28,9 +29,9 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 
 > * **macOS, Windows** of **Linux**
 
-> * **[Atom 1.2x](https://atom.io/)** of een andere soortgelijke texteditor
+> * **[Atom 1.26.1](https://atom.io/)** of een andere soortgelijke texteditor
 
-> * **[Python 3.6.x](https://www.python.org/downloads/)**
+> * **[Python 3.6.5](https://www.python.org/downloads/)**
 
 > * **[numpy 1.14.2](http://www.numpy.org/)**
 

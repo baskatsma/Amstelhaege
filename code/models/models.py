@@ -35,10 +35,13 @@ class House(object):
     def __init__(self, type, houseDimensions, freeArea, extraFreeArea, value,
     valueIncrease, xBegin, xEnd, yBegin, yEnd, gridXLength, gridYLength, uniqueID):
         self.type = type
-        self.houseDimensions = (int(houseDimensions[0] * 2),
-                                int(houseDimensions[1] * 2))
-        self.freeArea = freeArea * 2
-        self.extraFreeArea = extraFreeArea * 2
+        # self.houseDimensions = (int(houseDimensions[0] * 2),
+        #                         int(houseDimensions[1] * 2))
+        # self.freeArea = freeArea * 2
+        # self.extraFreeArea = extraFreeArea * 2
+        self.houseDimensions = (houseDimensions[0], houseDimensions[1])
+        self.freeArea = freeArea
+        self.extraFreeArea = extraFreeArea
         self.value = value
         self.valueIncrease = valueIncrease
         self.xBegin = xBegin
@@ -63,6 +66,19 @@ class House(object):
         # Use uniqueID number to visualize
         drawNumber = self.uniqueID
 
+        # Terminal testing purposes
+        if self.type == "eengezinswoning":
+            self.freeArea = 1
+            drawNumber = 2
+
+        elif self.type == "bungalow":
+            self.freeArea = 1
+            drawNumber = 3
+
+        elif self.type == "maison":
+            self.freeArea = 2
+            drawNumber = 4
+
         # Extract house dimension values
         houseYLength = self.houseDimensions[1]
         houseXLength = self.houseDimensions[0]
@@ -80,38 +96,84 @@ class House(object):
         self.xBegin = beginCoordinates[1]
         self.xEnd = endCoordinates[1]
 
-        # Check whether houses are in the grid
-        if self.yEnd > self.gridYLength or self.xEnd > self.gridXLength:
+        # Check for grid border problems
+        if self.yEnd + self.freeArea > self.gridYLength or \
+        self.xEnd + self.freeArea > self.gridXLength or \
+        self.xBegin - self.freeArea < 0 or \
+        self.yBegin - self.freeArea < 0:
             self.drawOnGrid(numpyGrid)
 
+        # No grid border problems, continuing
         else:
 
-            # Check for overlap
-            if self.checkOverlap(self.yBegin, self.yEnd, self.xBegin,
-                                 self.xEnd, numpyGrid) == True:
+            # Check for house and free area overlap
+            if self.checkHouseOverlap(self.yBegin,
+                    self.yEnd,
+                    self.xBegin,
+                    self.xEnd, numpyGrid) == True and \
+            self.checkFreeAreaOverlap(self.yBegin,
+                    self.yEnd,
+                    (self.xBegin - self.freeArea),
+                    self.xBegin, numpyGrid) == True and \
+            self.checkFreeAreaOverlap(self.yBegin,
+                    self.yEnd,
+                    self.xEnd,
+                    (self.xEnd + self.freeArea), numpyGrid) == True and \
+            self.checkFreeAreaOverlap((self.yBegin - self.freeArea),
+                    self.yBegin,
+                    self.xBegin,
+                    self.xEnd, numpyGrid) == True and \
+            self.checkFreeAreaOverlap(self.yEnd,
+                    (self.yEnd + self.freeArea),
+                    self.xBegin,
+                    self.xEnd, numpyGrid) == True:
 
                 # Field is clear, update grid
                 numpyGrid[self.yBegin:self.yEnd,
                           self.xBegin:self.xEnd] = drawNumber
 
+                numpyGrid[self.yBegin:self.yEnd,
+                        self.xBegin - self.freeArea:self.xBegin] = 1
+
+                numpyGrid[self.yBegin:self.yEnd,
+                        self.xEnd:self.xEnd + self.freeArea] = 1
+
+                numpyGrid[self.yBegin - self.freeArea:self.yBegin,
+                        self.xBegin:self.xEnd] = 1
+
+                numpyGrid[self.yEnd:self.yEnd + self.freeArea,
+                        self.xBegin:self.xEnd] = 1
+
             # Start over with drawOnGrid for this specific house
             else:
-                print("Fetching new coordinates, because of overlap")
+                print("Fetching new coordinates, because of any overlap")
                 self.drawOnGrid(numpyGrid)
 
-    def checkOverlap(self, yBegin, yEnd, xBegin, xEnd, numpyGrid):
+    def checkHouseOverlap(self, newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid):
 
         # Check house dimension area starting at the begin coordinates
-        if np.any(numpyGrid[self.yBegin:self.yEnd,self.xBegin:self.xEnd] != 0):
+        if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
             return False
 
         else:
             return True
 
+    def checkFreeAreaOverlap(self, newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid):
+
+        # We willen dat het vrijstands gebied OF helemaal 0 is, OF helemaal 1 \
+        # of een mix van beiden. IIG geen uniqueID of 2, 3, 4, 5 etc.
+        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 1):
+            return True
+
+        else:
+            print("There's more than 0 or 1")
+            return False
+
     # Calculate and return score per house
     def calculateScore(self):
 
-        scoreHouse = self.value + self.value * (self.valueIncrease * self.extraFreeArea)
+        scoreHouse = self.value + self.value * \
+                    (self.valueIncrease * self.extraFreeArea)
 
         return int(scoreHouse)
 

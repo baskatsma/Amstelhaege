@@ -14,9 +14,6 @@ def main():
     # Create grid instance
     gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
 
-    # Create numpy grid (verticalY, horizontalX)
-    numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)
-
     # Create woonwijk
     residentialArea = []
 
@@ -29,6 +26,10 @@ def main():
 
     for maison in range(gridInformation.totalAmountMaisons):
         residentialArea.append(House(**maisonTemplate))
+
+    # Initialize numpy grid (verticalY, horizontalX)
+    # numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)
+    numpyGrid = np.zeros((gridYLength,gridXLength))
 
     # Initialize total score
     totalScore = 0
@@ -48,55 +49,56 @@ def main():
 
     print("The total score is:", totalScore)
 
-    # # Print numpyGrid with some fancy thaaangs
-    # rowCounter = 0
-    # print("")
-    # print("")
-    # print("        X →")
-    # print("        ",end="")
-    # for i in range(gridXLength):
-    #     if i < 10:
-    #         print(i," ",end="")
-    #     else:
-    #         print(i,"",end="")
-    # print("")
-    # print("  ↓ Y")
-    # for row in numpyGrid:
-    #     if rowCounter < 10:
-    #         print("   ",rowCounter," ", end="")
-    #     else:
-    #         print("  ",rowCounter," ", end="")
-    #
-    #     print(row)
-    #     rowCounter += 1
-    # print("")
-    # print("")
+    # Print numpyGrid with some fancy thaaangs
+    rowCounter = 0
+    print("")
+    print("")
+    print("        X →")
+    print("        ",end="")
+    for i in range(gridXLength):
+        if i < 10:
+            print(i," ",end="")
+        else:
+            print(i,"",end="")
+    print("")
+    print("  ↓ Y")
+    for row in numpyGrid:
+        if rowCounter < 10:
+            print("   ",rowCounter," ", end="")
+        else:
+            print("  ",rowCounter," ", end="")
+
+        print(row)
+        rowCounter += 1
+    print("")
+    print("")
 
     # Initialize matplotlib
     plt.figure()
 
+    # Define grid
     xGridList = [0, gridXLength, gridXLength, 0, 0]
     yGridList = [0, 0, gridYLength, gridYLength, 0]
     plt.plot(xGridList, yGridList)
 
-    # Loop over all houses
-    for house in residentialArea:
+    # Loop over all objects
+    for object in residentialArea:
 
-        xCoordinates = [house.xBegin, house.xEnd,
-        house.xEnd, house.xBegin, house.xBegin]
+        xCoordinates = [object.xBegin, object.xEnd,
+        object.xEnd, object.xBegin, object.xBegin]
 
-        yCoordinates = [house.yBegin, house.yBegin,
-        house.yEnd, house.yEnd, house.yBegin]
+        yCoordinates = [object.yBegin, object.yBegin,
+        object.yEnd, object.yEnd, object.yBegin]
 
-        if house.type == "eengezinswoning":
+        if object.type == "eengezinswoning":
             ePlot = plt.plot(xCoordinates, yCoordinates)
             ePlot[0].set_color('r')
 
-        elif house.type == "bungalow":
+        elif object.type == "bungalow":
             bPlot = plt.plot(xCoordinates, yCoordinates)
             bPlot[0].set_color('g')
 
-        elif house.type == "maison":
+        elif object.type == "maison":
             mPlot = plt.plot(xCoordinates, yCoordinates)
             mPlot[0].set_color('y')
 
