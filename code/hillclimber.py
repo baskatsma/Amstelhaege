@@ -1,6 +1,6 @@
 # %% Import classes
-import numpy as np
 import matplotlib.pyplot as plt
+import random as rd
 from models.models import *
 from models.templates import *
 from functions import *
@@ -12,6 +12,9 @@ def main():
 
     # Create grid instance
     gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
+
+    # Create numpy grid (verticalY, horizontalX)
+    numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)
 
     # Create woonwijk
     residentialArea = []
@@ -26,12 +29,9 @@ def main():
     for maison in range(gridInformation.totalAmountMaisons):
         residentialArea.append(House(**maisonTemplate))
 
-    # Initialize numpy grid (verticalY, horizontalX)
-    # numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)
-    numpyGrid = np.zeros((gridYLength,gridXLength))
-
-    # Initialize total score
-    totalScore = 0
+    # Initialize current and new score
+    currentScore = 0
+    newScore = 0
 
     # Loop over all houses
     for house in range(len(residentialArea)):
@@ -44,70 +44,63 @@ def main():
 
         # Place houses on grid and calculate total score
         currentHouse.drawOnGrid(numpyGrid)
-        totalScore += currentHouse.calculateScore()
+        currentScore += currentHouse.calculateScore()
 
-    print("The total score is:", totalScore)
+    print("The current score is:", currentScore)
 
-    # Print numpyGrid with some fancy thaaangs
-    rowCounter = 0
-    print("")
-    print("")
-    print("        X →")
-    print("        ",end="")
-    for i in range(gridXLength):
-        if i < 10:
-            print(i," ",end="")
-        else:
-            print(i,"",end="")
-    print("")
-    print("  ↓ Y")
-    for row in numpyGrid:
-        if rowCounter < 10:
-            print("   ",rowCounter," ", end="")
-        else:
-            print("  ",rowCounter," ", end="")
+    randomHouse1 = residentialArea[rd.randint(0,len(residentialArea))]
+    randomHouse2 = residentialArea[rd.randint(0,len(residentialArea))]
 
-        print(row)
-        rowCounter += 1
-    print("")
-    print("")
+    coordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
+    coordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
+
+    randomHouse1.yBegin = coordinates2[0]
+    randomHouse1.xBegin = coordinates2[1]
+    randomHouse2.yBegin = coordinates1[0]
+    randomHouse2.xBegin = coordinates1[1]
+
+    randomHouse1.drawOnGrid(numpyGrid)
+    randomHouse2.drawOnGrid(numpyGrid)
+
+    for house in range(len(residentialArea)):
+        newScore = currentHouse.calculateScore()
+
+    print("The new score is:", newScore)
+
+    # if currentScore > newScore:
+
+
 
     # Initialize matplotlib
     plt.figure()
 
-    # Define grid
     xGridList = [0, gridXLength, gridXLength, 0, 0]
     yGridList = [0, 0, gridYLength, gridYLength, 0]
     plt.plot(xGridList, yGridList)
 
-    # Loop over all objects
-    for object in residentialArea:
+    # Loop over all houses
+    for house in residentialArea:
 
-        xCoordinates = [object.xBegin, object.xEnd,
-        object.xEnd, object.xBegin, object.xBegin]
+        xCoordinates = [house.xBegin, house.xEnd,
+        house.xEnd, house.xBegin, house.xBegin]
 
-        yCoordinates = [object.yBegin, object.yBegin,
-        object.yEnd, object.yEnd, object.yBegin]
+        yCoordinates = [house.yBegin, house.yBegin,
+        house.yEnd, house.yEnd, house.yBegin]
 
-        if object.type == "eengezinswoning":
+        if house.type == "eengezinswoning":
             ePlot = plt.plot(xCoordinates, yCoordinates)
             ePlot[0].set_color('r')
 
-        elif object.type == "bungalow":
+        elif house.type == "bungalow":
             bPlot = plt.plot(xCoordinates, yCoordinates)
             bPlot[0].set_color('g')
 
-        elif object.type == "maison":
+        elif house.type == "maison":
             mPlot = plt.plot(xCoordinates, yCoordinates)
             mPlot[0].set_color('y')
 
     # Show matplotlib
     plt.show()
-
-    # # Print test woonwijk
-    # for i in range(len(residentialArea)):
-    #     print(residentialArea[i].type, "|| uniqueID is:",
-    #     residentialArea[i].uniqueID)
 
 # %%
 if __name__ == "__main__":

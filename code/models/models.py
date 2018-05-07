@@ -24,8 +24,6 @@ class Water(object):
 
 
 
-
-
 # Define House class
 class House(object):
     """
