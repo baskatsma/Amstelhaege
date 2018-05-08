@@ -1,13 +1,23 @@
 # Grid dimensions in meters
-# gridXLength = 180 * 2
-# gridYLength = 160 * 2
-gridXLength = 23
-gridYLength = 20
+gridXLength = 180 * 2
+gridYLength = 160 * 2
+# gridXLength = 23
+# gridYLength = 20
 
-# Define house templates (in dictionary format) to create class instances
+# Define object templates (in dictionary format) to create class instances
+waterTemplate = {"type": "water",
+                    "freeArea": 0,
+                    "xBegin": 0,
+                    "xEnd": 0,
+                    "yBegin": 0,
+                    "yEnd": 0,
+                    "gridXLength": gridXLength,
+                    "gridYLength": gridYLength,
+                    "uniqueID": 0}
+
 eengezinswoningTemplate = {"type": "eengezinswoning",
-                            # "houseDimensions": (8, 8),
-                            "houseDimensions": (2, 2),
+                            "houseDimensions": (8, 8),
+                            # "houseDimensions": (2, 2),
                             "freeArea": 2,
                             "extraFreeArea": 0,
                             "value": 285000,
@@ -21,8 +31,8 @@ eengezinswoningTemplate = {"type": "eengezinswoning",
                             "uniqueID": 0}
 
 bungalowTemplate = {"type": "bungalow",
-                    # "houseDimensions": (10, 7.5),
-                    "houseDimensions": (3, 2),
+                    "houseDimensions": (10, 7.5),
+                    # "houseDimensions": (3, 2),
                     "freeArea": 3,
                     "extraFreeArea": 0,
                     "value": 399000,
@@ -36,8 +46,8 @@ bungalowTemplate = {"type": "bungalow",
                     "uniqueID": 0}
 
 maisonTemplate = {"type": "maison",
-                    # "houseDimensions": (11, 10.5),
-                    "houseDimensions": (4, 4),
+                    "houseDimensions": (11, 10.5),
+                    # "houseDimensions": (4, 4),
                     "freeArea": 6,
                     "extraFreeArea": 0,
                     "value": 610000,

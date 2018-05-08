@@ -48,8 +48,8 @@ def main():
 
     print("The current score is:", currentScore)
 
-    randomHouse1 = residentialArea[rd.randint(0,len(residentialArea))]
-    randomHouse2 = residentialArea[rd.randint(0,len(residentialArea))]
+    randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
+    randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
 
     coordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
     coordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)

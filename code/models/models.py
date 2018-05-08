@@ -9,6 +9,7 @@ USAGE       to-do
 """
 # %%
 import random as rd
+import math as mt
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -17,12 +18,93 @@ class Water(object):
     Contains all water properties and functions
     """
 
-    def __init__(self, totalSquareArea, amountOfWater, waterDimensions):
-        self.totalSquareArea = 0.2 * gridXLength * gridYLength
-        self.amountOfWater = rd.randint(1,4)
-        self.waterDimensions = (int(waterDimensions[0]), int(waterDimensions[1]))
+    def __init__(self, type, freeArea, gridXLength, gridYLength, xBegin, xEnd, yBegin, yEnd, uniqueID):
+        self.totalSquareArea = 0.2 * int(gridXLength) * int(gridYLength)
+        self.type = type
+        self.freeArea = freeArea
+        self.gridXLength = gridXLength
+        self.gridYLength = gridYLength
+        self.waterDimensions = (int(mt.sqrt(self.totalSquareArea)),
+                                int(mt.sqrt(self.totalSquareArea)))
+        self.xBegin = xBegin
+        self.xEnd = xEnd
+        self.yBegin = yBegin
+        self.yEnd = yEnd
+        self.uniqueID = uniqueID
 
+    def drawOnGrid(self, numpyGrid):
 
+        # Use uniqueID number to visualize
+        drawNumber = self.uniqueID
+
+        # # Terminal testing purposes
+        # if self.type == "eengezinswoning":
+        #     self.freeArea = 1
+        #     drawNumber = 2
+        #
+        # elif self.type == "bungalow":
+        #     self.freeArea = 1
+        #     drawNumber = 3
+        #
+        # elif self.type == "maison":
+        #     self.freeArea = 2
+        #     drawNumber = 4
+
+        # elif self.type == "water":
+        #     self.freeArea = 0
+        #     drawNumber = 7
+
+        # Extract water dimension values
+        houseYLength = self.waterDimensions[0]
+        houseXLength = self.waterDimensions[1]
+
+        # Begin coordinates (y, x tuple)
+        beginCoordinates = (0, 0)
+
+        # Define end coordinates (y, x tuple)
+        endCoordinates = (beginCoordinates[0] + houseYLength,
+                          beginCoordinates[1] + houseXLength)
+
+        # Update coordinates
+        self.yBegin = beginCoordinates[0]
+        self.yEnd = endCoordinates[0]
+        self.xBegin = beginCoordinates[1]
+        self.xEnd = endCoordinates[1]
+
+        # Check for house and free area overlap
+        if self.checkHouseOverlap(self.yBegin,
+                self.yEnd,
+                self.xBegin,
+                self.xEnd, numpyGrid) == True:
+
+            # Field is clear, update grid
+            numpyGrid[self.yBegin:self.yEnd,
+                      self.xBegin:self.xEnd] = drawNumber
+
+        # Start over with drawOnGrid for this specific house
+        else:
+            #print("Fetching new coordinates, because of any overlap")
+            self.drawOnGrid(numpyGrid)
+
+    def checkHouseOverlap(self, newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid):
+
+        # Check house dimension area starting at the begin coordinates
+        if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
+            return False
+
+        else:
+            return True
+
+    def checkFreeAreaOverlap(self, newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid):
+
+        # We willen dat het vrijstands gebied OF helemaal 0 is, OF helemaal 1 \
+        # of een mix van beiden. IIG geen uniqueID of 2, 3, 4, 5 etc.
+        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 1):
+            return True
+
+        else:
+            #print("There's more than 0 or 1")
+            return False
 
 # Define House class
 class House(object):
@@ -33,13 +115,13 @@ class House(object):
     def __init__(self, type, houseDimensions, freeArea, extraFreeArea, value,
     valueIncrease, xBegin, xEnd, yBegin, yEnd, gridXLength, gridYLength, uniqueID):
         self.type = type
-        # self.houseDimensions = (int(houseDimensions[0] * 2),
-        #                         int(houseDimensions[1] * 2))
-        # self.freeArea = freeArea * 2
-        # self.extraFreeArea = extraFreeArea * 2
-        self.houseDimensions = (houseDimensions[0], houseDimensions[1])
-        self.freeArea = freeArea
-        self.extraFreeArea = extraFreeArea
+        self.houseDimensions = (int(houseDimensions[0] * 2),
+                                int(houseDimensions[1] * 2))
+        self.freeArea = freeArea * 2
+        self.extraFreeArea = extraFreeArea * 2
+        # self.houseDimensions = (houseDimensions[0], houseDimensions[1])
+        # self.freeArea = freeArea
+        # self.extraFreeArea = extraFreeArea
         self.value = value
         self.valueIncrease = valueIncrease
         self.xBegin = xBegin
@@ -64,18 +146,18 @@ class House(object):
         # Use uniqueID number to visualize
         drawNumber = self.uniqueID
 
-        # Terminal testing purposes
-        if self.type == "eengezinswoning":
-            self.freeArea = 1
-            drawNumber = 2
-
-        elif self.type == "bungalow":
-            self.freeArea = 1
-            drawNumber = 3
-
-        elif self.type == "maison":
-            self.freeArea = 2
-            drawNumber = 4
+        # # Terminal testing purposes
+        # if self.type == "eengezinswoning":
+        #     self.freeArea = 1
+        #     drawNumber = 2
+        #
+        # elif self.type == "bungalow":
+        #     self.freeArea = 1
+        #     drawNumber = 3
+        #
+        # elif self.type == "maison":
+        #     self.freeArea = 2
+        #     drawNumber = 4
 
         # Extract house dimension values
         houseYLength = self.houseDimensions[1]

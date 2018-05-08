@@ -15,6 +15,24 @@ def main():
 
     # Create woonwijk
     residentialArea = []
+    testwijk = []
+
+    testwijk.append(House(**eengezinswoningTemplate))
+    # Loop over all objects (water + houses)
+    for object in range(len(testwijk)):
+
+        # Give the current object an easy variable
+        currentObject = testwijk[object]
+
+        # Update uniqueID and put water on grid
+        getCoordinates(currentObject)
+        print(currentObject.yBegin)
+        print(currentObject.yEnd)
+        print(currentObject.xBegin)
+        print(currentObject.xEnd)
+
+    # Add one piece of water
+    residentialArea.append(Water(**waterTemplate))
 
     # Create new houses based on the grid requirements
     for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
@@ -33,44 +51,59 @@ def main():
     # Initialize total score
     totalScore = 0
 
-    # Loop over all houses
-    for house in range(len(residentialArea)):
+    # Loop over all objects (water + houses)
+    for object in range(len(residentialArea)):
 
-        # Give the current house an easy variable
-        currentHouse = residentialArea[house]
+        # Give the current object an easy variable
+        currentObject = residentialArea[object]
 
-        # Update uniqueIDs (starting at 10)
-        currentHouse.uniqueID = house + 10
+        newYBegin = currentObject.yBegin
+        newYEnd = currentObject.yEnd
+        newXBegin = currentObject.xBegin
+        newXEnd = currentObject.xEnd
 
-        # Place houses on grid and calculate total score
-        currentHouse.drawOnGrid(numpyGrid)
-        totalScore += currentHouse.calculateScore()
+        # Update uniqueID and put water on grid
+        if currentObject.type == "water":
+            currentObject.uniqueID = object + 200
+            checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, "houses")
+            currentObject.drawOnGrid(numpyGrid)
 
+        # Update uniqueIDs, put houses on grid and calculate score
+        else:
+            currentObject.uniqueID = object + 10
+            checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, "houses")
+            currentObject.drawOnGrid(numpyGrid)
+            totalScore += currentObject.calculateScore()
+
+        # checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, "houses")
+        # currentObject.drawOnGrid(numpyGrid)
+
+    # Print score
     print("The total score is:", totalScore)
 
-    # Print numpyGrid with some fancy thaaangs
-    rowCounter = 0
-    print("")
-    print("")
-    print("        X →")
-    print("        ",end="")
-    for i in range(gridXLength):
-        if i < 10:
-            print(i," ",end="")
-        else:
-            print(i,"",end="")
-    print("")
-    print("  ↓ Y")
-    for row in numpyGrid:
-        if rowCounter < 10:
-            print("   ",rowCounter," ", end="")
-        else:
-            print("  ",rowCounter," ", end="")
-
-        print(row)
-        rowCounter += 1
-    print("")
-    print("")
+    # # Print numpyGrid with some fancy thaaangs
+    # rowCounter = 0
+    # print("")
+    # print("")
+    # print("        X →")
+    # print("        ",end="")
+    # for i in range(gridXLength):
+    #     if i < 10:
+    #         print(i," ",end="")
+    #     else:
+    #         print(i,"",end="")
+    # print("")
+    # print("  ↓ Y")
+    # for row in numpyGrid:
+    #     if rowCounter < 10:
+    #         print("   ",rowCounter," ", end="")
+    #     else:
+    #         print("  ",rowCounter," ", end="")
+    #
+    #     print(row)
+    #     rowCounter += 1
+    # print("")
+    # print("")
 
     # Initialize matplotlib
     plt.figure()
@@ -101,10 +134,14 @@ def main():
             mPlot = plt.plot(xCoordinates, yCoordinates)
             mPlot[0].set_color('y')
 
+        elif object.type == "water":
+            mPlot = plt.plot(xCoordinates, yCoordinates)
+            mPlot[0].set_color('b')
+
     # Show matplotlib
     plt.show()
 
-    # # Print test woonwijk
+    # Print test woonwijk
     # for i in range(len(residentialArea)):
     #     print(residentialArea[i].type, "|| uniqueID is:",
     #     residentialArea[i].uniqueID)

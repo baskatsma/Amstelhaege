@@ -1,4 +1,6 @@
 # %% Hydrogen run
+import numpy as np
+import random as rd
 import sys
 
 # %% Define residential area size (either 20, 40 or 60 houses at max)
@@ -26,7 +28,63 @@ def defineMaxHouses():
             maxHouses = 20
             print("sys.argv is an invalid number, maxHouses = 20 by default")
 
-    # testing
-    maxHouses = 7
+    # # testing
+    # maxHouses = 20
 
     return maxHouses
+
+
+
+    # Use uniqueID number to visualize
+    drawNumber = currentObject.uniqueID
+
+def getCoordinates(currentObject):
+
+    # Set new begin coordinates (y, x tuple) and save them in self
+    currentObject.yBegin = rd.randrange(currentObject.gridYLength)
+    currentObject.xBegin = rd.randrange(currentObject.gridXLength)
+    beginCoordinates = (currentObject.yBegin, currentObject.xBegin)
+
+    # Extract house dimension values
+    houseYLength = currentObject.houseDimensions[1]
+    houseXLength = currentObject.houseDimensions[0]
+
+    # Define end coordinates (y, x tuple)
+    endCoordinates = (beginCoordinates[0] + houseYLength,
+                      beginCoordinates[1] + houseXLength)
+
+    # Update coordinates
+    currentObject.yBegin = beginCoordinates[0]
+    currentObject.yEnd = endCoordinates[0]
+    currentObject.xBegin = beginCoordinates[1]
+    currentObject.xEnd = endCoordinates[1]
+
+def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
+
+    # newYBegin = currentObject.yBegin
+    # newYEnd = currentObject.yEnd
+    # newXBegin = currentObject.xBegin
+    # newXEnd = currentObject.xEnd
+
+    if choice == "houses" or "both":
+
+        # Check house dimension area starting at the begin coordinates
+        if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
+            print("There's more than 0's")
+            return False
+
+        else:
+            print("There's room!")
+            return True
+
+    if choice == "freeArea" or "both":
+
+    # We willen dat het vrijstands gebied OF helemaal 0 is, OF helemaal 1 \
+    # of een mix van beiden. IIG geen uniqueID of 2, 3, 4, 5 etc.
+        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 1):
+            print("There's room!")
+            return True
+
+        else:
+            print("There's more than 0 or 1")
+            return False
