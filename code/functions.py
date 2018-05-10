@@ -122,7 +122,7 @@ def randomAlgorithm():
         print("")
 
         # Visualize grid with matplotlib
-        printPlot(residentialArea)
+        printPlot(residentialArea, totalScore)
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
@@ -332,7 +332,7 @@ def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumbe
     # Select a specific grid area and fill it
     numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] = drawNumber
 
-def printPlot(residentialArea):
+def printPlot(residentialArea, totalScore):
 
     # Initialize matplotlib
     plt.figure()
@@ -341,6 +341,8 @@ def printPlot(residentialArea):
     xGridList = [0, gridXLength, gridXLength, 0, 0]
     yGridList = [0, 0, gridYLength, gridYLength, 0]
     plt.plot(xGridList, yGridList)
+
+    plt.title(str(totalScore) + " euro, bitch!")
 
     # Loop over all objects
     for object in residentialArea:
