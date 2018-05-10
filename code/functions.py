@@ -117,7 +117,7 @@ def defineSettings():
     if len(sys.argv) == 1:
         print("maxHouses remains 20; algorithm is random")
 
-    elif len(sys.argv) == 2:
+    elif len(sys.argv) >= 2:
 
         # Check if the number is valid (either 20, 40 or 60)
         if str(sys.argv[1]) == "20":
