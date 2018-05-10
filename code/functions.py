@@ -12,6 +12,9 @@ def randomAlgorithm():
         # Measure algorithm time
         timeStart = timer()
 
+        # Increase recursion maximum to obtain 60 house results easier
+        sys.setrecursionlimit(4000)
+
         # Get maxHouses
         maxHouses = defineSettings()
 
