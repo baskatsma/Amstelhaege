@@ -19,7 +19,7 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 - [x] Grid en huizen worden correct gescaled
 - [x] Anti-overlap functies toegevoegd
 - [x] Verplichte vrijstand toegevoegd (zonder pythagoras)
-- [ ] Extra vrijstand functie toegevoegd
+- [X] Extra vrijstand calculator functie toegevoegd
 - [X] Water toegevoegd
 - [ ] Random algoritme optimaliseren
 - [ ] Nieuwe algoritmes toepassen
