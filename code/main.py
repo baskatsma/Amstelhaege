@@ -1,11 +1,15 @@
 # %% Import classes
 import numpy as np
 import matplotlib.pyplot as plt
+import time as tm
 from models.models import *
 from models.templates import *
 from functions import *
 
 def main():
+
+    # Measure algorithm time
+    timeStart = tm.time()
 
     # Get maxHouses
     maxHouses = defineMaxHouses()
@@ -65,13 +69,17 @@ def main():
         # Update uniqueID and put water on grid
         if currentObject.type == "water":
             currentObject.uniqueID = object + 200
-            checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, "houses")
+
+            # Free area and water do not interfere
+            checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, \
+                        "includingFreeArea")
             currentObject.drawOnGrid(numpyGrid)
 
         # Update uniqueIDs, put houses on grid and calculate score
         else:
             currentObject.uniqueID = object + 10
-            checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, "houses")
+            checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, \
+                        "excludingFreeArea")
             currentObject.drawOnGrid(numpyGrid)
             totalScore += currentObject.calculateScore()
 
@@ -81,65 +89,70 @@ def main():
     # Print score
     print("The total score is:", totalScore)
 
-    # # Print numpyGrid with some fancy thaaangs
-    # rowCounter = 0
-    # print("")
-    # print("")
-    # print("        X →")
-    # print("        ",end="")
-    # for i in range(gridXLength):
-    #     if i < 10:
-    #         print(i," ",end="")
-    #     else:
-    #         print(i,"",end="")
-    # print("")
-    # print("  ↓ Y")
-    # for row in numpyGrid:
-    #     if rowCounter < 10:
-    #         print("   ",rowCounter," ", end="")
-    #     else:
-    #         print("  ",rowCounter," ", end="")
+    # Print numpyGrid with some fancy thaaangs
+    rowCounter = 0
+    print("")
+    print("")
+    print("        X →")
+    print("        ",end="")
+    for i in range(gridXLength):
+        if i < 10:
+            print(i," ",end="")
+        else:
+            print(i,"",end="")
+    print("")
+    print("  ↓ Y")
+    for row in numpyGrid:
+        if rowCounter < 10:
+            print("   ",rowCounter," ", end="")
+        else:
+            print("  ",rowCounter," ", end="")
+
+        print(row)
+        rowCounter += 1
+    print("")
+    print("")
+
+    timeEnd = tm.time()
+    print("Elapsed time (in seconds):",timeEnd - timeStart)
+    print("")
+
     #
-    #     print(row)
-    #     rowCounter += 1
-    # print("")
-    # print("")
-
-    # Initialize matplotlib
-    plt.figure()
-
-    # Define grid
-    xGridList = [0, gridXLength, gridXLength, 0, 0]
-    yGridList = [0, 0, gridYLength, gridYLength, 0]
-    plt.plot(xGridList, yGridList)
-
-    # Loop over all objects
-    for object in residentialArea:
-
-        xCoordinates = [object.xBegin, object.xEnd,
-        object.xEnd, object.xBegin, object.xBegin]
-
-        yCoordinates = [object.yBegin, object.yBegin,
-        object.yEnd, object.yEnd, object.yBegin]
-
-        if object.type == "eengezinswoning":
-            ePlot = plt.plot(xCoordinates, yCoordinates)
-            ePlot[0].set_color('r')
-
-        elif object.type == "bungalow":
-            bPlot = plt.plot(xCoordinates, yCoordinates)
-            bPlot[0].set_color('g')
-
-        elif object.type == "maison":
-            mPlot = plt.plot(xCoordinates, yCoordinates)
-            mPlot[0].set_color('y')
-
-        elif object.type == "water":
-            mPlot = plt.plot(xCoordinates, yCoordinates)
-            mPlot[0].set_color('b')
-
-    # Show matplotlib
-    plt.show()
+    # # Initialize matplotlib
+    # plt.figure()
+    #
+    # # Define grid
+    # xGridList = [0, gridXLength, gridXLength, 0, 0]
+    # yGridList = [0, 0, gridYLength, gridYLength, 0]
+    # plt.plot(xGridList, yGridList)
+    #
+    # # Loop over all objects
+    # for object in residentialArea:
+    #
+    #     xCoordinates = [object.xBegin, object.xEnd,
+    #     object.xEnd, object.xBegin, object.xBegin]
+    #
+    #     yCoordinates = [object.yBegin, object.yBegin,
+    #     object.yEnd, object.yEnd, object.yBegin]
+    #
+    #     if object.type == "eengezinswoning":
+    #         ePlot = plt.plot(xCoordinates, yCoordinates)
+    #         ePlot[0].set_color('r')
+    #
+    #     elif object.type == "bungalow":
+    #         bPlot = plt.plot(xCoordinates, yCoordinates)
+    #         bPlot[0].set_color('g')
+    #
+    #     elif object.type == "maison":
+    #         mPlot = plt.plot(xCoordinates, yCoordinates)
+    #         mPlot[0].set_color('y')
+    #
+    #     elif object.type == "water":
+    #         mPlot = plt.plot(xCoordinates, yCoordinates)
+    #         mPlot[0].set_color('b')
+    #
+    # # Show matplotlib
+    # plt.show()
 
     # Print test woonwijk
     # for i in range(len(residentialArea)):

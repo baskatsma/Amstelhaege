@@ -29,7 +29,7 @@ def defineMaxHouses():
             print("sys.argv is an invalid number, maxHouses = 20 by default")
 
     # # testing
-    # maxHouses = 20
+    maxHouses = 8
 
     return maxHouses
 
@@ -66,7 +66,7 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
     # newXBegin = currentObject.xBegin
     # newXEnd = currentObject.xEnd
 
-    if choice == "houses" or "both":
+    if choice == "excludingFreeArea":
 
         # Check house dimension area starting at the begin coordinates
         if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
@@ -77,14 +77,16 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
             print("There's room!")
             return True
 
-    if choice == "freeArea" or "both":
+    if choice == "includingFreeArea":
 
-    # We willen dat het vrijstands gebied OF helemaal 0 is, OF helemaal 1 \
-    # of een mix van beiden. IIG geen uniqueID of 2, 3, 4, 5 etc.
-        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 1):
+    # We willen kijken of dit gebied OF helemaal 0 (leeg) is, OF helemaal 1
+    # (vrijstand, want die mag overlappen), OF helemaal 2 (water),
+    # OF een mix van 0, 1 en 2 (leeg + vrijstand + water)
+    # In ieder geval geen 3, 4, 5, etc. of uniqueID waarde.
+        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 2):
             print("There's room!")
             return True
 
         else:
-            print("There's more than 0 or 1")
+            print("There's more than 0 or 1 or 2")
             return False
