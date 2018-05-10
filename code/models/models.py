@@ -10,7 +10,6 @@ USAGE       to-do
 import random as rd
 import math as mt
 import numpy as np
-import matplotlib.pyplot as plt
 
 class Water(object):
     """
@@ -58,7 +57,7 @@ class House(object):
         self.gridYLength = gridYLength
         self.uniqueID = uniqueID
 
-    def checkGrid(self):
+    def checkBorders(self):
 
         # Check for grid border problems
         if self.yEnd + self.freeArea > self.gridYLength or \

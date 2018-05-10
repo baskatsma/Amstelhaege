@@ -236,7 +236,7 @@ def placeOnGrid(currentObject, numpyGrid):
     fADrawNumber = 1
 
     # Check for grid border problems
-    if currentObject.checkGrid() == True:
+    if currentObject.checkBorders() == True:
 
         # Check for house and free area overlap
         if checkOverlap(yBegin, yEnd, xBegin, xEnd, numpyGrid,
