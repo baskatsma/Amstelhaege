@@ -7,7 +7,6 @@ CODERS      Amy van der Gun     10791760
 
 USAGE       to-do
 """
-# %%
 import random as rd
 import math as mt
 import numpy as np
@@ -24,7 +23,7 @@ class Water(object):
         self.freeArea = freeArea
         self.gridXLength = gridXLength
         self.gridYLength = gridYLength
-        self.waterDimensions = (int(mt.sqrt(self.totalSquareArea)),
+        self.objectDimensions = (int(mt.sqrt(self.totalSquareArea)),
                                 int(mt.sqrt(self.totalSquareArea)))
         self.xBegin = xBegin
         self.xEnd = xEnd
@@ -32,98 +31,23 @@ class Water(object):
         self.yEnd = yEnd
         self.uniqueID = uniqueID
 
-    def drawOnGrid(self, numpyGrid):
-
-        # Use uniqueID number to visualize
-        drawNumber = self.uniqueID
-
-        # Terminal testing purposes
-        if self.type == "eengezinswoning":
-            self.freeArea = 1
-            drawNumber = 3
-
-        elif self.type == "bungalow":
-            self.freeArea = 1
-            drawNumber = 4
-
-        elif self.type == "maison":
-            self.freeArea = 2
-            drawNumber = 5
-
-        elif self.type == "water":
-            self.freeArea = 0
-            drawNumber = 2
-
-        # Extract water dimension values
-        houseYLength = self.waterDimensions[0]
-        houseXLength = self.waterDimensions[1]
-
-        # Begin coordinates (y, x tuple)
-        beginCoordinates = (0, 0)
-
-        # Define end coordinates (y, x tuple)
-        endCoordinates = (beginCoordinates[0] + houseYLength,
-                          beginCoordinates[1] + houseXLength)
-
-        # Update coordinates
-        self.yBegin = beginCoordinates[0]
-        self.yEnd = endCoordinates[0]
-        self.xBegin = beginCoordinates[1]
-        self.xEnd = endCoordinates[1]
-
-        # Check for house and free area overlap
-        if self.checkHouseOverlap(self.yBegin,
-                self.yEnd,
-                self.xBegin,
-                self.xEnd, numpyGrid) == True:
-
-            # Field is clear, update grid
-            numpyGrid[self.yBegin:self.yEnd,
-                      self.xBegin:self.xEnd] = drawNumber
-
-        # Start over with drawOnGrid for this specific house
-        else:
-            self.drawOnGrid(numpyGrid)
-
-    def checkHouseOverlap(self, newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid):
-
-        # Check house dimension area starting at the begin coordinates
-        if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
-            return False
-
-        else:
-            return True
-
-    def checkFreeAreaOverlap(self, newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid):
-
-        # We willen kijken of dit gebied OF helemaal 0 (leeg) is, OF helemaal 1
-        # (vrijstand, want die mag overlappen), OF helemaal 2 (water),
-        # OF een mix van 0, 1 en 2 (leeg + vrijstand + water)
-        # In ieder geval geen 3, 4, 5, etc. of uniqueID waarde.
-        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 2):
-            print("There's room!")
-            return True
-
-        else:
-            print("There's more than 0 or 1 or 2")
-            return False
-
 # Define House class
 class House(object):
     """
     Contains all house properties and functions
     """
 
-    def __init__(self, type, houseDimensions, freeArea, extraFreeArea, value,
+    def __init__(self, type, objectDimensions, freeArea, extraFreeArea, value,
     valueIncrease, xBegin, xEnd, yBegin, yEnd, gridXLength, gridYLength, uniqueID):
         self.type = type
-        # self.houseDimensions = (int(houseDimensions[0] * 2),
-        #                         int(houseDimensions[1] * 2))
-        # self.freeArea = freeArea * 2
-        # self.extraFreeArea = extraFreeArea * 2
-        self.houseDimensions = (houseDimensions[0], houseDimensions[1])
-        self.freeArea = freeArea
-        self.extraFreeArea = extraFreeArea
+        self.objectDimensions = (int(objectDimensions[0] * 2),
+                                int(objectDimensions[1] * 2))
+        self.freeArea = freeArea * 2
+        self.extraFreeArea = extraFreeArea * 2
+        # TERMINAL
+        # self.objectDimensions = (objectDimensions[0], objectDimensions[1])
+        # self.freeArea = freeArea
+        # self.extraFreeArea = extraFreeArea
         self.value = value
         self.valueIncrease = valueIncrease
         self.xBegin = xBegin
@@ -134,109 +58,18 @@ class House(object):
         self.gridYLength = gridYLength
         self.uniqueID = uniqueID
 
-    def getBeginCoordinates(self):
-
-        # Set new begin coordinates and save them in self
-        self.yBegin = rd.randrange(self.gridYLength)
-        self.xBegin = rd.randrange(self.gridXLength)
-        beginCoordinates = (self.yBegin, self.xBegin)
-
-        return beginCoordinates
-
-    def drawOnGrid(self, numpyGrid):
-
-        # Use uniqueID number to visualize
-        drawNumber = self.uniqueID
-
-        # Terminal testing purposes
-        if self.type == "eengezinswoning":
-            self.freeArea = 1
-            drawNumber = 3
-
-        elif self.type == "bungalow":
-            self.freeArea = 1
-            drawNumber = 4
-
-        elif self.type == "maison":
-            self.freeArea = 2
-            drawNumber = 5
-
-        elif self.type == "water":
-            self.freeArea = 0
-            drawNumber = 2
-
-        # Extract house dimension values
-        houseYLength = self.houseDimensions[1]
-        houseXLength = self.houseDimensions[0]
-
-        # Get begin coordinates (y, x tuple) randomly
-        beginCoordinates = self.getBeginCoordinates()
-
-        # Define end coordinates (y, x tuple)
-        endCoordinates = (beginCoordinates[0] + houseYLength,
-                          beginCoordinates[1] + houseXLength)
-
-        # Update coordinates
-        self.yBegin = beginCoordinates[0]
-        self.yEnd = endCoordinates[0]
-        self.xBegin = beginCoordinates[1]
-        self.xEnd = endCoordinates[1]
+    def checkGrid(self):
 
         # Check for grid border problems
         if self.yEnd + self.freeArea > self.gridYLength or \
         self.xEnd + self.freeArea > self.gridXLength or \
         self.xBegin - self.freeArea < 0 or \
         self.yBegin - self.freeArea < 0:
-            self.drawOnGrid(numpyGrid)
+            return False
 
         # No grid border problems, continuing
         else:
-
-            # Check for house and free area overlap
-            if self.checkHouseOverlap(self.yBegin,
-                    self.yEnd,
-                    self.xBegin,
-                    self.xEnd, numpyGrid) == True and \
-            self.checkFreeAreaOverlap((self.yBegin - self.freeArea),
-                    (self.yEnd + self.freeArea),
-                    (self.xBegin - self.freeArea),
-                    (self.xEnd + self.freeArea), numpyGrid) == True:
-
-                # The area is viable: draw free area first
-                numpyGrid[self.yBegin - self.freeArea:self.yEnd + self.freeArea,
-                        self.xBegin - self.freeArea:self.xEnd + self.freeArea] = 1
-
-                # Visualize house on top of free area
-                numpyGrid[self.yBegin:self.yEnd,
-                          self.xBegin:self.xEnd] = drawNumber
-
-            # Start over with drawOnGrid for this specific house
-            else:
-                print("Fetching new coordinates, because of any overlap")
-                self.drawOnGrid(numpyGrid)
-
-    def checkHouseOverlap(self, newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid):
-
-        # Check house dimension area starting at the begin coordinates
-        if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
-            return False
-
-        else:
             return True
-
-    def checkFreeAreaOverlap(self, newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid):
-
-        # We willen kijken of dit gebied OF helemaal 0 (leeg) is, OF helemaal 1
-        # (vrijstand, want die mag overlappen), OF helemaal 2 (water),
-        # OF een mix van 0, 1 en 2 (leeg + vrijstand + water)
-        # In ieder geval geen 3, 4, 5, etc. of uniqueID waarde.
-        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 2):
-            print("There's room!")
-            return True
-
-        else:
-            print("There's more than 0 or 1 or 2")
-            return False
 
     # Calculate and return score per house
     def calculateScore(self):

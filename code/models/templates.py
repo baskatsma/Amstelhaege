@@ -1,8 +1,10 @@
 # Grid dimensions in meters
-# gridXLength = 180 * 2
-# gridYLength = 160 * 2
-gridXLength = 23
-gridYLength = 20
+gridXLength = 180 * 2
+gridYLength = 160 * 2
+
+# TERMINAL
+# gridXLength = 23
+# gridYLength = 20
 
 # Define object templates (in dictionary format) to create class instances
 waterTemplate = {"type": "water",
@@ -16,8 +18,9 @@ waterTemplate = {"type": "water",
                     "uniqueID": 0}
 
 eengezinswoningTemplate = {"type": "eengezinswoning",
-                            # "houseDimensions": (8, 8),
-                            "houseDimensions": (2, 2),
+                            "objectDimensions": (8, 8),
+                            # TERMINAL
+                            # "objectDimensions": (2, 2),
                             "freeArea": 2,
                             "extraFreeArea": 0,
                             "value": 285000,
@@ -31,8 +34,9 @@ eengezinswoningTemplate = {"type": "eengezinswoning",
                             "uniqueID": 0}
 
 bungalowTemplate = {"type": "bungalow",
-                    # "houseDimensions": (10, 7.5),
-                    "houseDimensions": (3, 2),
+                    "objectDimensions": (10, 7.5),
+                    # TERMINAL
+                    # "objectDimensions": (3, 2),
                     "freeArea": 3,
                     "extraFreeArea": 0,
                     "value": 399000,
@@ -46,8 +50,9 @@ bungalowTemplate = {"type": "bungalow",
                     "uniqueID": 0}
 
 maisonTemplate = {"type": "maison",
-                    # "houseDimensions": (11, 10.5),
-                    "houseDimensions": (4, 4),
+                    "objectDimensions": (11, 10.5),
+                    # TERMINAL
+                    # "objectDimensions": (4, 4),
                     "freeArea": 6,
                     "extraFreeArea": 0,
                     "value": 610000,
