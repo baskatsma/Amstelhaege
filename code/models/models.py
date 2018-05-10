@@ -60,10 +60,10 @@ class House(object):
     def checkBorders(self):
 
         # Check for grid border problems
-        if self.yEnd + self.freeArea > self.gridYLength or \
-        self.xEnd + self.freeArea > self.gridXLength or \
-        self.xBegin - self.freeArea < 0 or \
-        self.yBegin - self.freeArea < 0:
+        if (self.yEnd + self.freeArea + self.extraFreeArea) > self.gridYLength or \
+        (self.xEnd + self.freeArea + self.extraFreeArea) > self.gridXLength or \
+        (self.xBegin - self.freeArea - self.extraFreeArea) < 0 or \
+        (self.yBegin - self.freeArea - self.extraFreeArea) < 0:
             return False
 
         # No grid border problems, continuing

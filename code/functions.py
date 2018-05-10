@@ -67,9 +67,19 @@ def randomAlgorithm():
                 # Update uniqueID and place houses
                 currentObject.uniqueID = object + 10
                 placeOnGrid(currentObject, numpyGrid)
+
+        for object in range(len(residentialArea)):
+
+            currentObject = residentialArea[object]
+
+            # Calculate score
+            if currentObject.type != "water":
                 increase = 1
                 checkAllFreeArea(currentObject, increase, numpyGrid)
                 totalScore += currentObject.calculateScore()
+
+                print(currentObject.type, "|| uniqueID is:",
+                currentObject.uniqueID," || eFA is:", currentObject.extraFreeArea)
 
         # Print score
         print("The total score is:", totalScore)
@@ -201,6 +211,7 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
 
 def checkAllFreeArea(currentObject, increase, numpyGrid):
 
+    # Define coordinate variables
     yBegin = currentObject.yBegin
     yEnd = currentObject.yEnd
     xBegin = currentObject.xBegin
@@ -217,13 +228,17 @@ def checkAllFreeArea(currentObject, increase, numpyGrid):
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
+    # Change uniqueID drawnumber to 1's for this method to work
     numpyGrid[yBegin:yEnd,xBegin:xEnd] = fADrawNumber
 
+    # Check if new area contains only empty-values or free area-values
     if np.all(numpyGrid[fAYBegin - increase:fAYEnd + increase,
-            fAXBegin - increase:fAXEnd + increase] <= 1):
+            fAXBegin - increase:fAXEnd + increase] <= 1) and \
+            currentObject.checkBorders() == True:
+
+        # Update extra free area and call self until impossible
         currentObject.extraFreeArea = increase
         increase += 1
-        print("currentObject ID =",currentObject.uniqueID,"|| eFA =",currentObject.extraFreeArea)
         checkAllFreeArea(currentObject, increase, numpyGrid)
 
     else:
