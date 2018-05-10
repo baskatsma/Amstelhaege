@@ -20,7 +20,7 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 - [x] Anti-overlap functies toegevoegd
 - [x] Verplichte vrijstand toegevoegd (zonder pythagoras)
 - [ ] Extra vrijstand functie toegevoegd
-- [ ] Water toegevoegd
+- [X] Water toegevoegd
 - [ ] Random algoritme optimaliseren
 - [ ] Nieuwe algoritmes toepassen
 
@@ -47,15 +47,10 @@ python3 -mpip install matplotlib
 
 
 ## Gebruik
-#### Basic (20 huizenvariant)
+#### Advanced
 ```
-python3 main.py
-```
-
-#### Advanced (20-, 40- of 60-huizenvariant)
-```
-python3 main.py 40
-python3 main.py 60
+python3 main.py 40 random
+python3 main.py 60 hillclimber
 ```
 
 ## Dankwoord
