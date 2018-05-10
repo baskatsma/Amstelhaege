@@ -41,8 +41,8 @@ class House(object):
         self.type = type
         self.objectDimensions = (int(objectDimensions[0] * 2),
                                 int(objectDimensions[1] * 2))
-        self.freeArea = freeArea * 2
-        self.extraFreeArea = extraFreeArea * 2
+        self.freeArea = (freeArea * 2)
+        self.extraFreeArea = (extraFreeArea * 2)
         # TERMINAL
         # self.objectDimensions = (objectDimensions[0], objectDimensions[1])
         # self.freeArea = freeArea
@@ -73,8 +73,8 @@ class House(object):
     # Calculate and return score per house
     def calculateScore(self):
 
-        scoreHouse = self.value + self.value * \
-                    (self.valueIncrease * self.extraFreeArea)
+        scoreHouse = self.value + (self.value * \
+                    (self.valueIncrease * self.extraFreeArea))
 
         return int(scoreHouse)
 

@@ -71,16 +71,22 @@ def randomAlgorithm():
                 currentObject.uniqueID = object + 10
                 placeOnGrid(currentObject, numpyGrid)
 
+        # After placing all houses, loop over them
         for object in range(len(residentialArea)):
 
+            # Give the current object an easy variable
             currentObject = residentialArea[object]
 
-            # Calculate score
+            # Calculate score if current item is not water
             if currentObject.type != "water":
-                increase = 1 * 2
+
+                # Find all extra free area per house
+                increase = (1 * 2)
                 numpyGridOriginal = numpyGrid
                 checkAllFreeArea(currentObject, increase, numpyGrid,
                                  numpyGridOriginal)
+
+                # Then, calculate the new value of the house
                 totalScore += currentObject.calculateScore()
 
         # Print score
@@ -115,12 +121,8 @@ def randomAlgorithm():
         print("Elapsed time (in seconds):",timeEnd - timeStart)
         print("")
 
+        # Visualize grid with matplotlib
         printPlot(residentialArea)
-
-        # # Print test woonwijk
-        # for i in range(len(residentialArea)):
-        #     print(residentialArea[i].type, "|| uniqueID is:",
-        #     residentialArea[i].uniqueID)
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
@@ -190,21 +192,22 @@ def updateCoordinates(currentObject, coordinates):
 
 def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
 
+    # ALLES moet hier 0 zijn in dit gebied om een huis te plaatsen,
+    # dus IETS wat ook maar geen 0 is (aka niet leeg), wordt gelijk gecanceld.
     if choice == "excludingFreeArea":
 
-        # Check house dimension area starting at the begin coordinates
+        # Check house dimension area if it's completely empty
         if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
             return False
 
         else:
             return True
 
-    if choice == "includingFreeArea":
-
     # We willen kijken of dit gebied OF helemaal 0 (leeg) is, OF helemaal 1
-    # (vrijstand, want die mag overlappen)
+    # (inclusief vrijstand dus, want die mag overlappen)
     # OF een mix van 0 en 1 (leeg + vrijstand)
     # In ieder geval geen 3, 4, 5, etc. of uniqueID waarde.
+    if choice == "includingFreeArea":
         if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 1):
             return True
 
@@ -244,20 +247,20 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
         # Update extra free area in self
         currentObject.extraFreeArea = increase
 
-        # Increase X, Y and call self until impossible
+        # testing
         print(currentObject.type,"ID:",currentObject.uniqueID,"(",\
         currentObject.yBegin,",",currentObject.xBegin,")","|| increase:",increase)
+
+        # Increase X, Y and call self until impossible
         increase += 2
         checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal)
 
     else:
-        # Update extra free area in self
-        currentObject.extraFreeArea = increase
 
         # Re-draw number, because we deleted it a few steps ago
         numpyGrid[yBegin:yEnd,xBegin:xEnd] = drawNumber
 
-        # Remove all modifications before ending
+        # Remove all other modifications before ending
         numpyGrid = numpyGridOriginal
 
         return False
@@ -316,10 +319,11 @@ def placeOnGrid(currentObject, numpyGrid):
             # Visualize house on top of free area
             visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
 
-        # Start over with drawOnGrid for this specific house
+        # Start over, because there are house and/or free area overlap issues
         else:
             placeOnGrid(currentObject, numpyGrid)
 
+    # Start over, because the house is overlining the border
     else:
         placeOnGrid(currentObject, numpyGrid)
 
