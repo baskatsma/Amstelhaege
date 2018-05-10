@@ -67,6 +67,8 @@ def randomAlgorithm():
                 # Update uniqueID and place houses
                 currentObject.uniqueID = object + 10
                 placeOnGrid(currentObject, numpyGrid)
+                increase = 1
+                checkAllFreeArea(currentObject, increase, numpyGrid)
                 totalScore += currentObject.calculateScore()
 
         # Print score
@@ -116,24 +118,21 @@ def defineSettings():
 
     # Check if arguments are entered in the CLI
     if len(sys.argv) == 1:
-        print("maxHouses remains 20; algorithm is random")
+        maxHouses = 20
 
     elif len(sys.argv) >= 2:
 
         # Check if the number is valid (either 20, 40 or 60)
         if str(sys.argv[1]) == "20":
-            print("sys.argv = 20, maxHouses remains 20")
+            maxHouses = 20
         elif str(sys.argv[1]) == "40":
             maxHouses = 40
-            print("sys.argv = 40, maxHouses = 40")
         elif str(sys.argv[1]) == "60":
             maxHouses = 60
-            print("sys.argv = 60, maxHouses = 60")
 
         # Else default to 20 houses
         else:
             maxHouses = 20
-            print("sys.argv is an invalid number, maxHouses = 20 by default")
 
     # TERMINAL
     # maxHouses = 8
@@ -199,6 +198,38 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
 
         else:
             return False
+
+def checkAllFreeArea(currentObject, increase, numpyGrid):
+
+    yBegin = currentObject.yBegin
+    yEnd = currentObject.yEnd
+    xBegin = currentObject.xBegin
+    xEnd = currentObject.xEnd
+    freeArea = currentObject.freeArea
+
+    fAYBegin = yBegin - freeArea
+    fAYEnd = yEnd + freeArea
+    fAXBegin = xBegin - freeArea
+    fAXEnd = xEnd + freeArea
+
+    # Get drawNumbers
+    # TERMINAL
+    drawNumber = currentObject.uniqueID
+    fADrawNumber = 1
+
+    numpyGrid[yBegin:yEnd,xBegin:xEnd] = fADrawNumber
+
+    if np.all(numpyGrid[fAYBegin - increase:fAYEnd + increase,
+            fAXBegin - increase:fAXEnd + increase] <= 1):
+        currentObject.extraFreeArea = increase
+        increase += 1
+        print("currentObject ID =",currentObject.uniqueID,"|| eFA =",currentObject.extraFreeArea)
+        checkAllFreeArea(currentObject, increase, numpyGrid)
+
+    else:
+        # Re-draw number, because we deleted it a few steps ago
+        numpyGrid[yBegin:yEnd,xBegin:xEnd] = drawNumber
+        return False
 
 def placeOnGrid(currentObject, numpyGrid):
 
