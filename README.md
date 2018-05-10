@@ -50,7 +50,7 @@ python3 -mpip install matplotlib
 ```
 python3 main.py '#HOUSES' 'ALGORITHM'
 ```
-Exempli gratia
+**Voorbeelden:**
 ```
 python3 main.py 40 random
 python3 main.py 60 hillclimber
