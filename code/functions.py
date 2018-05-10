@@ -1,3 +1,4 @@
+import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
 import random as rd
@@ -38,8 +39,8 @@ def randomAlgorithm():
             residentialArea.append(House(**maisonTemplate))
 
         # Initialize numpy grid (verticalY, horizontalX)
-        # numpyGrid = np.zeros((gridYLength,gridXLength),dtype=object)
-        numpyGrid = np.zeros((gridYLength,gridXLength))
+        numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
+        # numpyGrid = np.zeros((gridYLength,gridXLength))
 
         # Initialize total score
         totalScore = 0
@@ -334,40 +335,118 @@ def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumbe
 
 def printPlot(residentialArea, totalScore):
 
-    # Initialize matplotlib
-    plt.figure()
+    # Initialize matplotlib and figure
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
 
-    # Define grid
-    xGridList = [0, gridXLength, gridXLength, 0, 0]
-    yGridList = [0, 0, gridYLength, gridYLength, 0]
-    plt.plot(xGridList, yGridList)
-
+    # Add title
     plt.title(str(totalScore) + " euro, bitch!")
 
     # Loop over all objects
     for object in residentialArea:
 
-        xCoordinates = [object.xBegin, object.xEnd,
-        object.xEnd, object.xBegin, object.xBegin]
+        # Initialize variables
+        yBegin = object.yBegin
+        yEnd = object.yEnd
+        xBegin = object.xBegin
+        xEnd = object.xEnd
+        fA = object.freeArea
 
-        yCoordinates = [object.yBegin, object.yBegin,
-        object.yEnd, object.yEnd, object.yBegin]
+        # Define color for free area
+        colorChoice = 'gray'
 
+        # Define color for house
         if object.type == "eengezinswoning":
-            ePlot = plt.plot(xCoordinates, yCoordinates)
-            ePlot[0].set_color('r')
+            colorChoice2 = 'red'
 
         elif object.type == "bungalow":
-            bPlot = plt.plot(xCoordinates, yCoordinates)
-            bPlot[0].set_color('g')
+            colorChoice2 = 'green'
 
         elif object.type == "maison":
-            mPlot = plt.plot(xCoordinates, yCoordinates)
-            mPlot[0].set_color('y')
+            colorChoice2 = 'yellow'
 
         elif object.type == "water":
-            mPlot = plt.plot(xCoordinates, yCoordinates)
-            mPlot[0].set_color('b')
+            colorChoice2 = 'blue'
+
+        # Create new rects for freeArea + house
+        rectUpperRight = patches.Rectangle((xBegin,yBegin),         # (X,Y) tuple
+                                 xEnd - xBegin + fA,                # width
+                                 yEnd - yBegin + fA,                # height
+                                 color=colorChoice,
+                                 alpha=0.2)
+
+        rectUpperLeft = patches.Rectangle((xBegin - fA,yBegin),     # (X,Y) tuple
+                                 xEnd - xBegin + fA,                # width
+                                 yEnd - yBegin + fA,                # height
+                                 color=colorChoice,
+                                 alpha=0.2)
+
+        rectLowerRight = patches.Rectangle((xEnd + fA,yEnd),        # (X,Y) tuple
+                                 xBegin - xEnd - fA,                # width
+                                 yBegin - yEnd - fA,                # height
+                                 color=colorChoice,
+                                 alpha=0.2)
+
+        rectLowerLeft = patches.Rectangle((xEnd,yEnd),              # (X,Y) tuple
+                                 xBegin - xEnd - fA,                # width
+                                 yBegin - yEnd - fA,                # height
+                                 color=colorChoice,
+                                 alpha=0.2)
+
+        # Create new rect for house only
+        rectHouse = patches.Rectangle((xBegin,yBegin),              # (X,Y) tuple
+                                 (xEnd - xBegin),                   # width
+                                 (yEnd - yBegin),                   # height
+                                 color=colorChoice2,)
+
+        # Add the rects
+        ax.add_patch(rectUpperRight)
+        ax.add_patch(rectUpperLeft)
+        ax.add_patch(rectLowerRight)
+        ax.add_patch(rectLowerLeft)
+        ax.add_patch(rectHouse)
+
+    # Set figure dimensions
+    plt.xlim([0, gridXLength])
+    plt.ylim([0, gridYLength])
 
     # Show matplotlib
     plt.show()
+    
+    # # Initialize matplotlib
+    # plt.figure()
+    #
+    # # Define grid
+    # xGridList = [0, gridXLength, gridXLength, 0, 0]
+    # yGridList = [0, 0, gridYLength, gridYLength, 0]
+    # plt.plot(xGridList, yGridList)
+    #
+    # plt.title(str(totalScore) + " euro, bitch!")
+    #
+    # # Loop over all objects
+    # for object in residentialArea:
+    #
+    #     xCoordinates = [object.xBegin, object.xEnd,
+    #     object.xEnd, object.xBegin, object.xBegin]
+    #
+    #     yCoordinates = [object.yBegin, object.yBegin,
+    #     object.yEnd, object.yEnd, object.yBegin]
+    #
+    #     if object.type == "eengezinswoning":
+    #         ePlot = plt.plot(xCoordinates, yCoordinates)
+    #         ePlot[0].set_color('r')
+    #
+    #     elif object.type == "bungalow":
+    #         bPlot = plt.plot(xCoordinates, yCoordinates)
+    #         bPlot[0].set_color('g')
+    #
+    #     elif object.type == "maison":
+    #         mPlot = plt.plot(xCoordinates, yCoordinates)
+    #         mPlot[0].set_color('y')
+    #
+    #     elif object.type == "water":
+    #         mPlot = plt.plot(xCoordinates, yCoordinates)
+    #         mPlot[0].set_color('b')
+    #
+    # # Show matplotlib
+    # plt.show()
