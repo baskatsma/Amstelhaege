@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random as rd
 import sys
-import time as tm
+from timeit import default_timer as timer
 from models.models import *
 from models.templates import *
 
@@ -10,7 +10,7 @@ from models.templates import *
 def randomAlgorithm():
 
         # Measure algorithm time
-        timeStart = tm.time()
+        timeStart = timer()
 
         # Get maxHouses
         maxHouses = defineSettings()
@@ -96,7 +96,8 @@ def randomAlgorithm():
         # print("")
         # print("")
 
-        timeEnd = tm.time()
+        timeEnd = timer()
+
         print("Elapsed time (in seconds):",timeEnd - timeStart)
         print("")
 
