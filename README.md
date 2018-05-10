@@ -47,7 +47,10 @@ python3 -mpip install matplotlib
 
 
 ## Gebruik
-#### Advanced
+```
+python3 main.py '#HOUSES' 'ALGORITHM'
+```
+Exempli gratia
 ```
 python3 main.py 40 random
 python3 main.py 60 hillclimber
