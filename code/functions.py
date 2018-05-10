@@ -236,14 +236,17 @@ def checkAllFreeArea(currentObject, increase, numpyGrid):
             fAXBegin - increase:fAXEnd + increase] <= 1) and \
             currentObject.checkBorders() == True:
 
-        # Update extra free area and call self until impossible
-        currentObject.extraFreeArea = increase
+        # Increase X, Y and call self until impossible
         increase += 1
         checkAllFreeArea(currentObject, increase, numpyGrid)
 
     else:
+        # Update extra free area in self
+        currentObject.extraFreeArea = increase
+
         # Re-draw number, because we deleted it a few steps ago
         numpyGrid[yBegin:yEnd,xBegin:xEnd] = drawNumber
+
         return False
 
 def placeOnGrid(currentObject, numpyGrid):
