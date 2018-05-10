@@ -54,7 +54,7 @@ def randomAlgorithm():
                 updateCoordinates(currentObject, (0, 0))
                 currentObject.uniqueID = object + 200
                 #drawNumber = currentObject.uniqueID
-                drawNumber = 2
+                drawNumber = 3
 
                 # Free area and water do not interfere
                 visualizeOnGrid(currentObject.yBegin, currentObject.yEnd,
@@ -74,12 +74,11 @@ def randomAlgorithm():
 
             # Calculate score
             if currentObject.type != "water":
-                increase = 1
-                checkAllFreeArea(currentObject, increase, numpyGrid)
+                increase = 1 * 2
+                numpyGridOriginal = numpyGrid
+                checkAllFreeArea(currentObject, increase, numpyGrid,
+                                 numpyGridOriginal)
                 totalScore += currentObject.calculateScore()
-
-                print(currentObject.type, "|| uniqueID is:",
-                currentObject.uniqueID," || eFA is:", currentObject.extraFreeArea)
 
         # Print score
         print("The total score is:", totalScore)
@@ -209,7 +208,10 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
         else:
             return False
 
-def checkAllFreeArea(currentObject, increase, numpyGrid):
+def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
+
+    # Remove all modifications before (re)starting
+    numpyGrid = numpyGridOriginal
 
     # Define coordinate variables
     yBegin = currentObject.yBegin
@@ -236,9 +238,14 @@ def checkAllFreeArea(currentObject, increase, numpyGrid):
             fAXBegin - increase:fAXEnd + increase] <= 1) and \
             currentObject.checkBorders() == True:
 
+        # Update extra free area in self
+        currentObject.extraFreeArea = increase
+
         # Increase X, Y and call self until impossible
-        increase += 1
-        checkAllFreeArea(currentObject, increase, numpyGrid)
+        print(currentObject.type,"ID:",currentObject.uniqueID,"(",\
+        currentObject.yBegin,",",currentObject.xBegin,")","|| increase:",increase)
+        increase += 2
+        checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal)
 
     else:
         # Update extra free area in self
@@ -246,6 +253,9 @@ def checkAllFreeArea(currentObject, increase, numpyGrid):
 
         # Re-draw number, because we deleted it a few steps ago
         numpyGrid[yBegin:yEnd,xBegin:xEnd] = drawNumber
+
+        # Remove all modifications before ending
+        numpyGrid = numpyGridOriginal
 
         return False
 
