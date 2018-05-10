@@ -9,8 +9,8 @@ def main():
         randomAlgorithm()
     elif str(sys.argv[2]) == "hillclimber":
         hillclimberAlgorithm()
-    elif len(sys.argv) < 3:
-        randomAlgorithm()
+    else:
+        print("Not a valid algorithm!")
 
 if __name__ == "__main__":
     main()
