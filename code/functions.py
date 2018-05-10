@@ -13,7 +13,7 @@ def randomAlgorithm():
         timeStart = tm.time()
 
         # Get maxHouses
-        maxHouses = defineMaxHouses()
+        maxHouses = defineSettings()
 
         # Create a grid helper instance
         gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
@@ -108,17 +108,18 @@ def randomAlgorithm():
         #     residentialArea[i].uniqueID)
 
 # Define residential area size (either 20, 40 or 60 houses at max)
-def defineMaxHouses():
+def defineSettings():
 
-    # 20 by default, unless specified
+    # 20 houses by default, unless specified
     maxHouses = 20
 
-    # Check if a number is entered in the CLI
+    # Check if arguments are entered in the CLI
     if len(sys.argv) == 1:
-        print("maxHouses remains 20")
+        print("maxHouses remains 20; algorithm is random")
 
-    # Check if the number is valid (either 20, 40 or 60)
     elif len(sys.argv) == 2:
+
+        # Check if the number is valid (either 20, 40 or 60)
         if str(sys.argv[1]) == "20":
             print("sys.argv = 20, maxHouses remains 20")
         elif str(sys.argv[1]) == "40":
@@ -127,7 +128,8 @@ def defineMaxHouses():
         elif str(sys.argv[1]) == "60":
             maxHouses = 60
             print("sys.argv = 60, maxHouses = 60")
-        # Else default to 20
+
+        # Else default to 20 houses
         else:
             maxHouses = 20
             print("sys.argv is an invalid number, maxHouses = 20 by default")
