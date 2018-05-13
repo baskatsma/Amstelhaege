@@ -11,7 +11,10 @@ from pathlib import Path
 from timeit import default_timer as timer
 
 # Run random algorithm
-def randomAlgorithm():
+def randomAlgorithm(rounds, roundsCounter, bestResults):
+
+        # Update round
+        roundsCounter += 1
 
         # Remove old output results
         for png in glob.glob("tmp/*.png"):
@@ -22,9 +25,6 @@ def randomAlgorithm():
 
         # Measure algorithm time
         timeStart = timer()
-
-        # Increase recursion maximum to obtain 60 house results easier
-        sys.setrecursionlimit(4000)
 
         # Get maxHouses
         maxHouses = defineSettings()
@@ -103,27 +103,54 @@ def randomAlgorithm():
         # Print score
         print("The total score is:", totalScore)
 
+        # Only save the best results
+        if totalScore > bestResults[0]:
+            bestResults = []
+            bestResults.append(totalScore)
+            bestResults.append(residentialArea)
+
         # Print algorithm runtime
         timeEnd = timer()
         print("Elapsed time (in seconds):",timeEnd - timeStart)
         print("")
 
-        # Either print normal plot, or create video
-        if len(sys.argv) == 4 and str(sys.argv[3] == "gif"):
-
-            # Get video output
-            for indexPhoto in range(len(residentialArea)):
-                GIFPlot(residentialArea, indexPhoto)
-                indexPhoto += 1
-
-            # Create video output
-            os.system("ffmpeg -framerate 1/0.15 -i tmp/%03d.png "+
-            "-c:v libx264 -r 30 tmp/__output.mp4")
+        # Only run 'rounds' amount of times
+        if roundsCounter < rounds:
+            randomAlgorithm(rounds, roundsCounter, bestResults)
 
         else:
+            getVideo(bestResults[1])
+            printPlot(bestResults[1], bestResults[0])
 
-            # Visualize grid with matplotlib
-            printPlot(residentialArea, totalScore)
+        # # Continue until satisfied
+        # if maxHouses == 60:
+        #     if totalScore > 25850000:
+        #         print(totalScore)
+        #
+        #         # Get video output
+        #         getVideo(residentialArea)
+        #         printPlot(residentialArea, totalScore)
+        #
+        #     else:
+        #         randomAlgorithm()
+        #
+        # elif maxHouses == 40:
+        #     if totalScore > 19000000:
+        #         print(totalScore)
+        #         getVideo(residentialArea)
+        #         printPlot(residentialArea, totalScore)
+        #
+        #     else:
+        #         randomAlgorithm()
+        #
+        # elif maxHouses == 20:
+        #     if totalScore > 12250000:
+        #         print(totalScore)
+        #         getVideo(residentialArea)
+        #         printPlot(residentialArea, totalScore)
+        #
+        #     else:
+        #         randomAlgorithm()
 
         # # TERMINAL
         # rowCounter = 0
@@ -357,6 +384,17 @@ def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumbe
     # Select a specific grid area and fill it
     numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] = drawNumber
 
+def getVideo(residentialArea):
+
+    # Get video output
+    for indexPhoto in range(len(residentialArea)):
+        GIFPlot(residentialArea, indexPhoto)
+        indexPhoto += 1
+
+    # Create video output
+    os.system("ffmpeg -framerate 1/0.15 -i tmp/%03d.png "+
+    "-c:v libx264 -r 30 tmp/__output.mp4")
+
 def GIFPlot(residentialArea, indexPhoto):
 
     # Initialize matplotlib and figure
@@ -413,6 +451,7 @@ def printPlot(residentialArea, totalScore):
 
     # Show matplotlib
     plt.show()
+    plt.close(fig)
 
 def drawPlotObjects(residentialArea, object, ax):
 
