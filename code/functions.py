@@ -14,10 +14,10 @@ from timeit import default_timer as timer
 def randomAlgorithm():
 
         # Remove old output results
-        for png in glob.glob("output/*.png"):
+        for png in glob.glob("tmp/*.png"):
             os.remove(png)
 
-        for mp4 in glob.glob("output/*.mp4"):
+        for mp4 in glob.glob("tmp/*.mp4"):
             os.remove(mp4)
 
         # Measure algorithm time
@@ -117,8 +117,8 @@ def randomAlgorithm():
                 indexPhoto += 1
 
             # Create video output
-            os.system("ffmpeg -framerate 1/0.15 -i output/%03d.png "+
-            "-c:v libx264 -r 30 output/output.mp4")
+            os.system("ffmpeg -framerate 1/0.15 -i tmp/%03d.png "+
+            "-c:v libx264 -r 30 tmp/output.mp4")
 
         else:
 
@@ -386,11 +386,11 @@ def GIFPlot(residentialArea, indexPhoto):
 
     # Save pic
     pictureName = '{:03}'.format(indexPhoto)
-    plt.savefig('output/'+pictureName, bbox_inches='tight')
+    plt.savefig('tmp/'+pictureName, bbox_inches='tight')
     plt.close(fig)
 
     # Afterwards, use FFmpeg manually!!
-    # ffmpeg -framerate 1/0.15 -i output/%03d.png -c:v libx264 -r 30 output/output.mp4
+    # ffmpeg -framerate 1/0.15 -i tmp/%03d.png -c:v libx264 -r 30 tmp/output.mp4
 
 def printPlot(residentialArea, totalScore):
 
