@@ -1,3 +1,4 @@
+import glob
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,12 +13,12 @@ from timeit import default_timer as timer
 # Run random algorithm
 def randomAlgorithm():
 
-        # .home() is new in 3.5, otherwise use os.path.expanduser('~')
-        directory_path = Path.home() / 'directory'
-        directory_path.mkdir()
+        # Remove old output results
+        for png in glob.glob("output/*.png"):
+            os.remove(png)
 
-        file_path = directory_path / 'file'
-        file_path.touch()
+        for mp4 in glob.glob("output/*.mp4"):
+            os.remove(mp4)
 
         # Measure algorithm time
         timeStart = timer()
@@ -107,13 +108,20 @@ def randomAlgorithm():
         print("Elapsed time (in seconds):",timeEnd - timeStart)
         print("")
 
+        # Either print normal plot, or create video
         if len(sys.argv) == 4 and str(sys.argv[3] == "gif"):
+
             # Get video output
             for indexPhoto in range(len(residentialArea)):
                 GIFPlot(residentialArea, indexPhoto)
                 indexPhoto += 1
 
+            # Create video output
+            os.system("ffmpeg -framerate 1/0.15 -i output/%03d.png "+
+            "-c:v libx264 -r 30 output/output.mp4")
+
         else:
+
             # Visualize grid with matplotlib
             printPlot(residentialArea, totalScore)
 
@@ -140,7 +148,6 @@ def randomAlgorithm():
         #     rowCounter += 1
         # print("")
         # print("")
-
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
@@ -383,8 +390,7 @@ def GIFPlot(residentialArea, indexPhoto):
     plt.close(fig)
 
     # Afterwards, use FFmpeg manually!!
-    # cd output
-    # ffmpeg -framerate 1/0.15 -i %03d.png -c:v libx264 -r 30 output.mp4
+    # ffmpeg -framerate 1/0.15 -i output/%03d.png -c:v libx264 -r 30 output/output.mp4
 
 def printPlot(residentialArea, totalScore):
 
