@@ -1,14 +1,23 @@
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 import random as rd
 import sys
-from timeit import default_timer as timer
 from models.models import *
 from models.templates import *
+from pathlib import Path
+from timeit import default_timer as timer
 
 # Run random algorithm
 def randomAlgorithm():
+
+        # .home() is new in 3.5, otherwise use os.path.expanduser('~')
+        directory_path = Path.home() / 'directory'
+        directory_path.mkdir()
+
+        file_path = directory_path / 'file'
+        file_path.touch()
 
         # Measure algorithm time
         timeStart = timer()
@@ -29,14 +38,14 @@ def randomAlgorithm():
         residentialArea.append(Water(**waterTemplate))
 
         # Create new houses based on the grid requirements
-        for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
-            residentialArea.append(House(**eengezinswoningTemplate))
+        for maison in range(gridInformation.totalAmountMaisons):
+            residentialArea.append(House(**maisonTemplate))
 
         for bungalow in range(gridInformation.totalAmountBungalows):
             residentialArea.append(House(**bungalowTemplate))
 
-        for maison in range(gridInformation.totalAmountMaisons):
-            residentialArea.append(House(**maisonTemplate))
+        for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
+            residentialArea.append(House(**eengezinswoningTemplate))
 
         # Initialize numpy grid (verticalY, horizontalX)
         numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
@@ -93,6 +102,21 @@ def randomAlgorithm():
         # Print score
         print("The total score is:", totalScore)
 
+        # Print algorithm runtime
+        timeEnd = timer()
+        print("Elapsed time (in seconds):",timeEnd - timeStart)
+        print("")
+
+        if len(sys.argv) == 4 and str(sys.argv[3] == "gif"):
+            # Get video output
+            for indexPhoto in range(len(residentialArea)):
+                GIFPlot(residentialArea, indexPhoto)
+                indexPhoto += 1
+
+        else:
+            # Visualize grid with matplotlib
+            printPlot(residentialArea, totalScore)
+
         # # TERMINAL
         # rowCounter = 0
         # print("")
@@ -117,13 +141,6 @@ def randomAlgorithm():
         # print("")
         # print("")
 
-        timeEnd = timer()
-
-        print("Elapsed time (in seconds):",timeEnd - timeStart)
-        print("")
-
-        # Visualize grid with matplotlib
-        printPlot(residentialArea, totalScore)
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
@@ -249,8 +266,8 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
         currentObject.extraFreeArea = increase
 
         # testing
-        print(currentObject.type,"ID:",currentObject.uniqueID,"(",\
-        currentObject.yBegin,",",currentObject.xBegin,")","|| increase:",increase)
+        #print(currentObject.type,"ID:",currentObject.uniqueID,"(",\
+        #currentObject.yBegin,",",currentObject.xBegin,")","|| increase:",increase)
 
         # Increase X, Y and call self until impossible
         increase += 2
@@ -333,78 +350,56 @@ def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumbe
     # Select a specific grid area and fill it
     numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] = drawNumber
 
+def GIFPlot(residentialArea, indexPhoto):
+
+    # Initialize matplotlib and figure
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    # Display score
+    newScore = 0
+
+    # Loop over all objects
+    for object in residentialArea[0:indexPhoto+1]:
+
+        # Update score
+        if object.type != "water":
+            currentScore = object.calculateScore()
+            newScore += currentScore
+
+        # Draw water, houses and free area
+        drawPlotObjects(residentialArea, object, ax)
+
+    # Add current score title
+    plt.title(str(newScore) + " euro")
+
+    # Set figure dimensions
+    plt.xlim([0, gridXLength])
+    plt.ylim([0, gridYLength])
+
+    # Save pic
+    pictureName = '{:03}'.format(indexPhoto)
+    plt.savefig('output/'+pictureName, bbox_inches='tight')
+    plt.close(fig)
+
+    # Afterwards, use FFmpeg manually!!
+    # cd output
+    # ffmpeg -framerate 1/0.15 -i %03d.png -c:v libx264 -r 30 output.mp4
+
 def printPlot(residentialArea, totalScore):
 
     # Initialize matplotlib and figure
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    # Add title
-    plt.title(str(totalScore) + " euro, bitch!")
+    # Add score title
+    plt.title(str(totalScore) + " euro")
 
     # Loop over all objects
     for object in residentialArea:
 
-        # Initialize variables
-        yBegin = object.yBegin
-        yEnd = object.yEnd
-        xBegin = object.xBegin
-        xEnd = object.xEnd
-        fA = object.freeArea
-
-        # Define color for free area
-        colorChoice = 'gray'
-
-        # Define color for house
-        if object.type == "eengezinswoning":
-            colorChoice2 = 'red'
-
-        elif object.type == "bungalow":
-            colorChoice2 = 'green'
-
-        elif object.type == "maison":
-            colorChoice2 = 'yellow'
-
-        elif object.type == "water":
-            colorChoice2 = 'blue'
-
-        # Create new rects for freeArea + house
-        rectUpperRight = patches.Rectangle((xBegin,yBegin),         # (X,Y) tuple
-                                 xEnd - xBegin + fA,                # width
-                                 yEnd - yBegin + fA,                # height
-                                 color=colorChoice,
-                                 alpha=0.2)
-
-        rectUpperLeft = patches.Rectangle((xBegin - fA,yBegin),     # (X,Y) tuple
-                                 xEnd - xBegin + fA,                # width
-                                 yEnd - yBegin + fA,                # height
-                                 color=colorChoice,
-                                 alpha=0.2)
-
-        rectLowerRight = patches.Rectangle((xEnd + fA,yEnd),        # (X,Y) tuple
-                                 xBegin - xEnd - fA,                # width
-                                 yBegin - yEnd - fA,                # height
-                                 color=colorChoice,
-                                 alpha=0.2)
-
-        rectLowerLeft = patches.Rectangle((xEnd,yEnd),              # (X,Y) tuple
-                                 xBegin - xEnd - fA,                # width
-                                 yBegin - yEnd - fA,                # height
-                                 color=colorChoice,
-                                 alpha=0.2)
-
-        # Create new rect for house only
-        rectHouse = patches.Rectangle((xBegin,yBegin),              # (X,Y) tuple
-                                 (xEnd - xBegin),                   # width
-                                 (yEnd - yBegin),                   # height
-                                 color=colorChoice2,)
-
-        # Add the rects
-        ax.add_patch(rectUpperRight)
-        ax.add_patch(rectUpperLeft)
-        ax.add_patch(rectLowerRight)
-        ax.add_patch(rectLowerLeft)
-        ax.add_patch(rectHouse)
+        # Draw water, houses and free area
+        drawPlotObjects(residentialArea, object, ax)
 
     # Set figure dimensions
     plt.xlim([0, gridXLength])
@@ -412,41 +407,66 @@ def printPlot(residentialArea, totalScore):
 
     # Show matplotlib
     plt.show()
-    
-    # # Initialize matplotlib
-    # plt.figure()
-    #
-    # # Define grid
-    # xGridList = [0, gridXLength, gridXLength, 0, 0]
-    # yGridList = [0, 0, gridYLength, gridYLength, 0]
-    # plt.plot(xGridList, yGridList)
-    #
-    # plt.title(str(totalScore) + " euro, bitch!")
-    #
-    # # Loop over all objects
-    # for object in residentialArea:
-    #
-    #     xCoordinates = [object.xBegin, object.xEnd,
-    #     object.xEnd, object.xBegin, object.xBegin]
-    #
-    #     yCoordinates = [object.yBegin, object.yBegin,
-    #     object.yEnd, object.yEnd, object.yBegin]
-    #
-    #     if object.type == "eengezinswoning":
-    #         ePlot = plt.plot(xCoordinates, yCoordinates)
-    #         ePlot[0].set_color('r')
-    #
-    #     elif object.type == "bungalow":
-    #         bPlot = plt.plot(xCoordinates, yCoordinates)
-    #         bPlot[0].set_color('g')
-    #
-    #     elif object.type == "maison":
-    #         mPlot = plt.plot(xCoordinates, yCoordinates)
-    #         mPlot[0].set_color('y')
-    #
-    #     elif object.type == "water":
-    #         mPlot = plt.plot(xCoordinates, yCoordinates)
-    #         mPlot[0].set_color('b')
-    #
-    # # Show matplotlib
-    # plt.show()
+
+def drawPlotObjects(residentialArea, object, ax):
+
+    # Initialize variables
+    yBegin = object.yBegin
+    yEnd = object.yEnd
+    xBegin = object.xBegin
+    xEnd = object.xEnd
+    fA = object.freeArea
+
+    # Define color for free area
+    colorChoice = 'gray'
+
+    # Define color for house
+    if object.type == "eengezinswoning":
+        colorChoice2 = 'red'
+
+    elif object.type == "bungalow":
+        colorChoice2 = 'green'
+
+    elif object.type == "maison":
+        colorChoice2 = 'yellow'
+
+    elif object.type == "water":
+        colorChoice2 = 'blue'
+
+    # Create new rects for freeArea + house
+    rectUpperRight = patches.Rectangle((xBegin,yBegin),         # (X,Y) tuple
+                             xEnd - xBegin + fA,                # width
+                             yEnd - yBegin + fA,                # height
+                             color=colorChoice,
+                             alpha=0.2)
+
+    rectUpperLeft = patches.Rectangle((xBegin - fA,yBegin),     # (X,Y) tuple
+                             xEnd - xBegin + fA,                # width
+                             yEnd - yBegin + fA,                # height
+                             color=colorChoice,
+                             alpha=0.2)
+
+    rectLowerRight = patches.Rectangle((xEnd + fA,yEnd),        # (X,Y) tuple
+                             xBegin - xEnd - fA,                # width
+                             yBegin - yEnd - fA,                # height
+                             color=colorChoice,
+                             alpha=0.2)
+
+    rectLowerLeft = patches.Rectangle((xEnd,yEnd),              # (X,Y) tuple
+                             xBegin - xEnd - fA,                # width
+                             yBegin - yEnd - fA,                # height
+                             color=colorChoice,
+                             alpha=0.2)
+
+    # Create new rect for house only
+    rectHouse = patches.Rectangle((xBegin,yBegin),              # (X,Y) tuple
+                             (xEnd - xBegin),                   # width
+                             (yEnd - yBegin),                   # height
+                             color=colorChoice2,)
+
+    # Add the rects
+    ax.add_patch(rectUpperRight)
+    ax.add_patch(rectUpperLeft)
+    ax.add_patch(rectLowerRight)
+    ax.add_patch(rectLowerLeft)
+    ax.add_patch(rectHouse)
