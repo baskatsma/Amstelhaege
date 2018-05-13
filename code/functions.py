@@ -118,7 +118,7 @@ def randomAlgorithm():
 
             # Create video output
             os.system("ffmpeg -framerate 1/0.15 -i tmp/%03d.png "+
-            "-c:v libx264 -r 30 tmp/output.mp4")
+            "-c:v libx264 -r 30 tmp/__output.mp4")
 
         else:
 
@@ -386,7 +386,7 @@ def GIFPlot(residentialArea, indexPhoto):
 
     # Save pic
     pictureName = '{:03}'.format(indexPhoto)
-    plt.savefig('tmp/'+pictureName, bbox_inches='tight')
+    plt.savefig('tmp/'+pictureName, dpi=200, bbox_inches='tight')
     plt.close(fig)
 
     # Afterwards, use FFmpeg manually!!
