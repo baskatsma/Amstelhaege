@@ -57,6 +57,14 @@ class House(object):
         self.gridYLength = gridYLength
         self.uniqueID = uniqueID
 
+    def removeFromMap(self):
+
+        self.xBegin = 0
+        self.xEnd = 0
+        self.yBegin = 0
+        self.yEnd = 0
+        self.freeArea = 0
+
     def checkBorders(self):
 
         # Check for grid border problems

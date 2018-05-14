@@ -98,41 +98,41 @@ def hillclimberAlgorithm(allResults):
             currentResult["totalScore"] += currentObject.calculateScore()
 
     results = switchCoordinates(residentialArea, numpyGrid)
-    randomHouse1 = results[0]
-    randomHouse2 = results[1]
-
-    print (randomHouse1.uniqueID)
-    print(randomHouse1.type)
-    print (randomHouse2.uniqueID)
-    print(randomHouse2.type)
-
-    placeOnGridHILL(randomHouse1, numpyGrid, residentialArea)
-    placeOnGridHILL(randomHouse2, numpyGrid, residentialArea)
-
-    # After placing all houses, loop over them
-    for object in range(len(residentialArea)):
-
-        # Give the current object an easy variable
-        currentObject = residentialArea[object]
-
-        # Calculate score if current item is not water
-        if currentObject.type != "water":
-
-            # Find all extra free area per house
-            increase = (1 * 2)
-            numpyGridOriginal = numpyGrid
-            checkAllFreeArea(currentObject, increase, numpyGrid,
-                             numpyGridOriginal)
-
-            # Then, calculate the new value of the house
-            newScore += currentObject.calculateScore()
-
-    print("The new score is:", newScore)
-    # if currentScore > newScore:
-
-    # Print score
-    print("The total score is:", currentResult["totalScore"])
-
+    # randomHouse1 = results[0]
+    # randomHouse2 = results[1]
+    #
+    # print (randomHouse1.uniqueID)
+    # print(randomHouse1.type)
+    # print (randomHouse2.uniqueID)
+    # print(randomHouse2.type)
+    # #
+    # placeOnGridHILL(randomHouse1, numpyGrid, residentialArea)
+    # placeOnGridHILL(randomHouse2, numpyGrid, residentialArea)
+    #
+    # # After placing all houses, loop over them
+    # for object in range(len(residentialArea)):
+    #
+    #     # Give the current object an easy variable
+    #     currentObject = residentialArea[object]
+    #
+    #     # Calculate score if current item is not water
+    #     if currentObject.type != "water":
+    #
+    #         # Find all extra free area per house
+    #         increase = (1 * 2)
+    #         numpyGridOriginal = numpyGrid
+    #         checkAllFreeArea(currentObject, increase, numpyGrid,
+    #                          numpyGridOriginal)
+    #
+    #         # Then, calculate the new value of the house
+    #         newScore += currentObject.calculateScore()
+    #
+    # print("The new score is:", newScore)
+    # # if currentScore > newScore:
+    #
+    # # Print score
+    # print("The total score is:", currentResult["totalScore"])
+    #
     # Update algorithm runtime
     timeEnd = timer()
     runtime = (timeEnd - timeStart)
@@ -145,15 +145,13 @@ def hillclimberAlgorithm(allResults):
     allResults["totalRuntime"] += runtime
     allResults = updateResults(currentResult, allResults)
 
-    printPlot(allResults)
-
     # Print runtime
     print("This round (in seconds):",currentResult["runtime"])
     print("Total elapsed time (in seconds):",allResults["totalRuntime"])
     print("")
 
     # Visualize grid with matplotlib
-    #printPlot(allResults)
+    printPlot(allResults)
 
 def switchCoordinates(residentialArea, numpyGrid):
     randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
@@ -162,20 +160,35 @@ def switchCoordinates(residentialArea, numpyGrid):
     if randomHouse1.uniqueID != 200 and randomHouse2.uniqueID != 200 and \
         randomHouse1.uniqueID != randomHouse2.uniqueID:
 
-        removeFromMap(randomHouse1, numpyGrid)
-        removeFromMap(randomHouse2, numpyGrid)
-
         oldcoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
         oldcoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
         newcoordinates1 = oldcoordinates2
         newcoordinates2 = oldcoordinates1
 
-        randomHouse1.yBegin = newcoordinates1[0]
-        randomHouse1.xBegin = newcoordinates1[1]
-        randomHouse2.yBegin = newcoordinates2[0]
-        randomHouse2.xBegin = newcoordinates1[1]
+        print(oldcoordinates1)
+        print(oldcoordinates2)
+        print(newcoordinates1)
+        print(newcoordinates2)
 
-        return randomHouse1, randomHouse2
+        randomHouse1.removeFromMap()
+        randomHouse2.removeFromMap()
+
+        # oldcoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
+        # oldcoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
+        # newcoordinates1 = oldcoordinates2
+        # newcoordinates2 = oldcoordinates1
+        #
+        # print(oldcoordinates1)
+        # print(oldcoordinates2)
+        # print(newcoordinates1)
+        # print(newcoordinates2)
+        #
+        # randomHouse1.yBegin = newcoordinates1[0]
+        # randomHouse1.xBegin = newcoordinates1[1]
+        # randomHouse2.yBegin = newcoordinates2[0]
+        # randomHouse2.xBegin = newcoordinates1[1]
+        #
+        # return randomHouse1, randomHouse2
     else:
         switchCoordinates(residentialArea, numpyGrid)
 
@@ -194,6 +207,14 @@ def removeFromMap(currentObject, numpyGrid):
 
     # Delete selected maxHouses
     numpyGrid[fAYBegin:fAYEnd,fAXBegin:fAXEnd] = 0
+
+    yBegin = 0
+    yEnd = 0
+    xBegin = 0
+    xEnd = 0
+    freeArea = 0
+
+    print("House")
 
 def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
 
