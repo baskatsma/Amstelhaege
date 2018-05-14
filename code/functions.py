@@ -387,7 +387,7 @@ def hillVisualizer(currentObject, numpyGrid):
     elif currentObject.type == "maison":
         currentObject.freeArea = 6 * 2
 
-    print("Drawing fA + house for:", currentObject.type,"with ID:", currentObject.uniqueID)
+    #print("Drawing fA + house for:", currentObject.type,"with ID:", currentObject.uniqueID)
 
     yBegin = currentObject.yBegin
     yEnd = currentObject.yEnd

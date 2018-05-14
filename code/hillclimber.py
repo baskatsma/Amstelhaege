@@ -26,14 +26,14 @@ def hillclimberAlgorithm(allResults):
     residentialArea.append(Water(**waterTemplate))
 
     # Create new houses based on the grid requirements
-    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
-        residentialArea.append(House(**eengezinswoningTemplate))
+    for maison in range(gridInformation.totalAmountMaisons):
+        residentialArea.append(House(**maisonTemplate))
 
     for bungalow in range(gridInformation.totalAmountBungalows):
         residentialArea.append(House(**bungalowTemplate))
 
-    for maison in range(gridInformation.totalAmountMaisons):
-        residentialArea.append(House(**maisonTemplate))
+    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
+        residentialArea.append(House(**eengezinswoningTemplate))
 
     # Initialize numpy grid (verticalY, horizontalX)
     numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
@@ -95,7 +95,7 @@ def hillclimberAlgorithm(allResults):
             currentResult["totalScore"] += currentObject.calculateScore()
             oldScore += currentObject.calculateScore()
 
-    for i in range(7500):
+    for i in range(5500):
 
         results = switchCoordinates(residentialArea, numpyGrid)
         randomHouse1 = results[0]
@@ -106,7 +106,7 @@ def hillclimberAlgorithm(allResults):
         if placeOnGridHill(randomHouse1, numpyGrid, residentialArea) == True and \
         placeOnGridHill(randomHouse2, numpyGrid, residentialArea) == True:
 
-            print("Swap is legit")
+            #print("Swap is legit")
             hillVisualizer(randomHouse1, numpyGrid)
             hillVisualizer(randomHouse2, numpyGrid)
 
@@ -150,11 +150,13 @@ def hillclimberAlgorithm(allResults):
                 oldScore = newScore
 
         else:
-            print("Not legit -- reverting positions")
+            #print("Not legit -- reverting positions")
             updateCoordinates(randomHouse1, oldCoordinates1)
             updateCoordinates(randomHouse2, oldCoordinates2)
             hillVisualizer(randomHouse1, numpyGrid)
             hillVisualizer(randomHouse2, numpyGrid)
+
+    fixIncorrectVisualizations(currentObject, numpyGrid)
 
     # print("The new score is:", newScore)
     # # if currentScore > newScore:
@@ -205,10 +207,10 @@ def switchCoordinates(residentialArea, numpyGrid):
     oldCoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
     newCoordinates1 = (randomHouse2.yBegin, randomHouse2.xBegin)
     newCoordinates2 = (randomHouse1.yBegin, randomHouse1.xBegin)
-    print("Old coordinates of house 1:",oldCoordinates1,"of type:", randomHouse1.type)
-    print("Old coordinates of house 2:",oldCoordinates2,"of type:", randomHouse2.type)
-    print("New coordinates of house 1:",newCoordinates1,"of type:", randomHouse1.type)
-    print("New coordinates of house 2:",newCoordinates2,"of type:", randomHouse2.type)
+    #print("Old coordinates of house 1:",oldCoordinates1,"of type:", randomHouse1.type)
+    #print("Old coordinates of house 2:",oldCoordinates2,"of type:", randomHouse2.type)
+    #print("New coordinates of house 1:",newCoordinates1,"of type:", randomHouse1.type)
+    #print("New coordinates of house 2:",newCoordinates2,"of type:", randomHouse2.type)
 
     # Remove houses from map and numpyGrid
     randomHouse1.removeFromGridAndMap(numpyGrid)
@@ -267,12 +269,10 @@ def placeOnGridHill(currentObject, numpyGrid, residentialArea):
 
         # Start over, because there are house and/or free area overlap issues
         else:
-            print("huis overlap")
 
             return False
 
     # Start over, because the house is overlining the border
     else:
-        print("border problemsssss xxx amy")
 
         return False
