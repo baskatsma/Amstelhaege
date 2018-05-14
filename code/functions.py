@@ -11,10 +11,10 @@ from pathlib import Path
 from timeit import default_timer as timer
 
 # Run random algorithm
-def randomAlgorithm(rounds, roundsCounter, allResults):
+def randomAlgorithm(allResults):
 
         # Update round
-        roundsCounter += 1
+        allResults["roundsCounter"] += 1
 
         # Remove old output results
         for png in glob.glob("tmp/*.png"):
@@ -53,7 +53,6 @@ def randomAlgorithm(rounds, roundsCounter, allResults):
         # numpyGrid = np.zeros((gridYLength,gridXLength))
 
         # Initialize total score
-        #totalScore = 0
         currentResult = {
                         "totalScore": 0,
                         "runtime": 0,
@@ -126,16 +125,18 @@ def randomAlgorithm(rounds, roundsCounter, allResults):
         print("")
 
         # Only run 'rounds' amount of times
-        if roundsCounter < rounds:
-            randomAlgorithm(rounds, roundsCounter, allResults)
+        if allResults["roundsCounter"] < allResults["rounds"]:
+            randomAlgorithm(allResults)
 
         else:
             # Print high/low score & runtime
             print("Highest score:", allResults["highestScore"])
             print("Lowest score:", allResults["lowestScore"])
-            print("Fastest runtime:", allResults["fastestRuntime"])
-            print("Slowest runtime:", allResults["slowestRuntime"])
-            print("Total runtime:", allResults["totalRuntime"])
+            print("Average score:", allResults["averageScore"])
+            print("Fastest runtime (sec):", allResults["fastestRuntime"])
+            print("Slowest runtime (sec):", allResults["slowestRuntime"])
+            print("Average runtime (sec):", allResults["averageRuntime"])
+            print("Total runtime (sec):", allResults["totalRuntime"])
             print("")
             #getVideo(allResults["highestScoreMap"])
             printPlot(allResults)
@@ -509,6 +510,10 @@ def updateResults(currentResult, allResults):
     # Update .all results
     allResults["allScores"] += currentResult["totalScore"]
     allResults["allRuntimes"] += currentResult["runtime"]
+
+    # Update avg results
+    allResults["averageScore"] = int((allResults["allScores"]/allResults["rounds"]))
+    allResults["averageRuntime"] = (allResults["allRuntimes"]/allResults["rounds"])
 
     # Update score results
     if currentResult["totalScore"] > allResults["highestScore"]:

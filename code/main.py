@@ -7,6 +7,10 @@ def main():
     # Increase recursion maximum to obtain 60 house results easier
     sys.setrecursionlimit(4000)
 
+    # Initialize variables
+    rounds = 150
+    roundsCounter = 0
+
     # Set result template
     allResults = {
                     "allScores": 0,
@@ -19,6 +23,8 @@ def main():
                     "slowestRuntime": 0,
                     "averageRuntime": 0,
                     "totalRuntime": 0,
+                    "rounds": rounds,
+                    "roundsCounter": roundsCounter,
                     }
 
     if len(sys.argv) < 3:
@@ -26,13 +32,8 @@ def main():
 
     elif str(sys.argv[2]) == "random":
 
-        # Initialize variables
-        rounds = 150
-        roundsCounter = 0
-        totalTime = 0
-
         # Run random 'rounds' amount of times and display best results
-        randomAlgorithm(rounds, roundsCounter, allResults)
+        randomAlgorithm(allResults)
 
     elif str(sys.argv[2]) == "hillclimber":
 
