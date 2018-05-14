@@ -1,3 +1,4 @@
+from hillclimber import *
 from functions import *
 import sys
 
