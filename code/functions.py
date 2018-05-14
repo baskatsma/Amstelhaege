@@ -410,6 +410,39 @@ def hillVisualizer(currentObject, numpyGrid):
     # Visualize house on top of free area
     visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
 
+def fixIncorrectVisualizations(currentObject, numpyGrid):
+
+    if currentObject.type == "eengezinswoning":
+        currentObject.freeArea = 2 * 2
+    elif currentObject.type == "bungalow":
+        currentObject.freeArea = 3 * 2
+    elif currentObject.type == "maison":
+        currentObject.freeArea = 6 * 2
+
+    yBegin = currentObject.yBegin
+    yEnd = currentObject.yEnd
+    xBegin = currentObject.xBegin
+    xEnd = currentObject.xEnd
+    freeArea = currentObject.freeArea
+
+    fAYBegin = yBegin - freeArea
+    fAYEnd = yEnd + freeArea
+    fAXBegin = xBegin - freeArea
+    fAXEnd = xEnd + freeArea
+
+    drawNumber = currentObject.uniqueID
+    fADrawNumber = 1
+
+    visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
+                    numpyGrid, 0)
+
+    # The area is viable: draw free area first
+    visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
+                    numpyGrid, fADrawNumber)
+
+    # Visualize house on top of free area
+    visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
+
 def getVideo(residentialArea):
 
     # Get video output

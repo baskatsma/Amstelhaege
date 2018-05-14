@@ -46,8 +46,6 @@ def hillclimberAlgorithm(allResults):
                     "residentialArea": [],
                     }
 
-    oldScore = 0
-
     # Loop over all objects (water + houses)
     for object in range(len(residentialArea)):
 
@@ -75,6 +73,8 @@ def hillclimberAlgorithm(allResults):
             # Update uniqueID and place houses
             currentObject.uniqueID = object + 10
             placeOnGrid(currentObject, numpyGrid)
+
+    oldScore = 0
 
     # After placing all houses, loop over them
     for object in range(len(residentialArea)):
@@ -213,6 +213,14 @@ def switchCoordinates(residentialArea, numpyGrid):
     # Remove houses from map and numpyGrid
     randomHouse1.removeFromGridAndMap(numpyGrid)
     randomHouse2.removeFromGridAndMap(numpyGrid)
+
+    # Loop over all objects (water + houses)
+    for object in range(len(residentialArea)):
+
+        # Give the current object an easy variable
+        currentObject = residentialArea[object]
+
+        fixIncorrectVisualizations(currentObject, numpyGrid)
 
     # Update coordinates
     updateCoordinates(randomHouse1, newCoordinates1)
