@@ -130,12 +130,17 @@ def randomAlgorithm(allResults):
 
         else:
             # Print high/low score & runtime
+            print("")
+            print("Rounds:", allResults["rounds"])
+            print("---------------------------------------------")
             print("Highest score:", allResults["highestScore"])
             print("Lowest score:", allResults["lowestScore"])
             print("Average score:", allResults["averageScore"])
+            print("---------------------------------------------")
             print("Fastest runtime (sec):", allResults["fastestRuntime"])
             print("Slowest runtime (sec):", allResults["slowestRuntime"])
             print("Average runtime (sec):", allResults["averageRuntime"])
+            print("---------------------------------------------")
             print("Total runtime (sec):", allResults["totalRuntime"])
             print("")
             #getVideo(allResults["highestScoreMap"])
