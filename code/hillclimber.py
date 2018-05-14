@@ -169,30 +169,14 @@ def switchCoordinates(residentialArea, numpyGrid):
         newCoordinates1 = oldCoordinates2
         newCoordinates2 = oldCoordinates1
 
-        print(oldCoordinates1)
-        print(oldCoordinates2)
-        print(newCoordinates1)
-        print(newCoordinates2)
-
         # Remove houses from map and numpyGrid
         randomHouse1.removeFromGridAndMap(numpyGrid)
         randomHouse2.removeFromGridAndMap(numpyGrid)
 
-        # oldcoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
-        # oldcoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
-        # newcoordinates1 = oldcoordinates2
-        # newcoordinates2 = oldcoordinates1
-        #
-        # print(oldcoordinates1)
-        # print(oldcoordinates2)
-        # print(newcoordinates1)
-        # print(newcoordinates2)
-        #
-        # randomHouse1.yBegin = newcoordinates1[0]
-        # randomHouse1.xBegin = newcoordinates1[1]
-        # randomHouse2.yBegin = newcoordinates2[0]
-        # randomHouse2.xBegin = newcoordinates1[1]
-        #
+        # Update coordinates
+        updateCoordinates(randomHouse1, newCoordinates1)
+        updateCoordinates(randomHouse2, newCoordinates2)
+
         # return randomHouse1, randomHouse2
     else:
         switchCoordinates(residentialArea, numpyGrid)
