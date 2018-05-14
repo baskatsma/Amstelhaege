@@ -160,14 +160,11 @@ def switchCoordinates(residentialArea, numpyGrid):
     randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
     randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
 
-
     # Retry if selected house is 'water', or when both houses are the same
     while randomHouse1.uniqueID == 200 or randomHouse2.uniqueID == 200 or \
         randomHouse1.uniqueID == randomHouse2.uniqueID:
 
-        print("HAPPY LIFE")
-
-        # Select random house
+        # Select random house again
         randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
         randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
         break
@@ -185,9 +182,9 @@ def switchCoordinates(residentialArea, numpyGrid):
     # Update coordinates
     updateCoordinates(randomHouse1, newCoordinates1)
     updateCoordinates(randomHouse2, newCoordinates2)
-    
-    return [randomHouse1, randomHouse2]
 
+    # Return valid random selected houses
+    return randomHouse1, randomHouse2
 
 def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
 
