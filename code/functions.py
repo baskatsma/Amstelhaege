@@ -216,7 +216,7 @@ def getCoordinates(currentObject):
 
 def updateCoordinates(currentObject, coordinates):
 
-    # Extract water dimension values
+    # Extract object dimension (x, y tuple) values
     objectYLength = currentObject.objectDimensions[0]
     objectXLength = currentObject.objectDimensions[1]
 
@@ -414,9 +414,6 @@ def GIFPlot(residentialArea, indexPhoto):
     pictureName = '{:03}'.format(indexPhoto)
     plt.savefig('tmp/'+pictureName, dpi=200, bbox_inches='tight')
     plt.close(fig)
-
-    # Afterwards, use FFmpeg manually!!
-    # ffmpeg -framerate 1/0.15 -i tmp/%03d.png -c:v libx264 -r 30 tmp/output.mp4
 
 def printPlot(allResults):
 
