@@ -42,6 +42,12 @@ def hillclimberAlgorithm(allResults):
     totalScore = 0
 
     # Initialize current and new score
+    currentResult = {
+                    "totalScore": 0,
+                    "runtime": 0,
+                    "residentialArea": [],
+                    }
+
     currentScore = 0
     newScore = 0
 
@@ -89,10 +95,7 @@ def hillclimberAlgorithm(allResults):
                              numpyGridOriginal)
 
             # Then, calculate the new value of the house
-            totalScore += currentObject.calculateScore()
-
-    # Print score
-    print("The total score is:", totalScore)
+            currentResult["totalScore"] += currentObject.calculateScore()
 
     results = switchCoordinates(residentialArea, numpyGrid)
     randomHouse1 = results[0]
@@ -127,9 +130,26 @@ def hillclimberAlgorithm(allResults):
     print("The new score is:", newScore)
     # if currentScore > newScore:
 
-    timeEnd = timer()
+    # Print score
+    print("The total score is:", currentResult["totalScore"])
 
-    print("Elapsed time (in seconds):",timeEnd - timeStart)
+    # Update algorithm runtime
+    timeEnd = timer()
+    runtime = (timeEnd - timeStart)
+
+    # Save current results
+    currentResult["runtime"] = runtime
+    currentResult["residentialArea"] = residentialArea
+
+    # Update all results
+    allResults["totalRuntime"] += runtime
+    allResults = updateResults(currentResult, allResults)
+
+    printPlot(allResults)
+
+    # Print runtime
+    print("This round (in seconds):",currentResult["runtime"])
+    print("Total elapsed time (in seconds):",allResults["totalRuntime"])
     print("")
 
     # Visualize grid with matplotlib
@@ -157,7 +177,7 @@ def switchCoordinates(residentialArea, numpyGrid):
 
         return randomHouse1, randomHouse2
     else:
-        switchCoordinates(residentialArea)
+        switchCoordinates(residentialArea, numpyGrid)
 
 def removeFromMap(currentObject, numpyGrid):
 
