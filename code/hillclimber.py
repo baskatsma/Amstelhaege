@@ -6,6 +6,7 @@ from models.templates import *
 from functions import *
 
 def hillclimberAlgorithm(allResults):
+
     # Measure algorithm time
     timeStart = timer()
 
@@ -98,36 +99,20 @@ def hillclimberAlgorithm(allResults):
             currentResult["totalScore"] += currentObject.calculateScore()
 
     results = switchCoordinates(residentialArea, numpyGrid)
-    print(results)
     randomHouse1 = results[0]
     randomHouse2 = results[1]
+    oldCoordinates1 = results[2]
+    oldCoordinates2 = results[3]
 
-    # print (randomHouse1.uniqueID)
-    # print(randomHouse1.type)
-    # print (randomHouse2.uniqueID)
-    # print(randomHouse2.type)
-    # #
-    # placeOnGridHILL(randomHouse1, numpyGrid, residentialArea)
-    # placeOnGridHILL(randomHouse2, numpyGrid, residentialArea)
-    #
-    # # After placing all houses, loop over them
-    # for object in range(len(residentialArea)):
-    #
-    #     # Give the current object an easy variable
-    #     currentObject = residentialArea[object]
-    #
-    #     # Calculate score if current item is not water
-    #     if currentObject.type != "water":
-    #
-    #         # Find all extra free area per house
-    #         increase = (1 * 2)
-    #         numpyGridOriginal = numpyGrid
-    #         checkAllFreeArea(currentObject, increase, numpyGrid,
-    #                          numpyGridOriginal)
-    #
-    #         # Then, calculate the new value of the house
-    #         newScore += currentObject.calculateScore()
-    #
+    if placeOnGridHill(randomHouse1, numpyGrid, residentialArea) == True and \
+    placeOnGridHill(randomHouse2, numpyGrid, residentialArea) == True:
+        print("Swap is legit")
+
+    else:
+        print("Not legit -- reverting positions")
+        updateCoordinates(randomHouse1, oldCoordinates1)
+        updateCoordinates(randomHouse2, oldCoordinates2)
+
     # print("The new score is:", newScore)
     # # if currentScore > newScore:
     #
@@ -156,24 +141,31 @@ def hillclimberAlgorithm(allResults):
 
 def switchCoordinates(residentialArea, numpyGrid):
 
+    # Define RA without water
+    residentialAreaNew = residentialArea[1:len(residentialArea)]
+
     # Select random house
-    randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
-    randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
+    randomHouse1 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
+    randomHouse2 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
 
     # Retry if selected house is 'water', or when both houses are the same
-    while randomHouse1.uniqueID == 200 or randomHouse2.uniqueID == 200 or \
+    while randomHouse1.type == "water" or randomHouse2.type == "water" or \
         randomHouse1.uniqueID == randomHouse2.uniqueID:
 
         # Select random house again
-        randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
-        randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
+        randomHouse1 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
+        randomHouse2 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
         break
 
     # Save old and new coordinates
     oldCoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
     oldCoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
-    newCoordinates1 = oldCoordinates2
-    newCoordinates2 = oldCoordinates1
+    newCoordinates1 = (randomHouse2.yBegin, randomHouse2.xBegin)
+    newCoordinates2 = (randomHouse1.yBegin, randomHouse1.xBegin)
+    print("Old coordinates of house 1:",oldCoordinates1,"of type:", randomHouse1.type)
+    print("Old coordinates of house 2:",oldCoordinates2,"of type:", randomHouse2.type)
+    print("New coordinates of house 1:",newCoordinates1,"of type:", randomHouse1.type)
+    print("New coordinates of house 2:",newCoordinates2,"of type:", randomHouse2.type)
 
     # Remove houses from map and numpyGrid
     randomHouse1.removeFromGridAndMap(numpyGrid)
@@ -184,12 +176,9 @@ def switchCoordinates(residentialArea, numpyGrid):
     updateCoordinates(randomHouse2, newCoordinates2)
 
     # Return valid random selected houses
-    return randomHouse1, randomHouse2
+    return randomHouse1, randomHouse2, oldCoordinates1, oldCoordinates2
 
-def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
-
-    # Get random coordinates and update in self
-    # getCoordinates(currentObject)
+def placeOnGridHill(currentObject, numpyGrid, residentialArea):
 
     yBegin = currentObject.yBegin
     yEnd = currentObject.yEnd
@@ -216,24 +205,23 @@ def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
         checkOverlap(fAYBegin, fAYEnd, fAXBegin, fAXEnd, numpyGrid,
                     "includingFreeArea") == True:
 
-            # The area is viable: draw free area first
-            visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
-                            numpyGrid, fADrawNumber)
+            # # The area is viable: draw free area first
+            # visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
+            #                 numpyGrid, fADrawNumber)
+            #
+            # # Visualize house on top of free area
+            # visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
 
-            # Visualize house on top of free area
-            visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
+            return True
 
         # Start over, because there are house and/or free area overlap issues
         else:
             print("huis overlap")
-            # results2 = switchCoordinates(residentialArea)
-            # placeOnGridHILL(results2[0], numpyGrid, residentialArea)
-            # placeOnGridHILL(results2[1], numpyGrid, residentialArea)
+
+            return False
 
     # Start over, because the house is overlining the border
     else:
         print("border problemsssss xxx amy")
-        # results3 = switchCoordinates(residentialArea)
-        #
-        # placeOnGridHILL(results3[0], numpyGrid, residentialArea)
-        # placeOnGridHILL(results3[1], numpyGrid, residentialArea)
+
+        return False

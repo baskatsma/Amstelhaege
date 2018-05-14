@@ -223,8 +223,8 @@ def getCoordinates(currentObject):
 def updateCoordinates(currentObject, coordinates):
 
     # Extract object dimension (x, y tuple) values
-    objectYLength = currentObject.objectDimensions[0]
-    objectXLength = currentObject.objectDimensions[1]
+    objectYLength = currentObject.objectDimensions[1]
+    objectXLength = currentObject.objectDimensions[0]
 
     # Define end coordinates (y, x tuple)
     endCoordinates = (coordinates[0] + objectYLength,
