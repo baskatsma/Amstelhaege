@@ -39,9 +39,6 @@ def hillclimberAlgorithm(allResults):
     numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
     # numpyGrid = np.zeros((gridYLength,gridXLength))
 
-    # Initialize total score
-    totalScore = 0
-
     # Initialize current and new score
     currentResult = {
                     "totalScore": 0,
@@ -49,8 +46,7 @@ def hillclimberAlgorithm(allResults):
                     "residentialArea": [],
                     }
 
-    currentScore = 0
-    newScore = 0
+    oldScore = 0
 
     # Loop over all objects (water + houses)
     for object in range(len(residentialArea)):
@@ -97,21 +93,68 @@ def hillclimberAlgorithm(allResults):
 
             # Then, calculate the new value of the house
             currentResult["totalScore"] += currentObject.calculateScore()
+            oldScore += currentObject.calculateScore()
 
-    results = switchCoordinates(residentialArea, numpyGrid)
-    randomHouse1 = results[0]
-    randomHouse2 = results[1]
-    oldCoordinates1 = results[2]
-    oldCoordinates2 = results[3]
+    for i in range(7500):
 
-    if placeOnGridHill(randomHouse1, numpyGrid, residentialArea) == True and \
-    placeOnGridHill(randomHouse2, numpyGrid, residentialArea) == True:
-        print("Swap is legit")
+        results = switchCoordinates(residentialArea, numpyGrid)
+        randomHouse1 = results[0]
+        randomHouse2 = results[1]
+        oldCoordinates1 = results[2]
+        oldCoordinates2 = results[3]
 
-    else:
-        print("Not legit -- reverting positions")
-        updateCoordinates(randomHouse1, oldCoordinates1)
-        updateCoordinates(randomHouse2, oldCoordinates2)
+        if placeOnGridHill(randomHouse1, numpyGrid, residentialArea) == True and \
+        placeOnGridHill(randomHouse2, numpyGrid, residentialArea) == True:
+
+            print("Swap is legit")
+            hillVisualizer(randomHouse1, numpyGrid)
+            hillVisualizer(randomHouse2, numpyGrid)
+
+            newScore = 0
+
+            # After placing all houses, loop over them
+            for object in range(len(residentialArea)):
+
+                # Give the current object an easy variable
+                currentObject = residentialArea[object]
+
+                # Calculate score if current item is not water
+                if currentObject.type != "water":
+
+                    # Find all extra free area per house
+                    increase = (1 * 2)
+                    numpyGridOriginal = numpyGrid
+                    checkAllFreeArea(currentObject, increase, numpyGrid,
+                                     numpyGridOriginal)
+
+                    # Then, calculate the new value of the house
+                    newScore += currentObject.calculateScore()
+
+            if newScore < oldScore:
+                print("Lower score (", newScore, ") vs. ", oldScore, "-- reverting it")
+                print("")
+                updateCoordinates(randomHouse1, oldCoordinates1)
+                updateCoordinates(randomHouse2, oldCoordinates2)
+                hillVisualizer(randomHouse1, numpyGrid)
+                hillVisualizer(randomHouse2, numpyGrid)
+
+            else:
+                print("Higher score (", newScore, ") vs. ", oldScore, "-- keeping it!")
+                print("")
+
+                allResults["highestScore"] = 0
+                allResults["highestScore"] = newScore
+                allResults["highestScoreMap"] = []
+                allResults["highestScoreMap"] = residentialArea
+
+                oldScore = newScore
+
+        else:
+            print("Not legit -- reverting positions")
+            updateCoordinates(randomHouse1, oldCoordinates1)
+            updateCoordinates(randomHouse2, oldCoordinates2)
+            hillVisualizer(randomHouse1, numpyGrid)
+            hillVisualizer(randomHouse2, numpyGrid)
 
     # print("The new score is:", newScore)
     # # if currentScore > newScore:

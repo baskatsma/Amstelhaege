@@ -378,6 +378,38 @@ def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumbe
     # Select a specific grid area and fill it
     numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] = drawNumber
 
+def hillVisualizer(currentObject, numpyGrid):
+
+    if currentObject.type == "eengezinswoning":
+        currentObject.freeArea = 2 * 2
+    elif currentObject.type == "bungalow":
+        currentObject.freeArea = 3 * 2
+    elif currentObject.type == "maison":
+        currentObject.freeArea = 6 * 2
+
+    print("Drawing fA + house for:", currentObject.type,"with ID:", currentObject.uniqueID)
+
+    yBegin = currentObject.yBegin
+    yEnd = currentObject.yEnd
+    xBegin = currentObject.xBegin
+    xEnd = currentObject.xEnd
+    freeArea = currentObject.freeArea
+
+    fAYBegin = yBegin - freeArea
+    fAYEnd = yEnd + freeArea
+    fAXBegin = xBegin - freeArea
+    fAXEnd = xEnd + freeArea
+
+    drawNumber = currentObject.uniqueID
+    fADrawNumber = 1
+
+    # The area is viable: draw free area first
+    visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
+                    numpyGrid, fADrawNumber)
+
+    # Visualize house on top of free area
+    visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
+
 def getVideo(residentialArea):
 
     # Get video output
