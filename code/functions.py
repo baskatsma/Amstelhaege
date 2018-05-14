@@ -136,8 +136,9 @@ def randomAlgorithm(rounds, roundsCounter, allResults):
             print("Fastest runtime:", allResults["fastestRuntime"])
             print("Slowest runtime:", allResults["slowestRuntime"])
             print("Total runtime:", allResults["totalRuntime"])
+            print("")
             #getVideo(allResults["highestScoreMap"])
-            printPlot(allResults["highestScoreMap"], allResults["highestScore"])
+            printPlot(allResults)
 
         # # TERMINAL
         # rowCounter = 0
@@ -417,7 +418,10 @@ def GIFPlot(residentialArea, indexPhoto):
     # Afterwards, use FFmpeg manually!!
     # ffmpeg -framerate 1/0.15 -i tmp/%03d.png -c:v libx264 -r 30 tmp/output.mp4
 
-def printPlot(residentialArea, totalScore):
+def printPlot(allResults):
+
+    residentialArea = allResults["highestScoreMap"]
+    totalScore = allResults["highestScore"]
 
     # Initialize matplotlib and figure
     fig = plt.figure()
@@ -504,23 +508,6 @@ def drawPlotObjects(residentialArea, object, ax):
     ax.add_patch(rectHouse)
 
 def updateResults(currentResult, allResults):
-
-    # currentResult = {
-    #                 "totalScore": 0,
-    #                 "runtime": 0,
-    #                 "residentialArea": [],
-    #                 }
-
-    # allResults = {
-    #                 "allScores": 0,
-    #                 "highestScore": 0,
-    #                 "lowestScore": 0,
-    #                 "averageScore": 0,
-    #                 "allRuntimes": 0,
-    #                 "fastestRuntime": 0,
-    #                 "slowestRuntime": 0,
-    #                 "averageRuntime": 0,
-    #             }
 
     # Update .all results
     allResults["allScores"] += currentResult["totalScore"]
