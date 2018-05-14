@@ -98,9 +98,10 @@ def hillclimberAlgorithm(allResults):
             currentResult["totalScore"] += currentObject.calculateScore()
 
     results = switchCoordinates(residentialArea, numpyGrid)
+    print(results)
     randomHouse1 = results[0]
     randomHouse2 = results[1]
-    #
+
     # print (randomHouse1.uniqueID)
     # print(randomHouse1.type)
     # print (randomHouse2.uniqueID)
@@ -159,33 +160,34 @@ def switchCoordinates(residentialArea, numpyGrid):
     randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
     randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
 
+
     # Retry if selected house is 'water', or when both houses are the same
-    if randomHouse1.uniqueID != 200 and randomHouse2.uniqueID != 200 and \
-        randomHouse1.uniqueID != randomHouse2.uniqueID:
+    while randomHouse1.uniqueID == 200 or randomHouse2.uniqueID == 200 or \
+        randomHouse1.uniqueID == randomHouse2.uniqueID:
 
-        # Save old and new coordinates
-        oldCoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
-        oldCoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
-        newCoordinates1 = oldCoordinates2
-        newCoordinates2 = oldCoordinates1
+        print("HAPPY LIFE")
 
-        # Remove houses from map and numpyGrid
-        randomHouse1.removeFromGridAndMap(numpyGrid)
-        randomHouse2.removeFromGridAndMap(numpyGrid)
+        # Select random house
+        randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
+        randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
+        break
 
-        # Update coordinates
-        updateCoordinates(randomHouse1, newCoordinates1)
-        updateCoordinates(randomHouse2, newCoordinates2)
+    # Save old and new coordinates
+    oldCoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
+    oldCoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
+    newCoordinates1 = oldCoordinates2
+    newCoordinates2 = oldCoordinates1
 
-        print("RH1 Y,X:",randomHouse1.yBegin,randomHouse1.xBegin)
-        print("RH1 Y,X:",randomHouse2.yBegin,randomHouse2.xBegin)
+    # Remove houses from map and numpyGrid
+    randomHouse1.removeFromGridAndMap(numpyGrid)
+    randomHouse2.removeFromGridAndMap(numpyGrid)
 
-        return randomHouse1, randomHouse2
+    # Update coordinates
+    updateCoordinates(randomHouse1, newCoordinates1)
+    updateCoordinates(randomHouse2, newCoordinates2)
+    
+    return [randomHouse1, randomHouse2]
 
-    else:
-
-        print("Retrying..")
-        switchCoordinates(residentialArea, numpyGrid)
 
 def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
 
