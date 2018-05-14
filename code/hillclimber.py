@@ -154,24 +154,29 @@ def hillclimberAlgorithm(allResults):
     printPlot(allResults)
 
 def switchCoordinates(residentialArea, numpyGrid):
+
+    # Select random house
     randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
     randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
 
+    # Retry if selected house is 'water', or when both houses are the same
     if randomHouse1.uniqueID != 200 and randomHouse2.uniqueID != 200 and \
         randomHouse1.uniqueID != randomHouse2.uniqueID:
 
-        oldcoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
-        oldcoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
-        newcoordinates1 = oldcoordinates2
-        newcoordinates2 = oldcoordinates1
+        # Save old and new coordinates
+        oldCoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
+        oldCoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
+        newCoordinates1 = oldCoordinates2
+        newCoordinates2 = oldCoordinates1
 
-        print(oldcoordinates1)
-        print(oldcoordinates2)
-        print(newcoordinates1)
-        print(newcoordinates2)
+        print(oldCoordinates1)
+        print(oldCoordinates2)
+        print(newCoordinates1)
+        print(newCoordinates2)
 
-        randomHouse1.removeFromMap()
-        randomHouse2.removeFromMap()
+        # Remove houses from map and numpyGrid
+        randomHouse1.removeFromGridAndMap(numpyGrid)
+        randomHouse2.removeFromGridAndMap(numpyGrid)
 
         # oldcoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
         # oldcoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
@@ -191,30 +196,6 @@ def switchCoordinates(residentialArea, numpyGrid):
         # return randomHouse1, randomHouse2
     else:
         switchCoordinates(residentialArea, numpyGrid)
-
-def removeFromMap(currentObject, numpyGrid):
-
-    yBegin = currentObject.yBegin
-    yEnd = currentObject.yEnd
-    xBegin = currentObject.xBegin
-    xEnd = currentObject.xEnd
-    freeArea = currentObject.freeArea
-
-    fAYBegin = yBegin - freeArea
-    fAYEnd = yEnd + freeArea
-    fAXBegin = xBegin - freeArea
-    fAXEnd = xEnd + freeArea
-
-    # Delete selected maxHouses
-    numpyGrid[fAYBegin:fAYEnd,fAXBegin:fAXEnd] = 0
-
-    yBegin = 0
-    yEnd = 0
-    xBegin = 0
-    xEnd = 0
-    freeArea = 0
-
-    print("House")
 
 def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
 

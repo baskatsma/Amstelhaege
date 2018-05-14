@@ -57,8 +57,24 @@ class House(object):
         self.gridYLength = gridYLength
         self.uniqueID = uniqueID
 
-    def removeFromMap(self):
+    def removeFromGridAndMap(self, numpyGrid):
 
+        # Define coordinate variables
+        yBegin = self.yBegin
+        yEnd = self.yEnd
+        xBegin = self.xBegin
+        xEnd = self.xEnd
+        freeArea = self.freeArea
+
+        fAYBegin = yBegin - freeArea
+        fAYEnd = yEnd + freeArea
+        fAXBegin = xBegin - freeArea
+        fAXEnd = xEnd + freeArea
+
+        # Delete selected house + free area from numpyGrid
+        numpyGrid[fAYBegin:fAYEnd,fAXBegin:fAXEnd] = 0
+
+        # Position house in (0, 0) with 0 free area
         self.xBegin = 0
         self.xEnd = 0
         self.yBegin = 0
