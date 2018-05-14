@@ -131,7 +131,7 @@ def randomAlgorithm(allResults):
         else:
             # Print high/low score & runtime
             print("")
-            print("Rounds:", allResults["rounds"])
+            print("Rounds:", allResults["rounds"], "|| MaxHouses:", maxHouses)
             print("---------------------------------------------")
             print("Highest score:", allResults["highestScore"])
             print("Lowest score:", allResults["lowestScore"])
