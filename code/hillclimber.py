@@ -98,8 +98,8 @@ def hillclimberAlgorithm(allResults):
             currentResult["totalScore"] += currentObject.calculateScore()
 
     results = switchCoordinates(residentialArea, numpyGrid)
-    # randomHouse1 = results[0]
-    # randomHouse2 = results[1]
+    randomHouse1 = results[0]
+    randomHouse2 = results[1]
     #
     # print (randomHouse1.uniqueID)
     # print(randomHouse1.type)
@@ -177,8 +177,14 @@ def switchCoordinates(residentialArea, numpyGrid):
         updateCoordinates(randomHouse1, newCoordinates1)
         updateCoordinates(randomHouse2, newCoordinates2)
 
-        # return randomHouse1, randomHouse2
+        print("RH1 Y,X:",randomHouse1.yBegin,randomHouse1.xBegin)
+        print("RH1 Y,X:",randomHouse2.yBegin,randomHouse2.xBegin)
+
+        return randomHouse1, randomHouse2
+
     else:
+
+        print("Retrying..")
         switchCoordinates(residentialArea, numpyGrid)
 
 def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
