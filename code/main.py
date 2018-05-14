@@ -12,13 +12,25 @@ def main():
     elif str(sys.argv[2]) == "random":
 
         # Initialize variables
-        rounds = 2000
+        rounds = 150
         roundsCounter = 0
-        bestResults = []
-        bestResults.append(0)
+        totalTime = 0
+
+        allResults = {
+                        "allScores": 0,
+                        "highestScore": 0,
+                        "highestScoreMap": [],
+                        "lowestScore": 1000000000,
+                        "averageScore": 0,
+                        "allRuntimes": 0,
+                        "fastestRuntime": 1000000000,
+                        "slowestRuntime": 0,
+                        "averageRuntime": 0,
+                        "totalRuntime": 0,
+                        }
 
         # Run random 'rounds' amount of times and display best results
-        randomAlgorithm(rounds, roundsCounter, bestResults)
+        randomAlgorithm(rounds, roundsCounter, allResults)
 
     elif str(sys.argv[2]) == "hillclimber":
         hillclimberAlgorithm()

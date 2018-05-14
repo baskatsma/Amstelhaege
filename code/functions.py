@@ -11,7 +11,7 @@ from pathlib import Path
 from timeit import default_timer as timer
 
 # Run random algorithm
-def randomAlgorithm(rounds, roundsCounter, bestResults):
+def randomAlgorithm(rounds, roundsCounter, allResults):
 
         # Update round
         roundsCounter += 1
@@ -53,7 +53,12 @@ def randomAlgorithm(rounds, roundsCounter, bestResults):
         # numpyGrid = np.zeros((gridYLength,gridXLength))
 
         # Initialize total score
-        totalScore = 0
+        #totalScore = 0
+        currentResult = {
+                        "totalScore": 0,
+                        "runtime": 0,
+                        "residentialArea": [],
+                        }
 
         # Loop over all objects (water + houses)
         for object in range(len(residentialArea)):
@@ -98,59 +103,41 @@ def randomAlgorithm(rounds, roundsCounter, bestResults):
                                  numpyGridOriginal)
 
                 # Then, calculate the new value of the house
-                totalScore += currentObject.calculateScore()
+                currentResult["totalScore"] += currentObject.calculateScore()
 
         # Print score
-        print("The total score is:", totalScore)
+        print("The total score is:", currentResult["totalScore"])
 
-        # Only save the best results
-        if totalScore > bestResults[0]:
-            bestResults = []
-            bestResults.append(totalScore)
-            bestResults.append(residentialArea)
-
-        # Print algorithm runtime
+        # Update algorithm runtime
         timeEnd = timer()
-        print("Elapsed time (in seconds):",timeEnd - timeStart)
+        runtime = (timeEnd - timeStart)
+
+        # Save current results
+        currentResult["runtime"] = runtime
+        currentResult["residentialArea"] = residentialArea
+
+        # Update all results
+        allResults["totalRuntime"] += runtime
+        allResults = updateResults(currentResult, allResults)
+
+        # Print runtime
+        print("This round (in seconds):",currentResult["runtime"])
+        print("Total elapsed time (in seconds):",allResults["totalRuntime"])
         print("")
 
         # Only run 'rounds' amount of times
         if roundsCounter < rounds:
-            randomAlgorithm(rounds, roundsCounter, bestResults)
+            randomAlgorithm(rounds, roundsCounter, allResults)
 
         else:
-            getVideo(bestResults[1])
-            printPlot(bestResults[1], bestResults[0])
-
-        # # Continue until satisfied
-        # if maxHouses == 60:
-        #     if totalScore > 25850000:
-        #         print(totalScore)
-        #
-        #         # Get video output
-        #         getVideo(residentialArea)
-        #         printPlot(residentialArea, totalScore)
-        #
-        #     else:
-        #         randomAlgorithm()
-        #
-        # elif maxHouses == 40:
-        #     if totalScore > 19000000:
-        #         print(totalScore)
-        #         getVideo(residentialArea)
-        #         printPlot(residentialArea, totalScore)
-        #
-        #     else:
-        #         randomAlgorithm()
-        #
-        # elif maxHouses == 20:
-        #     if totalScore > 12250000:
-        #         print(totalScore)
-        #         getVideo(residentialArea)
-        #         printPlot(residentialArea, totalScore)
-        #
-        #     else:
-        #         randomAlgorithm()
+            # Print high/low score & runtime
+            print("Highest score:", allResults["highestScore"])
+            print("Lowest score:", allResults["lowestScore"])
+            print("Fastest runtime:", allResults["fastestRuntime"])
+            print("Slowest runtime:", allResults["slowestRuntime"])
+            print("Total runtime:", allResults["totalRuntime"])
+            #getVideo(allResults["highestScoreMap"])
+            printPlot(allResults["highestScoreMap"], allResults["highestScore"])
 
         # # TERMINAL
         # rowCounter = 0
@@ -515,3 +502,47 @@ def drawPlotObjects(residentialArea, object, ax):
     ax.add_patch(rectLowerRight)
     ax.add_patch(rectLowerLeft)
     ax.add_patch(rectHouse)
+
+def updateResults(currentResult, allResults):
+
+    # currentResult = {
+    #                 "totalScore": 0,
+    #                 "runtime": 0,
+    #                 "residentialArea": [],
+    #                 }
+
+    # allResults = {
+    #                 "allScores": 0,
+    #                 "highestScore": 0,
+    #                 "lowestScore": 0,
+    #                 "averageScore": 0,
+    #                 "allRuntimes": 0,
+    #                 "fastestRuntime": 0,
+    #                 "slowestRuntime": 0,
+    #                 "averageRuntime": 0,
+    #             }
+
+    # Update .all results
+    allResults["allScores"] += currentResult["totalScore"]
+    allResults["allRuntimes"] += currentResult["runtime"]
+
+    # Update score results
+    if currentResult["totalScore"] > allResults["highestScore"]:
+        allResults["highestScore"] = 0
+        allResults["highestScore"] = currentResult["totalScore"]
+        allResults["highestScoreMap"] = currentResult["residentialArea"]
+
+    if currentResult["totalScore"] < allResults["lowestScore"]:
+        allResults["lowestScore"] = 0
+        allResults["lowestScore"] = currentResult["totalScore"]
+
+    # Update runtime results
+    if currentResult["runtime"] < allResults["fastestRuntime"]:
+        allResults["fastestRuntime"] = 0
+        allResults["fastestRuntime"] = currentResult["runtime"]
+
+    if currentResult["runtime"] > allResults["slowestRuntime"]:
+        allResults["slowestRuntime"] = 0
+        allResults["slowestRuntime"] = currentResult["runtime"]
+
+    return allResults
