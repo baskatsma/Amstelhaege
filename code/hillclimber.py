@@ -5,7 +5,7 @@ from models.models import *
 from models.templates import *
 from functions import *
 
-def hillclimberAlgorithm():
+def hillclimberAlgorithm(allResults):
     # Measure algorithm time
     timeStart = timer()
 
@@ -94,12 +94,14 @@ def hillclimberAlgorithm():
     # Print score
     print("The total score is:", totalScore)
 
-    results = switchCoordinates(residentialArea)
+    results = switchCoordinates(residentialArea, numpyGrid)
     randomHouse1 = results[0]
     randomHouse2 = results[1]
 
     print (randomHouse1.uniqueID)
+    print(randomHouse1.type)
     print (randomHouse2.uniqueID)
+    print(randomHouse2.type)
 
     placeOnGridHILL(randomHouse1, numpyGrid, residentialArea)
     placeOnGridHILL(randomHouse2, numpyGrid, residentialArea)
@@ -131,27 +133,47 @@ def hillclimberAlgorithm():
     print("")
 
     # Visualize grid with matplotlib
-    printPlot(residentialArea, totalScore)
+    #printPlot(allResults)
 
-def switchCoordinates(residentialArea):
+def switchCoordinates(residentialArea, numpyGrid):
     randomHouse1 = residentialArea[rd.randrange(len(residentialArea))]
     randomHouse2 = residentialArea[rd.randrange(len(residentialArea))]
 
-    if (randomHouse1.uniqueID != 200 and randomHouse2.uniqueID != 200 and \
-        randomHouse1 != randomHouse2):
-        coordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
-        coordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
+    if randomHouse1.uniqueID != 200 and randomHouse2.uniqueID != 200 and \
+        randomHouse1.uniqueID != randomHouse2.uniqueID:
 
-        randomHouse1.yBegin = coordinates2[0]
-        randomHouse1.xBegin = coordinates2[1]
-        randomHouse2.yBegin = coordinates1[0]
-        randomHouse2.xBegin = coordinates1[1]
+        removeFromMap(randomHouse1, numpyGrid)
+        removeFromMap(randomHouse2, numpyGrid)
+
+        oldcoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
+        oldcoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
+        newcoordinates1 = oldcoordinates2
+        newcoordinates2 = oldcoordinates1
+
+        randomHouse1.yBegin = newcoordinates1[0]
+        randomHouse1.xBegin = newcoordinates1[1]
+        randomHouse2.yBegin = newcoordinates2[0]
+        randomHouse2.xBegin = newcoordinates1[1]
 
         return randomHouse1, randomHouse2
     else:
         switchCoordinates(residentialArea)
 
+def removeFromMap(currentObject, numpyGrid):
 
+    yBegin = currentObject.yBegin
+    yEnd = currentObject.yEnd
+    xBegin = currentObject.xBegin
+    xEnd = currentObject.xEnd
+    freeArea = currentObject.freeArea
+
+    fAYBegin = yBegin - freeArea
+    fAYEnd = yEnd + freeArea
+    fAXBegin = xBegin - freeArea
+    fAXEnd = xEnd + freeArea
+
+    # Delete selected maxHouses
+    numpyGrid[fAYBegin:fAYEnd,fAXBegin:fAXEnd] = 0
 
 def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
 
@@ -174,9 +196,6 @@ def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
-    # Delete selected maxHouses
-    numpyGrid[fAYBegin:fAYEnd,fAXBegin:fAXEnd] = 0
-
     # Check for grid border problems
     if currentObject.checkBorders() == True:
 
@@ -195,12 +214,15 @@ def placeOnGridHILL(currentObject, numpyGrid, residentialArea):
 
         # Start over, because there are house and/or free area overlap issues
         else:
-            results2 = switchCoordinates(residentialArea)
-            placeOnGridHILL(results2[0], numpyGrid, residentialArea)
-            placeOnGridHILL(results2[1], numpyGrid, residentialArea)
+            print("huis overlap")
+            # results2 = switchCoordinates(residentialArea)
+            # placeOnGridHILL(results2[0], numpyGrid, residentialArea)
+            # placeOnGridHILL(results2[1], numpyGrid, residentialArea)
 
     # Start over, because the house is overlining the border
     else:
-        results3 = switchCoordinates(residentialArea)
-        placeOnGridHILL(results3[0], numpyGrid, residentialArea)
-        placeOnGridHILL(results3[1], numpyGrid, residentialArea)
+        print("border problemsssss xxx amy")
+        # results3 = switchCoordinates(residentialArea)
+        #
+        # placeOnGridHILL(results3[0], numpyGrid, residentialArea)
+        # placeOnGridHILL(results3[1], numpyGrid, residentialArea)
