@@ -205,7 +205,8 @@ def hillclimberAlgorithm(allResults):
         oldCoordinates1 = results[2]
         oldCoordinates2 = results[3]
 
-        if placeOnGridHill(randomHouse1, numpyGrid, residentialArea) == True and \
+        if \
+        placeOnGridHill(randomHouse1, numpyGrid, residentialArea) == True and \
         placeOnGridHill(randomHouse2, numpyGrid, residentialArea) == True:
 
             #print("Swap is legit")
@@ -323,10 +324,10 @@ def switchCoordinates(residentialArea, numpyGrid):
     # Retry if selected house is 'water', or when both houses are the same
     # or have the same type
     while \
-            randomHouse1.type == "water" or \
-            randomHouse2.type == "water" or \
-            randomHouse1.uniqueID == randomHouse2.uniqueID or \
-            randomHouse1.type == randomHouse2.type:
+    randomHouse1.type == "water" or \
+    randomHouse2.type == "water" or \
+    randomHouse1.uniqueID == randomHouse2.uniqueID or \
+    randomHouse1.type == randomHouse2.type:
 
         # Select random house again
         randomHouse1 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
@@ -373,7 +374,8 @@ def placeOnGridHill(currentObject, numpyGrid, residentialArea):
     if currentObject.checkBorders() == True:
 
         # Check for house and free area overlap
-        if checkOverlap(coord[0], coord[1], coord[2], coord[3], numpyGrid,
+        if \
+        checkOverlap(coord[0], coord[1], coord[2], coord[3], numpyGrid,
                         "excludingFreeArea") == True and \
         checkOverlap(coord[5], coord[6], coord[7], coord[8], numpyGrid,
                     "includingFreeArea") == True:

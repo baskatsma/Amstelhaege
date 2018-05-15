@@ -302,10 +302,11 @@ def placeOnGrid(currentObject, numpyGrid):
     if currentObject.checkBorders() == True:
 
         # Check for house and free area overlap
-        if checkOverlap(coord[0], coord[1], coord[2], coord[3], numpyGrid,
-                        "excludingFreeArea") == True and \
-        checkOverlap(coord[5], coord[6], coord[7], coord[8], numpyGrid,
-                    "includingFreeArea") == True:
+        if \
+        checkOverlap(coord[0], coord[1], coord[2], coord[3],
+                    numpyGrid, "excludingFreeArea") == True and \
+        checkOverlap(coord[5], coord[6], coord[7], coord[8],
+                    numpyGrid, "includingFreeArea") == True:
 
             # The area is viable: draw free area first
             visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
@@ -368,9 +369,10 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
     numpyGrid[coord[0]:coord[1],coord[2]:coord[3]] = fADrawNumber
 
     # Check if new area contains only empty-values or free area-values
-    if np.all(numpyGrid[coord[5] - increase:coord[6] + increase,
-            coord[7] - increase:coord[8] + increase] <= 1) and \
-            currentObject.checkBorders() == True:
+    if \
+    np.all(numpyGrid[coord[5] - increase:coord[6] + increase,
+    coord[7] - increase:coord[8] + increase] <= 1) and \
+    currentObject.checkBorders() == True:
 
         # Update extra free area in self
         currentObject.extraFreeArea = increase
