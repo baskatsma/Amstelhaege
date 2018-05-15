@@ -7,7 +7,6 @@ import random as rd
 import sys
 from models.models import *
 from models.templates import *
-from pathlib import Path
 from timeit import default_timer as timer
 
 # Run random algorithm
@@ -50,7 +49,6 @@ def randomAlgorithm(allResults):
 
         # Initialize numpy grid (verticalY, horizontalX)
         numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
-        # numpyGrid = np.zeros((gridYLength,gridXLength))
 
         # Initialize total score
         currentResult = {
@@ -101,7 +99,7 @@ def randomAlgorithm(allResults):
                 checkAllFreeArea(currentObject, increase, numpyGrid,
                                  numpyGridOriginal)
 
-                # Then, calculate the new value of the house
+                # Then, calculate the new value of each house
                 currentResult["totalScore"] += currentObject.calculateScore()
 
         # Print score
@@ -292,10 +290,6 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
 
         # Update extra free area in self
         currentObject.extraFreeArea = increase
-
-        # testing
-        #print(currentObject.type,"ID:",currentObject.uniqueID,"(",\
-        #currentObject.yBegin,",",currentObject.xBegin,")","|| increase:",increase)
 
         # Increase X, Y and call self until impossible
         increase += 2
