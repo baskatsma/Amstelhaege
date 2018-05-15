@@ -8,7 +8,7 @@ def main():
     sys.setrecursionlimit(4000)
 
     # Initialize variables
-    rounds = 150
+    rounds = 3500
     roundsCounter = 0
 
     # Set result template

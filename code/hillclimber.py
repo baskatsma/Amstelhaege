@@ -283,7 +283,7 @@ def hillclimberAlgorithm(allResults):
     #         hillclimberAlgorithm(randomMap, allResults)
 
     # Do hillclimber x amount of times
-    for i in range(5500):
+    for i in range(3500):
 
         results = switchCoordinates(residentialArea, numpyGrid)
         randomHouse1 = results[0]
