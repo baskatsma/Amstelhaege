@@ -25,82 +25,13 @@ def randomAlgorithm(allResults):
         # Measure algorithm time
         timeStart = timer()
 
-        # Get maxHouses
-        maxHouses = defineSettings()
+        # Get a random map
+        randomMap = initializeRandomMap()
 
-        # Create a grid helper instance
-        gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
-
-        # Create woonwijk
-        residentialArea = []
-
-        # Add one piece of water
-        residentialArea.append(Water(**waterTemplate))
-
-        # Create new houses based on the grid requirements
-        for maison in range(gridInformation.totalAmountMaisons):
-            residentialArea.append(House(**maisonTemplate))
-
-        for bungalow in range(gridInformation.totalAmountBungalows):
-            residentialArea.append(House(**bungalowTemplate))
-
-        for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
-            residentialArea.append(House(**eengezinswoningTemplate))
-
-        # Initialize numpy grid (verticalY, horizontalX)
-        numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
-
-        # Initialize total score
-        currentResult = {
-                        "score": 0,
-                        "runtime": 0,
-                        "residentialArea": [],
-                        }
-
-        # Loop over all objects (water + houses)
-        for object in range(len(residentialArea)):
-
-            # Give the current object an easy variable
-            currentObject = residentialArea[object]
-
-            # Put water on grid
-            if currentObject.type == "water":
-
-                # Set its coordinates and update uniqueID
-                updateCoordinates(currentObject, (0, 0))
-                currentObject.uniqueID = object + 200
-                #drawNumber = currentObject.uniqueID
-                drawNumber = 3
-
-                # Free area and water do not interfere
-                visualizeOnGrid(currentObject.yBegin, currentObject.yEnd,
-                                currentObject.xBegin, currentObject.xEnd,
-                                numpyGrid, drawNumber)
-
-            # Put houses on grid and calculate score
-            else:
-
-                # Update uniqueID and place houses
-                currentObject.uniqueID = object + 10
-                placeOnGrid(currentObject, numpyGrid)
-
-        # After placing all houses, loop over them
-        for object in range(len(residentialArea)):
-
-            # Give the current object an easy variable
-            currentObject = residentialArea[object]
-
-            # Calculate score if current item is not water
-            if currentObject.type != "water":
-
-                # Find all extra free area per house
-                increase = (1 * 2)
-                numpyGridOriginal = numpyGrid
-                checkAllFreeArea(currentObject, increase, numpyGrid,
-                                 numpyGridOriginal)
-
-                # Then, calculate the new value of each house
-                currentResult["score"] += currentObject.calculateScore()
+        # Extract map and results
+        residentialArea = randomMap[0]
+        numpyGrid = randomMap[1]
+        currentResult = randomMap[2]
 
         # Print score
         print("The total score is:", currentResult["score"])
@@ -113,12 +44,14 @@ def randomAlgorithm(allResults):
         currentResult["runtime"] = runtime
         currentResult["residentialArea"] = residentialArea
 
-        # Update all results
+        # Update allResults template with the current results
+        allResults["maxHouses"] = currentResult["maxHouses"]
         allResults["totalRuntime"] += runtime
+
+        # Based on the current results, check for higher/lower scores and update
         allResults = updateResults(currentResult, allResults)
 
         # Print runtime
-        print("This round (in seconds):",currentResult["runtime"])
         print("Total elapsed time (in seconds):",allResults["totalRuntime"])
         print("")
 
@@ -129,7 +62,8 @@ def randomAlgorithm(allResults):
         else:
             # Print high/low score & runtime
             print("")
-            print("Rounds:", allResults["rounds"], "|| MaxHouses:", maxHouses)
+            print("Rounds:", allResults["rounds"], "|| MaxHouses:", \
+            allResults["maxHouses"])
             print("---------------------------------------------")
             print("Highest score:", allResults["highestScore"])
             print("Lowest score:", allResults["lowestScore"])
@@ -167,6 +101,93 @@ def randomAlgorithm(allResults):
         #     rowCounter += 1
         # print("")
         # print("")
+
+def initializeRandomMap():
+
+    # Get maxHouses
+    maxHouses = defineSettings()
+
+    # Create a grid helper instance
+    gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
+
+    # Create woonwijk
+    residentialArea = []
+
+    # Add one piece of water
+    residentialArea.append(Water(**waterTemplate))
+
+    # Create new houses based on the grid requirements
+    for maison in range(gridInformation.totalAmountMaisons):
+        residentialArea.append(House(**maisonTemplate))
+
+    for bungalow in range(gridInformation.totalAmountBungalows):
+        residentialArea.append(House(**bungalowTemplate))
+
+    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
+        residentialArea.append(House(**eengezinswoningTemplate))
+
+    # Initialize numpy grid (verticalY, horizontalX)
+    numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
+
+    # Initialize current score
+    currentResult = {
+                    "score": 0,
+                    "runtime": 0,
+                    "residentialArea": [],
+                    "maxHouses": maxHouses,
+                    }
+
+    # Loop over all objects (water + houses)
+    for object in range(len(residentialArea)):
+
+        # Give the current object an easy variable
+        currentObject = residentialArea[object]
+
+        # Put water on numpy grid
+        if currentObject.type == "water":
+
+            # Set its coordinates and update uniqueID
+            updateCoordinates(currentObject, (0, 0))
+            currentObject.uniqueID = 200
+
+            # Define the number in the numpy grid
+            drawNumber = 3
+
+            # Immediately plot it, as the field is empty at the moment
+            visualizeOnGrid(currentObject.yBegin, currentObject.yEnd,
+                            currentObject.xBegin, currentObject.xEnd,
+                            numpyGrid, drawNumber)
+
+        # Put houses on grid and calculate score
+        else:
+
+            # Update uniqueID and place houses on numpy grid
+            currentObject.uniqueID = 10 + object
+            placeOnGrid(currentObject, numpyGrid)
+
+    # After placing all houses, loop over them
+    for object in range(len(residentialArea)):
+
+        # Give the current object an easy variable
+        currentObject = residentialArea[object]
+
+        # Calculate score if current item is not water
+        if currentObject.type != "water":
+
+            # Find all extra free area per house per step of 2 meter
+            increase = (1 * 2)
+
+            # Create a numpyGrid copy
+            numpyGridOriginal = numpyGrid
+
+            # For each house, calculate its extra free area
+            checkAllFreeArea(currentObject, increase, numpyGrid,
+                             numpyGridOriginal)
+
+            # Then, calculate the new value of each house
+            currentResult["score"] += currentObject.calculateScore()
+
+    return residentialArea, numpyGrid, currentResult
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
@@ -234,77 +255,6 @@ def updateCoordinates(currentObject, coordinates):
     currentObject.xBegin = coordinates[1]
     currentObject.xEnd = endCoordinates[1]
 
-def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
-
-    # ALLES moet hier 0 zijn in dit gebied om een huis te plaatsen,
-    # dus IETS wat ook maar geen 0 is (aka niet leeg), wordt gelijk gecanceld.
-    if choice == "excludingFreeArea":
-
-        # Check house dimension area if it's completely empty
-        if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
-            return False
-
-        else:
-            return True
-
-    # We willen kijken of dit gebied OF helemaal 0 (leeg) is, OF helemaal 1
-    # (inclusief vrijstand dus, want die mag overlappen)
-    # OF een mix van 0 en 1 (leeg + vrijstand)
-    # In ieder geval geen 3, 4, 5, etc. of uniqueID waarde.
-    if choice == "includingFreeArea":
-        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 1):
-            return True
-
-        else:
-            return False
-
-def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
-
-    # Remove all modifications before (re)starting
-    numpyGrid = numpyGridOriginal
-
-    # Define coordinate variables
-    yBegin = currentObject.yBegin
-    yEnd = currentObject.yEnd
-    xBegin = currentObject.xBegin
-    xEnd = currentObject.xEnd
-    freeArea = currentObject.freeArea
-
-    fAYBegin = yBegin - freeArea
-    fAYEnd = yEnd + freeArea
-    fAXBegin = xBegin - freeArea
-    fAXEnd = xEnd + freeArea
-
-    # Get drawNumbers
-    # TERMINAL
-    drawNumber = currentObject.uniqueID
-    fADrawNumber = 1
-
-    # Change uniqueID drawnumber to 1's for this method to work
-    numpyGrid[yBegin:yEnd,xBegin:xEnd] = fADrawNumber
-
-    # Check if new area contains only empty-values or free area-values
-    if np.all(numpyGrid[fAYBegin - increase:fAYEnd + increase,
-            fAXBegin - increase:fAXEnd + increase] <= 1) and \
-            currentObject.checkBorders() == True:
-
-        # Update extra free area in self
-        currentObject.extraFreeArea = increase
-
-        # Increase X, Y and call self until impossible
-        increase += 2
-        checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal)
-
-    else:
-
-        # Re-draw number, because we deleted it a few steps ago
-        numpyGrid[yBegin:yEnd,xBegin:xEnd] = drawNumber
-
-        # Remove all other modifications before ending
-        numpyGrid = numpyGridOriginal
-
-        return False
-
 def placeOnGrid(currentObject, numpyGrid):
 
     # Get random coordinates and update in self
@@ -327,19 +277,20 @@ def placeOnGrid(currentObject, numpyGrid):
     #     currentObject.freeArea = 0
     #     drawNumber = 2
 
+    # Define coordinate variables
     yBegin = currentObject.yBegin
     yEnd = currentObject.yEnd
     xBegin = currentObject.xBegin
     xEnd = currentObject.xEnd
     freeArea = currentObject.freeArea
 
+    # Define (coordinate + free area) variables
     fAYBegin = yBegin - freeArea
     fAYEnd = yEnd + freeArea
     fAXBegin = xBegin - freeArea
     fAXEnd = xEnd + freeArea
 
-    # Get drawNumbers
-    # TERMINAL
+    # Specify drawNumbers
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
@@ -372,6 +323,77 @@ def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumbe
     # Select a specific grid area and fill it
     numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] = drawNumber
 
+def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
+
+    # ALLES moet hier 0 zijn in dit gebied om een huis te plaatsen,
+    # dus IETS wat ook maar geen 0 is (aka niet leeg), wordt gelijk gecanceld.
+    if choice == "excludingFreeArea":
+
+        # Check house dimension area if it's completely empty
+        if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
+            return False
+
+        else:
+            return True
+
+    # We willen kijken of dit gebied OF helemaal 0 (leeg) is, OF helemaal 1
+    # (inclusief vrijstand dus, want die mag overlappen)
+    # OF een mix van 0 en 1 (leeg + vrijstand)
+    # In ieder geval geen 3, 4, 5, etc. of uniqueID waarde.
+    if choice == "includingFreeArea":
+        if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 1):
+            return True
+
+        else:
+            return False
+
+def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
+
+    # Remove all (increase) modifications before (re)starting
+    numpyGrid = numpyGridOriginal
+
+    # Define coordinate variables
+    yBegin = currentObject.yBegin
+    yEnd = currentObject.yEnd
+    xBegin = currentObject.xBegin
+    xEnd = currentObject.xEnd
+    freeArea = currentObject.freeArea
+
+    # Define (coordinate + free area) variables
+    fAYBegin = yBegin - freeArea
+    fAYEnd = yEnd + freeArea
+    fAXBegin = xBegin - freeArea
+    fAXEnd = xEnd + freeArea
+
+    # Specify drawNumbers
+    drawNumber = currentObject.uniqueID
+    fADrawNumber = 1
+
+    # Change uniqueID drawnumber to 1's for this method to work
+    numpyGrid[yBegin:yEnd,xBegin:xEnd] = fADrawNumber
+
+    # Check if new area contains only empty-values or free area-values
+    if np.all(numpyGrid[fAYBegin - increase:fAYEnd + increase,
+            fAXBegin - increase:fAXEnd + increase] <= 1) and \
+            currentObject.checkBorders() == True:
+
+        # Update extra free area in self
+        currentObject.extraFreeArea = increase
+
+        # Increase X, Y and call self until impossible
+        increase += 2
+        checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal)
+
+    else:
+
+        # Re-draw number, because we deleted it a few steps ago
+        numpyGrid[yBegin:yEnd,xBegin:xEnd] = drawNumber
+
+        # Remove all other modifications before ending
+        numpyGrid = numpyGridOriginal
+
+        return False
+
 def hillVisualizer(currentObject, numpyGrid):
 
     if currentObject.type == "eengezinswoning":
@@ -381,19 +403,20 @@ def hillVisualizer(currentObject, numpyGrid):
     elif currentObject.type == "maison":
         currentObject.freeArea = 6 * 2
 
-    #print("Drawing fA + house for:", currentObject.type,"with ID:", currentObject.uniqueID)
-
+    # Define coordinate variables
     yBegin = currentObject.yBegin
     yEnd = currentObject.yEnd
     xBegin = currentObject.xBegin
     xEnd = currentObject.xEnd
     freeArea = currentObject.freeArea
 
+    # Define (coordinate + free area) variables
     fAYBegin = yBegin - freeArea
     fAYEnd = yEnd + freeArea
     fAXBegin = xBegin - freeArea
     fAXEnd = xEnd + freeArea
 
+    # Specify drawNumbers
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
@@ -413,22 +436,22 @@ def fixIncorrectVisualizations(currentObject, numpyGrid):
     elif currentObject.type == "maison":
         currentObject.freeArea = 6 * 2
 
+    # Define coordinate variables
     yBegin = currentObject.yBegin
     yEnd = currentObject.yEnd
     xBegin = currentObject.xBegin
     xEnd = currentObject.xEnd
     freeArea = currentObject.freeArea
 
+    # Define (coordinate + free area) variables
     fAYBegin = yBegin - freeArea
     fAYEnd = yEnd + freeArea
     fAXBegin = xBegin - freeArea
     fAXEnd = xEnd + freeArea
 
+    # Specify drawNumbers
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
-
-    visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
-                    numpyGrid, 0)
 
     # The area is viable: draw free area first
     visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
@@ -571,7 +594,7 @@ def drawPlotObjects(residentialArea, object, ax):
 
 def updateResults(currentResult, allResults):
 
-    # Update .all results
+    # Update all results
     allResults["allScores"] += currentResult["score"]
     allResults["allRuntimes"] += currentResult["runtime"]
 

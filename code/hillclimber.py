@@ -10,87 +10,6 @@ from models.models import *
 from models.templates import *
 from timeit import default_timer as timer
 
-# def initializeRandomMap():
-#
-#     # Get maxHouses
-#     maxHouses = defineSettings()
-#
-#     # Create a grid helper instance
-#     gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
-#
-#     # Create woonwijk
-#     residentialArea = []
-#
-#     # Add one piece of water
-#     residentialArea.append(Water(**waterTemplate))
-#
-#     # Create new houses based on the grid requirements
-#     for maison in range(gridInformation.totalAmountMaisons):
-#         residentialArea.append(House(**maisonTemplate))
-#
-#     for bungalow in range(gridInformation.totalAmountBungalows):
-#         residentialArea.append(House(**bungalowTemplate))
-#
-#     for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
-#         residentialArea.append(House(**eengezinswoningTemplate))
-#
-#     # Initialize numpy grid (verticalY, horizontalX)
-#     numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
-#
-#     # Initialize total score
-#     currentResult = {
-#                     "score": 0,
-#                     "runtime": 0,
-#                     "residentialArea": [],
-#                     }
-#
-#     # Loop over all objects (water + houses)
-#     for object in range(len(residentialArea)):
-#
-#         # Give the current object an easy variable
-#         currentObject = residentialArea[object]
-#
-#         # Put water on grid
-#         if currentObject.type == "water":
-#
-#             # Set its coordinates and update uniqueID
-#             updateCoordinates(currentObject, (0, 0))
-#             currentObject.uniqueID = object + 200
-#             #drawNumber = currentObject.uniqueID
-#             drawNumber = 3
-#
-#             # Free area and water do not interfere
-#             visualizeOnGrid(currentObject.yBegin, currentObject.yEnd,
-#                             currentObject.xBegin, currentObject.xEnd,
-#                             numpyGrid, drawNumber)
-#
-#         # Put houses on grid and calculate score
-#         else:
-#
-#             # Update uniqueID and place houses
-#             currentObject.uniqueID = object + 10
-#             placeOnGrid(currentObject, numpyGrid)
-#
-#     # After placing all houses, loop over them
-#     for object in range(len(residentialArea)):
-#
-#         # Give the current object an easy variable
-#         currentObject = residentialArea[object]
-#
-#         # Calculate score if current item is not water
-#         if currentObject.type != "water":
-#
-#             # Find all extra free area per house
-#             increase = (1 * 2)
-#             numpyGridOriginal = numpyGrid
-#             checkAllFreeArea(currentObject, increase, numpyGrid,
-#                              numpyGridOriginal)
-#
-#             # Then, calculate the new value of the house
-#             currentResult["score"] += currentObject.calculateScore()
-#
-#     return residentialArea, numpyGrid, currentResult
-
 def hillclimberAlgorithm(allResults):
 #def hillclimberAlgorithm(randomMap, allResults):
 
@@ -107,14 +26,9 @@ def hillclimberAlgorithm(allResults):
     # Measure algorithm time
     timeStart = timer()
 
-    # # Extract map and variables
-    # residentialArea = randomMap[0]
-    # numpyGrid = randomMap[1]
-    # currentResult = randomMap[2]
-    # oldScore = currentResult["score"]
-
-    # Get maxHouses
+    # Get maxHouses and update in results sheet
     maxHouses = defineSettings()
+    allResults["maxHouses"] = maxHouses
 
     # Create a grid helper instance
     gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)

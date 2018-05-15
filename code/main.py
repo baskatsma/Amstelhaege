@@ -8,7 +8,7 @@ def main():
     sys.setrecursionlimit(4000)
 
     # Initialize variables
-    rounds = 3500
+    rounds = 200
     roundsCounter = 0
 
     # Set result template
@@ -25,6 +25,7 @@ def main():
                     "totalRuntime": 0,
                     "rounds": rounds,
                     "roundsCounter": roundsCounter,
+                    "maxHouses": 0,
                     }
 
     if len(sys.argv) < 3:
