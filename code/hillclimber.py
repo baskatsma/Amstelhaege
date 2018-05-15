@@ -197,7 +197,7 @@ def hillclimberAlgorithm(allResults):
     #         hillclimberAlgorithm(randomMap, allResults)
 
     # Do hillclimber x amount of times
-    for i in range(3500):
+    for i in range(20000):
 
         results = switchCoordinates(residentialArea, numpyGrid)
         randomHouse1 = results[0]
@@ -337,10 +337,6 @@ def switchCoordinates(residentialArea, numpyGrid):
     oldCoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
     newCoordinates1 = (randomHouse2.yBegin, randomHouse2.xBegin)
     newCoordinates2 = (randomHouse1.yBegin, randomHouse1.xBegin)
-    #print("Old coordinates of house 1:",oldCoordinates1,"of type:", randomHouse1.type)
-    #print("Old coordinates of house 2:",oldCoordinates2,"of type:", randomHouse2.type)
-    #print("New coordinates of house 1:",newCoordinates1,"of type:", randomHouse1.type)
-    #print("New coordinates of house 2:",newCoordinates2,"of type:", randomHouse2.type)
 
     # Remove houses from map and numpyGrid
     randomHouse1.removeFromGridAndMap(numpyGrid)

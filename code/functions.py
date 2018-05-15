@@ -213,9 +213,6 @@ def defineSettings():
         else:
             maxHouses = 20
 
-    # TERMINAL
-    # maxHouses = 8
-
     return maxHouses
 
 def getCoordinates(currentObject):
@@ -255,6 +252,23 @@ def updateCoordinates(currentObject, coordinates):
     currentObject.xBegin = coordinates[1]
     currentObject.xEnd = endCoordinates[1]
 
+def coordinateVariables(currentObject):
+
+    # Define coordinate variables
+    yBegin = currentObject.yBegin
+    yEnd = currentObject.yEnd
+    xBegin = currentObject.xBegin
+    xEnd = currentObject.xEnd
+    freeArea = currentObject.freeArea
+
+    # Define (coordinate + free area) variables
+    fAYBegin = yBegin - freeArea
+    fAYEnd = yEnd + freeArea
+    fAXBegin = xBegin - freeArea
+    fAXEnd = xEnd + freeArea
+
+    return yBegin, yEnd, xBegin, xEnd, freeArea, fAYBegin, fAYEnd, fAXBegin, fAXEnd
+
 def placeOnGrid(currentObject, numpyGrid):
 
     # Get random coordinates and update in self
@@ -277,18 +291,8 @@ def placeOnGrid(currentObject, numpyGrid):
     #     currentObject.freeArea = 0
     #     drawNumber = 2
 
-    # Define coordinate variables
-    yBegin = currentObject.yBegin
-    yEnd = currentObject.yEnd
-    xBegin = currentObject.xBegin
-    xEnd = currentObject.xEnd
-    freeArea = currentObject.freeArea
-
-    # Define (coordinate + free area) variables
-    fAYBegin = yBegin - freeArea
-    fAYEnd = yEnd + freeArea
-    fAXBegin = xBegin - freeArea
-    fAXEnd = xEnd + freeArea
+    # Get coordinate variables
+    coord = coordinateVariables(currentObject)
 
     # Specify drawNumbers
     drawNumber = currentObject.uniqueID
@@ -298,17 +302,18 @@ def placeOnGrid(currentObject, numpyGrid):
     if currentObject.checkBorders() == True:
 
         # Check for house and free area overlap
-        if checkOverlap(yBegin, yEnd, xBegin, xEnd, numpyGrid,
+        if checkOverlap(coord[0], coord[1], coord[2], coord[3], numpyGrid,
                         "excludingFreeArea") == True and \
-        checkOverlap(fAYBegin, fAYEnd, fAXBegin, fAXEnd, numpyGrid,
+        checkOverlap(coord[5], coord[6], coord[7], coord[8], numpyGrid,
                     "includingFreeArea") == True:
 
             # The area is viable: draw free area first
-            visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
+            visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
                             numpyGrid, fADrawNumber)
 
             # Visualize house on top of free area
-            visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
+            visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
+                            numpyGrid, drawNumber)
 
         # Start over, because there are house and/or free area overlap issues
         else:
@@ -352,29 +357,19 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
     # Remove all (increase) modifications before (re)starting
     numpyGrid = numpyGridOriginal
 
-    # Define coordinate variables
-    yBegin = currentObject.yBegin
-    yEnd = currentObject.yEnd
-    xBegin = currentObject.xBegin
-    xEnd = currentObject.xEnd
-    freeArea = currentObject.freeArea
-
-    # Define (coordinate + free area) variables
-    fAYBegin = yBegin - freeArea
-    fAYEnd = yEnd + freeArea
-    fAXBegin = xBegin - freeArea
-    fAXEnd = xEnd + freeArea
+    # Get coordinate variables
+    coord = coordinateVariables(currentObject)
 
     # Specify drawNumbers
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
     # Change uniqueID drawnumber to 1's for this method to work
-    numpyGrid[yBegin:yEnd,xBegin:xEnd] = fADrawNumber
+    numpyGrid[coord[0]:coord[1],coord[2]:coord[3]] = fADrawNumber
 
     # Check if new area contains only empty-values or free area-values
-    if np.all(numpyGrid[fAYBegin - increase:fAYEnd + increase,
-            fAXBegin - increase:fAXEnd + increase] <= 1) and \
+    if np.all(numpyGrid[coord[5] - increase:coord[6] + increase,
+            coord[7] - increase:coord[8] + increase] <= 1) and \
             currentObject.checkBorders() == True:
 
         # Update extra free area in self
@@ -387,7 +382,7 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
     else:
 
         # Re-draw number, because we deleted it a few steps ago
-        numpyGrid[yBegin:yEnd,xBegin:xEnd] = drawNumber
+        numpyGrid[coord[0]:coord[1],coord[2]:coord[3]] = drawNumber
 
         # Remove all other modifications before ending
         numpyGrid = numpyGridOriginal
@@ -403,29 +398,19 @@ def hillVisualizer(currentObject, numpyGrid):
     elif currentObject.type == "maison":
         currentObject.freeArea = 6 * 2
 
-    # Define coordinate variables
-    yBegin = currentObject.yBegin
-    yEnd = currentObject.yEnd
-    xBegin = currentObject.xBegin
-    xEnd = currentObject.xEnd
-    freeArea = currentObject.freeArea
-
-    # Define (coordinate + free area) variables
-    fAYBegin = yBegin - freeArea
-    fAYEnd = yEnd + freeArea
-    fAXBegin = xBegin - freeArea
-    fAXEnd = xEnd + freeArea
+    # Get coordinate variables
+    coord = coordinateVariables(currentObject)
 
     # Specify drawNumbers
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
     # The area is viable: draw free area first
-    visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
+    visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
                     numpyGrid, fADrawNumber)
 
     # Visualize house on top of free area
-    visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
+    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3], numpyGrid, drawNumber)
 
 def fixIncorrectVisualizations(currentObject, numpyGrid):
 
@@ -436,29 +421,19 @@ def fixIncorrectVisualizations(currentObject, numpyGrid):
     elif currentObject.type == "maison":
         currentObject.freeArea = 6 * 2
 
-    # Define coordinate variables
-    yBegin = currentObject.yBegin
-    yEnd = currentObject.yEnd
-    xBegin = currentObject.xBegin
-    xEnd = currentObject.xEnd
-    freeArea = currentObject.freeArea
-
-    # Define (coordinate + free area) variables
-    fAYBegin = yBegin - freeArea
-    fAYEnd = yEnd + freeArea
-    fAXBegin = xBegin - freeArea
-    fAXEnd = xEnd + freeArea
+    # Get coordinate variables
+    coord = coordinateVariables(currentObject)
 
     # Specify drawNumbers
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
     # The area is viable: draw free area first
-    visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
+    visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
                     numpyGrid, fADrawNumber)
 
     # Visualize house on top of free area
-    visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
+    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3], numpyGrid, drawNumber)
 
 def getVideo(residentialArea):
 
