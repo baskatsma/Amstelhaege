@@ -74,12 +74,12 @@ class House(object):
         # Delete selected house + free area from numpyGrid
         numpyGrid[fAYBegin:fAYEnd,fAXBegin:fAXEnd] = 0
 
-        # Position house in (0, 0) with 0 free area
+        # Position house in (0, 0)
         self.xBegin = 0
         self.xEnd = 0
         self.yBegin = 0
         self.yEnd = 0
-        self.freeArea = 0
+        # self.freeArea = 0
 
     def checkBorders(self):
 

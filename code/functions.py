@@ -261,7 +261,7 @@ def coordinateVariables(currentObject):
     xEnd = currentObject.xEnd
     freeArea = currentObject.freeArea
 
-    # Define (coordinate + free area) variables
+    # Define (coordinate incl. free area) variables
     fAYBegin = yBegin - freeArea
     fAYEnd = yEnd + freeArea
     fAXBegin = xBegin - freeArea
@@ -376,7 +376,7 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
         currentObject.extraFreeArea = increase
 
         # Increase X, Y and call self until impossible
-        increase += 2
+        increase += (1 * 2)
         checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal)
 
     else:
@@ -391,12 +391,12 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
 
 def hillVisualizer(currentObject, numpyGrid):
 
-    if currentObject.type == "eengezinswoning":
-        currentObject.freeArea = 2 * 2
-    elif currentObject.type == "bungalow":
-        currentObject.freeArea = 3 * 2
-    elif currentObject.type == "maison":
-        currentObject.freeArea = 6 * 2
+    # if currentObject.type == "eengezinswoning":
+    #     currentObject.freeArea = 2 * 2
+    # elif currentObject.type == "bungalow":
+    #     currentObject.freeArea = 3 * 2
+    # elif currentObject.type == "maison":
+    #     currentObject.freeArea = 6 * 2
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
@@ -410,16 +410,17 @@ def hillVisualizer(currentObject, numpyGrid):
                     numpyGrid, fADrawNumber)
 
     # Visualize house on top of free area
-    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3], numpyGrid, drawNumber)
+    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
+                    numpyGrid, drawNumber)
 
 def fixIncorrectVisualizations(currentObject, numpyGrid):
 
-    if currentObject.type == "eengezinswoning":
-        currentObject.freeArea = 2 * 2
-    elif currentObject.type == "bungalow":
-        currentObject.freeArea = 3 * 2
-    elif currentObject.type == "maison":
-        currentObject.freeArea = 6 * 2
+    # if currentObject.type == "eengezinswoning":
+    #     currentObject.freeArea = 2 * 2
+    # elif currentObject.type == "bungalow":
+    #     currentObject.freeArea = 3 * 2
+    # elif currentObject.type == "maison":
+    #     currentObject.freeArea = 6 * 2
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
@@ -433,7 +434,8 @@ def fixIncorrectVisualizations(currentObject, numpyGrid):
                     numpyGrid, fADrawNumber)
 
     # Visualize house on top of free area
-    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3], numpyGrid, drawNumber)
+    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
+                    numpyGrid, drawNumber)
 
 def getVideo(residentialArea):
 

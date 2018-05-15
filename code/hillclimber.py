@@ -197,7 +197,7 @@ def hillclimberAlgorithm(allResults):
     #         hillclimberAlgorithm(randomMap, allResults)
 
     # Do hillclimber x amount of times
-    for i in range(20000):
+    for i in range(500):
 
         results = switchCoordinates(residentialArea, numpyGrid)
         randomHouse1 = results[0]
@@ -321,6 +321,7 @@ def switchCoordinates(residentialArea, numpyGrid):
     randomHouse2 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
 
     # Retry if selected house is 'water', or when both houses are the same
+    # or have the same type
     while \
             randomHouse1.type == "water" or \
             randomHouse2.type == "water" or \
@@ -348,7 +349,9 @@ def switchCoordinates(residentialArea, numpyGrid):
         # Give the current object an easy variable
         currentObject = residentialArea[object]
 
-        fixIncorrectVisualizations(currentObject, numpyGrid)
+        # Fix rough free area removal
+        if currentObject.type != "water":
+            fixIncorrectVisualizations(currentObject, numpyGrid)
 
     # Update coordinates
     updateCoordinates(randomHouse1, newCoordinates1)
@@ -359,19 +362,10 @@ def switchCoordinates(residentialArea, numpyGrid):
 
 def placeOnGridHill(currentObject, numpyGrid, residentialArea):
 
-    yBegin = currentObject.yBegin
-    yEnd = currentObject.yEnd
-    xBegin = currentObject.xBegin
-    xEnd = currentObject.xEnd
-    freeArea = currentObject.freeArea
+    # Get coordinate variables
+    coord = coordinateVariables(currentObject)
 
-    fAYBegin = yBegin - freeArea
-    fAYEnd = yEnd + freeArea
-    fAXBegin = xBegin - freeArea
-    fAXEnd = xEnd + freeArea
-
-    # Get drawNumbers
-    # TERMINAL
+    # Specify drawNumbers
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
@@ -379,17 +373,18 @@ def placeOnGridHill(currentObject, numpyGrid, residentialArea):
     if currentObject.checkBorders() == True:
 
         # Check for house and free area overlap
-        if checkOverlap(yBegin, yEnd, xBegin, xEnd, numpyGrid,
+        if checkOverlap(coord[0], coord[1], coord[2], coord[3], numpyGrid,
                         "excludingFreeArea") == True and \
-        checkOverlap(fAYBegin, fAYEnd, fAXBegin, fAXEnd, numpyGrid,
+        checkOverlap(coord[5], coord[6], coord[7], coord[8], numpyGrid,
                     "includingFreeArea") == True:
 
             # # The area is viable: draw free area first
-            # visualizeOnGrid(fAYBegin, fAYEnd, fAXBegin, fAXEnd,
+            # visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
             #                 numpyGrid, fADrawNumber)
             #
             # # Visualize house on top of free area
-            # visualizeOnGrid(yBegin, yEnd, xBegin, xEnd, numpyGrid, drawNumber)
+            # visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
+            #                   numpyGrid, drawNumber)
 
             return True
 
