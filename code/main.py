@@ -37,6 +37,8 @@ def main():
 
     elif str(sys.argv[2]) == "hillclimber":
 
+        #randomMap = initializeRandomMap()
+        #hillclimberAlgorithm(randomMap, allResults)
         hillclimberAlgorithm(allResults)
 
     else:

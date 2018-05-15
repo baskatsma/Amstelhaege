@@ -52,7 +52,7 @@ def randomAlgorithm(allResults):
 
         # Initialize total score
         currentResult = {
-                        "totalScore": 0,
+                        "score": 0,
                         "runtime": 0,
                         "residentialArea": [],
                         }
@@ -100,10 +100,10 @@ def randomAlgorithm(allResults):
                                  numpyGridOriginal)
 
                 # Then, calculate the new value of each house
-                currentResult["totalScore"] += currentObject.calculateScore()
+                currentResult["score"] += currentObject.calculateScore()
 
         # Print score
-        print("The total score is:", currentResult["totalScore"])
+        print("The total score is:", currentResult["score"])
 
         # Update algorithm runtime
         timeEnd = timer()
@@ -572,7 +572,7 @@ def drawPlotObjects(residentialArea, object, ax):
 def updateResults(currentResult, allResults):
 
     # Update .all results
-    allResults["allScores"] += currentResult["totalScore"]
+    allResults["allScores"] += currentResult["score"]
     allResults["allRuntimes"] += currentResult["runtime"]
 
     # Update avg results
@@ -580,14 +580,14 @@ def updateResults(currentResult, allResults):
     allResults["averageRuntime"] = (allResults["allRuntimes"]/allResults["rounds"])
 
     # Update score results
-    if currentResult["totalScore"] > allResults["highestScore"]:
+    if currentResult["score"] > allResults["highestScore"]:
         allResults["highestScore"] = 0
-        allResults["highestScore"] = currentResult["totalScore"]
+        allResults["highestScore"] = currentResult["score"]
         allResults["highestScoreMap"] = currentResult["residentialArea"]
 
-    if currentResult["totalScore"] < allResults["lowestScore"]:
+    if currentResult["score"] < allResults["lowestScore"]:
         allResults["lowestScore"] = 0
-        allResults["lowestScore"] = currentResult["totalScore"]
+        allResults["lowestScore"] = currentResult["score"]
 
     # Update runtime results
     if currentResult["runtime"] < allResults["fastestRuntime"]:
