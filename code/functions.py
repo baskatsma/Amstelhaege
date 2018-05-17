@@ -38,15 +38,6 @@ def initializeRandomMap():
 
     # Initialize current score
     currentResult = Results(**resultsTemplate)
-    currentResult.maxHouses = maxHouses
-
-    # currentResult = {
-    #                 "score": 0,
-    #                 "runtime": 0,
-    #                 "residentialArea": [],
-    #                 "numpyGrid": 0,
-    #                 "maxHouses": maxHouses,
-    #                 }
 
     # Loop over all objects (water + houses)
     for object in range(len(residentialArea)):
@@ -98,10 +89,13 @@ def initializeRandomMap():
             # Then, calculate the new value of each house
             currentResult.highestScore += currentObject.calculateScore()
 
-    # Save numpyGrid
+    # Save current results
+    currentResult.maxHouses = maxHouses
+    currentResult.highestScoreMap = residentialArea
     currentResult.numpyGrid = numpyGrid
 
-    return residentialArea, numpyGrid, currentResult
+    # return residentialArea, numpyGrid, currentResult
+    return currentResult
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
@@ -187,23 +181,6 @@ def placeOnGrid(currentObject, numpyGrid):
 
     # Get random coordinates and update in self
     getCoordinates(currentObject)
-
-    # # TERMINAL
-    # if currentObject.type == "eengezinswoning":
-    #     currentObject.freeArea = 1
-    #     drawNumber = 3
-    #
-    # elif currentObject.type == "bungalow":
-    #     currentObject.freeArea = 1
-    #     drawNumber = 4
-    #
-    # elif currentObject.type == "maison":
-    #     currentObject.freeArea = 2
-    #     drawNumber = 5
-    #
-    # elif currentObject.type == "water":
-    #     currentObject.freeArea = 0
-    #     drawNumber = 2
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
@@ -539,7 +516,7 @@ def drawPlotObjects(residentialArea, object, ax):
         colorChoice2 = 'blue'
 
     # Create new rects for freeArea + house
-    rectUpperRight = patches.Rectangle((xBegin,yBegin),         # (X,Y) tuple
+    rectUpperRight = patches.Rectangle((xBegin,yBegin),               # (X,Y) tuple
                              xEnd - xBegin + fA + eFA,                # width
                              yEnd - yBegin + fA + eFA,                # height
                              color=colorChoice,
@@ -557,16 +534,16 @@ def drawPlotObjects(residentialArea, object, ax):
                              color=colorChoice,
                              alpha=0.2)
 
-    rectLowerLeft = patches.Rectangle((xEnd,yEnd),              # (X,Y) tuple
+    rectLowerLeft = patches.Rectangle((xEnd,yEnd),                    # (X,Y) tuple
                              xBegin - xEnd - fA - eFA,                # width
                              yBegin - yEnd - fA - eFA,                # height
                              color=colorChoice,
                              alpha=0.2)
 
     # Create new rect for house only
-    rectHouse = patches.Rectangle((xBegin,yBegin),              # (X,Y) tuple
-                             (xEnd - xBegin),                   # width
-                             (yEnd - yBegin),                   # height
+    rectHouse = patches.Rectangle((xBegin,yBegin),                    # (X,Y) tuple
+                             (xEnd - xBegin),                         # width
+                             (yEnd - yBegin),                         # height
                              color=colorChoice2,)
 
     # Add the rects
@@ -579,6 +556,7 @@ def drawPlotObjects(residentialArea, object, ax):
 def updateResults(currentResult, allResults):
 
     # Update all results
+    allResults.maxHouses = currentResult.maxHouses
     allResults.allScores += currentResult.highestScore
     allResults.allRuntimes += currentResult.fastestRuntime
 
@@ -588,22 +566,18 @@ def updateResults(currentResult, allResults):
 
     # Update score results
     if currentResult.highestScore > allResults.highestScore:
-        allResults.highestScore = 0
         allResults.highestScore = currentResult.highestScore
         allResults.highestScoreMap = currentResult.highestScoreMap
         allResults.numpyGrid = currentResult.numpyGrid
 
     if currentResult.highestScore < allResults.lowestScore:
-        allResults.lowestScore = 0
         allResults.lowestScore = currentResult.highestScore
 
     # Update runtime results
     if currentResult.fastestRuntime < allResults.fastestRuntime:
-        allResults.fastestRuntime = 0
         allResults.fastestRuntime = currentResult.fastestRuntime
 
     if currentResult.fastestRuntime > allResults.slowestRuntime:
-        allResults.slowestRuntime = 0
         allResults.slowestRuntime = currentResult.fastestRuntime
 
     return allResults

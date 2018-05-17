@@ -26,35 +26,23 @@ def randomAlgorithm(randomResults):
     # Measure algorithm time
     timeStart = timer()
 
-    # Get a random map
-    randomMap = initializeRandomMap()
+    # Get a random map and its results
+    currentResult = initializeRandomMap()
 
-    # Extract map and results
-    residentialArea = randomMap[0]
-    numpyGrid = randomMap[1]
-    currentResult = randomMap[2]
-
-    # Print score
-    print("The total score is:", currentResult.highestScore)
-
-    # Update algorithm runtime
+    # Update algorithm runtimes
     timeEnd = timer()
     runtime = (timeEnd - timeStart)
-
-    # Save current results
     currentResult.fastestRuntime = runtime
-    currentResult.highestScoreMap = residentialArea
-
-    # Update randomResults template with the current results
-    randomResults.maxHouses = currentResult.maxHouses
     randomResults.totalRuntime += runtime
 
     # Based on the current results, check for higher/lower scores and update
     randomResults = updateResults(currentResult, randomResults)
 
-    # Print runtime
-    print("Total elapsed time (in seconds):",randomResults.totalRuntime)
-    print("")
+    # Print current score and total runtime
+    runtimeDecimal = "%.3f" % randomResults.totalRuntime
+    print("Total runtime (sec.):",
+    runtimeDecimal,"|| Score:",currentResult.highestScore,
+    "|| Round:",randomResults.roundsCounter)
 
     # Only run 'rounds' amount of times
     if randomResults.roundsCounter < randomResults.rounds:
@@ -79,30 +67,6 @@ def randomAlgorithm(randomResults):
 
         return randomResults
 
-    # # TERMINAL
-    # rowCounter = 0
-    # print("")
-    # print("")
-    # print("        X →")
-    # print("        ",end="")
-    # for i in range(gridXLength):
-    #     if i < 10:
-    #         print(i," ",end="")
-    #     else:
-    #         print(i,"",end="")
-    # print("")
-    # print("  ↓ Y")
-    # for row in numpyGrid:
-    #     if rowCounter < 10:
-    #         print("   ",rowCounter," ", end="")
-    #     else:
-    #         print("  ",rowCounter," ", end="")
-    #
-    #     print(row)
-    #     rowCounter += 1
-    # print("")
-    # print("")
-
 # Run hillclimber algorithm
 def hillclimberAlgorithm(hillclimberResults, randomResults):
 
@@ -115,14 +79,6 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
 
     # Measure algorithm time
     timeStart = timer()
-
-    # # Get a random map
-    # randomMap = initializeRandomMap()
-    #
-    # # Extract map and results
-    # residentialArea = randomMap[0]
-    # numpyGrid = randomMap[1]
-    # currentResult = randomMap[2]
 
     # Extract map and results
     residentialArea = randomResults.highestScoreMap
@@ -198,13 +154,11 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
             # If the score is higher, leave the houses on their new spot!
             if newScore > oldScore:
 
-                print("++ Score:", newScore, "vs.", oldScore, "|| round:",
+                print("++ Score:", newScore, "vs.", oldScore, "|| Round:",
                 hillclimberResults.roundsCounter)
 
                 # Update scores
-                #hillclimberResults.highestScore = 0
                 hillclimberResults.highestScore = newScore
-                #hillclimberResults.highestScoreMap = []
                 hillclimberResults.highestScoreMap = residentialArea
                 hillclimberResults.swaps += 1
 
@@ -218,7 +172,7 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
             # Else, score is lower
             else:
 
-                print("-- Score:", newScore, "vs.", oldScore, "|| round:",
+                print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
                 hillclimberResults.roundsCounter)
 
                 # Revert to old coordinates and fix numpyGrid

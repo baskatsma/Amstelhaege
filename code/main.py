@@ -6,10 +6,10 @@ import sys
 def main():
 
     # Avoid recursion errors
-    sys.setrecursionlimit(4000)
+    sys.setrecursionlimit(5000)
 
     # Initialize variables
-    rounds = 100
+    rounds = 1750
     roundsCounter = 0
 
     if len(sys.argv) < 3:

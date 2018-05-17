@@ -45,10 +45,6 @@ class House(object):
                                 int(objectDimensions[1] * 2))
         self.freeArea = (freeArea * 2)
         self.extraFreeArea = (extraFreeArea * 2)
-        # TERMINAL
-        # self.objectDimensions = (objectDimensions[0], objectDimensions[1])
-        # self.freeArea = freeArea
-        # self.extraFreeArea = extraFreeArea
         self.value = value
         self.valueIncrease = valueIncrease
         self.xBegin = xBegin
@@ -81,12 +77,12 @@ class House(object):
         self.xEnd = 0
         self.yBegin = 0
         self.yEnd = 0
-        # self.freeArea = 0
 
     def checkBorders(self):
 
         # Check for grid border problems
-        if (self.yEnd + self.freeArea + self.extraFreeArea) > self.gridYLength or \
+        if \
+        (self.yEnd + self.freeArea + self.extraFreeArea) > self.gridYLength or \
         (self.xEnd + self.freeArea + self.extraFreeArea) > self.gridXLength or \
         (self.xBegin - self.freeArea - self.extraFreeArea) < 0 or \
         (self.yBegin - self.freeArea - self.extraFreeArea) < 0:
