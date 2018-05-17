@@ -37,13 +37,16 @@ def initializeRandomMap():
     numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
 
     # Initialize current score
-    currentResult = {
-                    "score": 0,
-                    "runtime": 0,
-                    "residentialArea": [],
-                    "numpyGrid": 0,
-                    "maxHouses": maxHouses,
-                    }
+    currentResult = Results(**resultsTemplate)
+    currentResult.maxHouses = maxHouses
+
+    # currentResult = {
+    #                 "score": 0,
+    #                 "runtime": 0,
+    #                 "residentialArea": [],
+    #                 "numpyGrid": 0,
+    #                 "maxHouses": maxHouses,
+    #                 }
 
     # Loop over all objects (water + houses)
     for object in range(len(residentialArea)):
@@ -93,10 +96,10 @@ def initializeRandomMap():
                              numpyGridOriginal)
 
             # Then, calculate the new value of each house
-            currentResult["score"] += currentObject.calculateScore()
+            currentResult.highestScore += currentObject.calculateScore()
 
     # Save numpyGrid
-    currentResult["numpyGrid"] = numpyGrid
+    currentResult.numpyGrid = numpyGrid
 
     return residentialArea, numpyGrid, currentResult
 
@@ -485,8 +488,8 @@ def GIFPlot(residentialArea, indexPhoto):
 
 def printPlot(allResults):
 
-    residentialArea = allResults["highestScoreMap"]
-    totalScore = allResults["highestScore"]
+    residentialArea = allResults.highestScoreMap
+    totalScore = allResults.highestScore
 
     # Initialize matplotlib and figure
     fig = plt.figure()
@@ -576,31 +579,31 @@ def drawPlotObjects(residentialArea, object, ax):
 def updateResults(currentResult, allResults):
 
     # Update all results
-    allResults["allScores"] += currentResult["score"]
-    allResults["allRuntimes"] += currentResult["runtime"]
+    allResults.allScores += currentResult.highestScore
+    allResults.allRuntimes += currentResult.fastestRuntime
 
     # Update avg results
-    allResults["averageScore"] = int((allResults["allScores"]/allResults["rounds"]))
-    allResults["averageRuntime"] = (allResults["allRuntimes"]/allResults["rounds"])
+    allResults.averageScore = int((allResults.allScores/allResults.rounds))
+    allResults.averageRuntime = (allResults.allRuntimes/allResults.rounds)
 
     # Update score results
-    if currentResult["score"] > allResults["highestScore"]:
-        allResults["highestScore"] = 0
-        allResults["highestScore"] = currentResult["score"]
-        allResults["highestScoreMap"] = currentResult["residentialArea"]
-        allResults["numpyGrid"] = currentResult["numpyGrid"]
+    if currentResult.highestScore > allResults.highestScore:
+        allResults.highestScore = 0
+        allResults.highestScore = currentResult.highestScore
+        allResults.highestScoreMap = currentResult.highestScoreMap
+        allResults.numpyGrid = currentResult.numpyGrid
 
-    if currentResult["score"] < allResults["lowestScore"]:
-        allResults["lowestScore"] = 0
-        allResults["lowestScore"] = currentResult["score"]
+    if currentResult.highestScore < allResults.lowestScore:
+        allResults.lowestScore = 0
+        allResults.lowestScore = currentResult.highestScore
 
     # Update runtime results
-    if currentResult["runtime"] < allResults["fastestRuntime"]:
-        allResults["fastestRuntime"] = 0
-        allResults["fastestRuntime"] = currentResult["runtime"]
+    if currentResult.fastestRuntime < allResults.fastestRuntime:
+        allResults.fastestRuntime = 0
+        allResults.fastestRuntime = currentResult.fastestRuntime
 
-    if currentResult["runtime"] > allResults["slowestRuntime"]:
-        allResults["slowestRuntime"] = 0
-        allResults["slowestRuntime"] = currentResult["runtime"]
+    if currentResult.fastestRuntime > allResults.slowestRuntime:
+        allResults.slowestRuntime = 0
+        allResults.slowestRuntime = currentResult.fastestRuntime
 
     return allResults

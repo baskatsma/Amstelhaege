@@ -16,7 +16,8 @@ class Water(object):
     Contains all water properties and functions
     """
 
-    def __init__(self, type, freeArea, extraFreeArea, gridXLength, gridYLength, xBegin, xEnd, yBegin, yEnd, uniqueID):
+    def __init__(self, type, freeArea, extraFreeArea, gridXLength, gridYLength,
+                xBegin, xEnd, yBegin, yEnd, uniqueID):
         self.totalSquareArea = 0.2 * int(gridXLength) * int(gridYLength)
         self.type = type
         self.freeArea = freeArea
@@ -66,7 +67,7 @@ class House(object):
         xBegin = self.xBegin
         xEnd = self.xEnd
         freeArea = self.freeArea
-        
+
         fAYBegin = yBegin - freeArea
         fAYEnd = yEnd + freeArea
         fAXBegin = xBegin - freeArea
@@ -120,3 +121,28 @@ class GridInformation(object):
         self.fractionEengezinswoningen)
         self.totalAmountBungalows = int(self.maxHouses * self.fractionBungalows)
         self.totalAmountMaisons = int(self.maxHouses * self.fractionMaisons)
+
+# Define Results class
+class Results(object):
+    """
+    Class that contains all results
+    """
+
+    def __init__(self, maxHouses, rounds, roundsCounter, swaps, allScores,
+    highestScore, highestScoreMap, numpyGrid, lowestScore, averageScore, allRuntimes,
+    fastestRuntime, slowestRuntime, averageRuntime, totalRuntime):
+        self.maxHouses = maxHouses
+        self.rounds = rounds
+        self.roundsCounter = roundsCounter
+        self.swaps = swaps
+        self.allScores = allScores
+        self.highestScore = highestScore
+        self.highestScoreMap = highestScoreMap
+        self.numpyGrid = numpyGrid
+        self.lowestScore = lowestScore
+        self.averageScore = averageScore
+        self.allRuntimes = allRuntimes
+        self.fastestRuntime = fastestRuntime
+        self.slowestRuntime = slowestRuntime
+        self.averageRuntime = averageRuntime
+        self.totalRuntime = totalRuntime

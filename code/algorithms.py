@@ -11,10 +11,10 @@ from models.templates import *
 from timeit import default_timer as timer
 
 # Run random algorithm
-def randomAlgorithm(allResults):
+def randomAlgorithm(randomResults):
 
     # Update round
-    allResults["roundsCounter"] += 1
+    randomResults.roundsCounter += 1
 
     # Remove old output results
     for png in glob.glob("tmp/*.png"):
@@ -35,49 +35,49 @@ def randomAlgorithm(allResults):
     currentResult = randomMap[2]
 
     # Print score
-    print("The total score is:", currentResult["score"])
+    print("The total score is:", currentResult.highestScore)
 
     # Update algorithm runtime
     timeEnd = timer()
     runtime = (timeEnd - timeStart)
 
     # Save current results
-    currentResult["runtime"] = runtime
-    currentResult["residentialArea"] = residentialArea
+    currentResult.fastestRuntime = runtime
+    currentResult.highestScoreMap = residentialArea
 
-    # Update allResults template with the current results
-    allResults["maxHouses"] = currentResult["maxHouses"]
-    allResults["totalRuntime"] += runtime
+    # Update randomResults template with the current results
+    randomResults.maxHouses = currentResult.maxHouses
+    randomResults.totalRuntime += runtime
 
     # Based on the current results, check for higher/lower scores and update
-    allResults = updateResults(currentResult, allResults)
+    randomResults = updateResults(currentResult, randomResults)
 
     # Print runtime
-    print("Total elapsed time (in seconds):",allResults["totalRuntime"])
+    print("Total elapsed time (in seconds):",randomResults.totalRuntime)
     print("")
 
     # Only run 'rounds' amount of times
-    if allResults["roundsCounter"] < allResults["rounds"]:
-        randomAlgorithm(allResults)
+    if randomResults.roundsCounter < randomResults.rounds:
+        randomAlgorithm(randomResults)
 
     else:
         # Print high/low score & runtime
         print("")
-        print("Rounds:", allResults["rounds"], "|| MaxHouses:", \
-        allResults["maxHouses"])
+        print("Rounds:", randomResults.rounds, "|| MaxHouses:", \
+        randomResults.maxHouses)
         print("---------------------------------------------")
-        print("Highest score:", allResults["highestScore"])
-        print("Lowest score:", allResults["lowestScore"])
-        print("Average score:", allResults["averageScore"])
+        print("Highest score:", randomResults.highestScore)
+        print("Lowest score:", randomResults.lowestScore)
+        print("Average score:", randomResults.averageScore)
         print("---------------------------------------------")
-        print("Fastest runtime (sec):", allResults["fastestRuntime"])
-        print("Slowest runtime (sec):", allResults["slowestRuntime"])
-        print("Average runtime (sec):", allResults["averageRuntime"])
+        print("Fastest runtime (sec):", randomResults.fastestRuntime)
+        print("Slowest runtime (sec):", randomResults.slowestRuntime)
+        print("Average runtime (sec):", randomResults.averageRuntime)
         print("---------------------------------------------")
-        print("Total runtime (sec):", allResults["totalRuntime"])
+        print("Total runtime (sec):", randomResults.totalRuntime)
         print("")
 
-        return allResults
+        return randomResults
 
     # # TERMINAL
     # rowCounter = 0
@@ -104,7 +104,7 @@ def randomAlgorithm(allResults):
     # print("")
 
 # Run hillclimber algorithm
-def hillclimberAlgorithm(allResults, randomResults):
+def hillclimberAlgorithm(hillclimberResults, randomResults):
 
     # Remove old output results
     for png in glob.glob("tmp/*.png"):
@@ -125,35 +125,37 @@ def hillclimberAlgorithm(allResults, randomResults):
     # currentResult = randomMap[2]
 
     # Extract map and results
-    residentialArea = randomResults["highestScoreMap"]
-    numpyGrid = randomResults["numpyGrid"]
+    residentialArea = randomResults.highestScoreMap
+    numpyGrid = randomResults.numpyGrid
 
     # Define score to compare against
-    oldScore = randomResults["highestScore"]
+    oldScore = randomResults.highestScore
 
     # Do hillclimber x amount of times
-    hillclimberResults = hillclimberCore(allResults, residentialArea,
-                                         numpyGrid, oldScore)
+    hillclimberCore(hillclimberResults, residentialArea,
+                    numpyGrid, oldScore)
 
     # Update algorithm runtime
     timeEnd = timer()
     runtime = (timeEnd - timeStart)
 
     # Print runtime
+    print("")
+    print("Rounds:",hillclimberResults.rounds)
     print("Total elapsed time (in seconds):",runtime)
-    print("Total swaps:",allResults["swaps"])
+    print("Total swaps:",hillclimberResults.swaps)
     print("")
 
     # Visualize grid with matplotlib
-    printPlot(allResults)
+    printPlot(hillclimberResults)
 
-def hillclimberCore(allResults, residentialArea, numpyGrid, oldScore):
+def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
 
     # Update round
-    allResults["roundsCounter"] += 1
+    hillclimberResults.roundsCounter += 1
 
     # Only run 'rounds' amount of times
-    if allResults["roundsCounter"] < allResults["rounds"]:
+    if hillclimberResults.roundsCounter < hillclimberResults.rounds:
 
         # Pick random houses & update new coordinates
         results = switchCoordinates(residentialArea, numpyGrid)
@@ -197,26 +199,27 @@ def hillclimberCore(allResults, residentialArea, numpyGrid, oldScore):
             if newScore > oldScore:
 
                 print("++ Score:", newScore, "vs.", oldScore, "|| round:",
-                allResults["roundsCounter"])
+                hillclimberResults.roundsCounter)
 
                 # Update scores
-                allResults["highestScore"] = 0
-                allResults["highestScore"] = newScore
-                allResults["highestScoreMap"] = []
-                allResults["highestScoreMap"] = residentialArea
-                allResults["swaps"] += 1
+                #hillclimberResults.highestScore = 0
+                hillclimberResults.highestScore = newScore
+                #hillclimberResults.highestScoreMap = []
+                hillclimberResults.highestScoreMap = residentialArea
+                hillclimberResults.swaps += 1
 
                 # Update score to compare against
                 oldScore = newScore
 
                 # Run hillclimber again
-                hillclimberCore(allResults, residentialArea, numpyGrid, oldScore)
+                hillclimberCore(hillclimberResults, residentialArea,
+                                numpyGrid, oldScore)
 
             # Else, score is lower
             else:
 
                 print("-- Score:", newScore, "vs.", oldScore, "|| round:",
-                allResults["roundsCounter"])
+                hillclimberResults.roundsCounter)
 
                 # Revert to old coordinates and fix numpyGrid
                 revertSituation(randomHouse1, randomHouse2, oldCoordinates1,
@@ -226,7 +229,8 @@ def hillclimberCore(allResults, residentialArea, numpyGrid, oldScore):
                 recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
                 # Run hillclimber again
-                hillclimberCore(allResults, residentialArea, numpyGrid, oldScore)
+                hillclimberCore(hillclimberResults, residentialArea,
+                                numpyGrid, oldScore)
 
         else:
 
@@ -238,7 +242,8 @@ def hillclimberCore(allResults, residentialArea, numpyGrid, oldScore):
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
             # Run hillclimber again
-            hillclimberCore(allResults, residentialArea, numpyGrid, oldScore)
+            hillclimberCore(hillclimberResults, residentialArea,
+                            numpyGrid, oldScore)
 
     else:
-        return allResults
+        return hillclimberResults

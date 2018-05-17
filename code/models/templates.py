@@ -67,36 +67,38 @@ maisonTemplate = {"type": "maison",
                     "uniqueID": 0}
 
 # Set result template
-allResults = {
-                "allScores": 0,
-                "highestScore": 0,
-                "highestScoreMap": [],
-                "lowestScore": 1000000000,
-                "averageScore": 0,
-                "allRuntimes": 0,
-                "fastestRuntime": 1000000000,
-                "slowestRuntime": 0,
-                "averageRuntime": 0,
-                "totalRuntime": 0,
-                "rounds": 0,
-                "roundsCounter": 0,
+resultsTemplate = {
                 "maxHouses": 0,
-                }
-
-# Set result template
-hillclimberResults = {
-                "allScores": 0,
-                "highestScore": 0,
-                "highestScoreMap": [],
-                "lowestScore": 1000000000,
-                "averageScore": 0,
-                "allRuntimes": 0,
-                "fastestRuntime": 1000000000,
-                "slowestRuntime": 0,
-                "averageRuntime": 0,
-                "totalRuntime": 0,
                 "rounds": 0,
                 "roundsCounter": 0,
                 "swaps": 0,
-                "maxHouses": 0,
+                "allScores": 0,
+                "highestScore": 0,
+                "highestScoreMap": [],
+                "numpyGrid": 0,
+                "lowestScore": 1000000000,
+                "averageScore": 0,
+                "allRuntimes": 0,
+                "fastestRuntime": 1000000000,
+                "slowestRuntime": 0,
+                "averageRuntime": 0,
+                "totalRuntime": 0,
                 }
+
+# # Set result template
+# hillclimberResults = {
+#                 "maxHouses": 0,
+#                 "allScores": 0,
+#                 "highestScore": 0,
+#                 "highestScoreMap": [],
+#                 "lowestScore": 1000000000,
+#                 "averageScore": 0,
+#                 "allRuntimes": 0,
+#                 "fastestRuntime": 1000000000,
+#                 "slowestRuntime": 0,
+#                 "averageRuntime": 0,
+#                 "totalRuntime": 0,
+#                 "rounds": 0,
+#                 "roundsCounter": 0,
+#                 "swaps": 0,
+#                 }
