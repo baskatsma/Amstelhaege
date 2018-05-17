@@ -260,6 +260,24 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
         else:
             return False
 
+def recalculateAllExtraFreeArea(residentialArea, numpyGrid):
+
+    # After placing all houses, loop over them
+    residentialAreaNew = residentialArea[1:len(residentialArea)]
+    for object in range(len(residentialAreaNew)):
+
+        # Give the current object an easy variable
+        currentObject = residentialAreaNew[object]
+
+        # Remove old value to avoid unexpected overlap
+        currentObject.extraFreeArea = 0
+
+        # Find all extra free area per house
+        increase = (1 * 2)
+        numpyGridOriginal = numpyGrid
+        checkAllFreeArea(currentObject, increase, numpyGrid,
+                         numpyGridOriginal)
+
 def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
 
     # Remove all (increase) modifications before (re)starting
@@ -324,15 +342,8 @@ def switchCoordinates(residentialArea, numpyGrid):
     randomHouse1.removeFromGridAndMap(numpyGrid)
     randomHouse2.removeFromGridAndMap(numpyGrid)
 
-    # Loop over all objects (water + houses)
-    for object in range(len(residentialArea)):
-
-        # Give the current object an easy variable
-        currentObject = residentialArea[object]
-
-        # Fix rough free area removal
-        if currentObject.type != "water":
-            fixIncorrectVisualizations(currentObject, numpyGrid)
+    # Fix rough free area removal
+    #fixIncorrectVisualizations(residentialArea, numpyGrid)
 
     # Update coordinates
     updateCoordinates(randomHouse1, newCoordinates1)
@@ -341,14 +352,10 @@ def switchCoordinates(residentialArea, numpyGrid):
     # Return valid random selected houses
     return randomHouse1, randomHouse2, oldCoordinates1, oldCoordinates2
 
-def placeOnGridHill(currentObject, numpyGrid, residentialArea):
+def checkAvailableArea(currentObject, numpyGrid, residentialArea):
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
-
-    # Specify drawNumbers
-    drawNumber = currentObject.uniqueID
-    fADrawNumber = 1
 
     # Check for grid border problems
     if currentObject.checkBorders() == True:
@@ -372,14 +379,7 @@ def placeOnGridHill(currentObject, numpyGrid, residentialArea):
 
         return False
 
-def hillVisualizer(currentObject, numpyGrid):
-
-    # if currentObject.type == "eengezinswoning":
-    #     currentObject.freeArea = 2 * 2
-    # elif currentObject.type == "bungalow":
-    #     currentObject.freeArea = 3 * 2
-    # elif currentObject.type == "maison":
-    #     currentObject.freeArea = 6 * 2
+def placeOnHillGrid(currentObject, numpyGrid):
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
@@ -396,40 +396,16 @@ def hillVisualizer(currentObject, numpyGrid):
     visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
                     numpyGrid, drawNumber)
 
-def fixIncorrectVisualizations(currentObject, numpyGrid):
+def fixIncorrectVisualizations(residentialArea, numpyGrid):
 
-    # if currentObject.type == "eengezinswoning":
-    #     currentObject.freeArea = 2 * 2
-    # elif currentObject.type == "bungalow":
-    #     currentObject.freeArea = 3 * 2
-    # elif currentObject.type == "maison":
-    #     currentObject.freeArea = 6 * 2
-
-    # Get coordinate variables
-    coord = coordinateVariables(currentObject)
-
-    # Specify drawNumbers
-    drawNumber = currentObject.uniqueID
-    fADrawNumber = 1
-
-    # The area is viable: draw free area first
-    visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
-                    numpyGrid, fADrawNumber)
-
-    # Visualize house on top of free area
-    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
-                    numpyGrid, drawNumber)
-
-def fixIncorrectVisualizationsTwo(residentialArea, numpyGrid):
-
-    # Exclude water
+    # Create list without water to avoid problems
     residentialAreaNew = residentialArea[1:len(residentialArea)]
 
     # Loop over all houses
     for object in range(len(residentialAreaNew)):
 
         # Give the current object an easy variable
-        currentObject = residentialArea[object]
+        currentObject = residentialAreaNew[object]
 
         # Get coordinate variables
         coord = coordinateVariables(currentObject)
@@ -445,6 +421,20 @@ def fixIncorrectVisualizationsTwo(residentialArea, numpyGrid):
         # Visualize house on top of free area
         visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
                         numpyGrid, drawNumber)
+
+def revertSituation(randomHouse1, randomHouse2, oldCoordinates1, oldCoordinates2,
+                    numpyGrid, residentialArea):
+
+    # Remove houses from numpyGrid and map
+    randomHouse1.removeFromGridAndMap(numpyGrid)
+    randomHouse2.removeFromGridAndMap(numpyGrid)
+
+    # Revert to old coordinates
+    updateCoordinates(randomHouse1, oldCoordinates1)
+    updateCoordinates(randomHouse2, oldCoordinates2)
+
+    # Clean-up some bugs and plot old location back
+    fixIncorrectVisualizations(residentialArea, numpyGrid)
 
 def getVideo(residentialArea):
 
