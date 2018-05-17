@@ -9,99 +9,6 @@ from models.models import *
 from models.templates import *
 from timeit import default_timer as timer
 
-# Run random algorithm
-def randomAlgorithm(allResults):
-
-        # Update round
-        allResults["roundsCounter"] += 1
-
-        # Remove old output results
-        for png in glob.glob("tmp/*.png"):
-            os.remove(png)
-
-        for mp4 in glob.glob("tmp/*.mp4"):
-            os.remove(mp4)
-
-        # Measure algorithm time
-        timeStart = timer()
-
-        # Get a random map
-        randomMap = initializeRandomMap()
-
-        # Extract map and results
-        residentialArea = randomMap[0]
-        numpyGrid = randomMap[1]
-        currentResult = randomMap[2]
-
-        # Print score
-        print("The total score is:", currentResult["score"])
-
-        # Update algorithm runtime
-        timeEnd = timer()
-        runtime = (timeEnd - timeStart)
-
-        # Save current results
-        currentResult["runtime"] = runtime
-        currentResult["residentialArea"] = residentialArea
-
-        # Update allResults template with the current results
-        allResults["maxHouses"] = currentResult["maxHouses"]
-        allResults["totalRuntime"] += runtime
-
-        # Based on the current results, check for higher/lower scores and update
-        allResults = updateResults(currentResult, allResults)
-
-        # Print runtime
-        print("Total elapsed time (in seconds):",allResults["totalRuntime"])
-        print("")
-
-        # Only run 'rounds' amount of times
-        if allResults["roundsCounter"] < allResults["rounds"]:
-            randomAlgorithm(allResults)
-
-        else:
-            # Print high/low score & runtime
-            print("")
-            print("Rounds:", allResults["rounds"], "|| MaxHouses:", \
-            allResults["maxHouses"])
-            print("---------------------------------------------")
-            print("Highest score:", allResults["highestScore"])
-            print("Lowest score:", allResults["lowestScore"])
-            print("Average score:", allResults["averageScore"])
-            print("---------------------------------------------")
-            print("Fastest runtime (sec):", allResults["fastestRuntime"])
-            print("Slowest runtime (sec):", allResults["slowestRuntime"])
-            print("Average runtime (sec):", allResults["averageRuntime"])
-            print("---------------------------------------------")
-            print("Total runtime (sec):", allResults["totalRuntime"])
-            print("")
-            #getVideo(allResults["highestScoreMap"])
-            printPlot(allResults)
-
-        # # TERMINAL
-        # rowCounter = 0
-        # print("")
-        # print("")
-        # print("        X →")
-        # print("        ",end="")
-        # for i in range(gridXLength):
-        #     if i < 10:
-        #         print(i," ",end="")
-        #     else:
-        #         print(i,"",end="")
-        # print("")
-        # print("  ↓ Y")
-        # for row in numpyGrid:
-        #     if rowCounter < 10:
-        #         print("   ",rowCounter," ", end="")
-        #     else:
-        #         print("  ",rowCounter," ", end="")
-        #
-        #     print(row)
-        #     rowCounter += 1
-        # print("")
-        # print("")
-
 def initializeRandomMap():
 
     # Get maxHouses
@@ -386,8 +293,82 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
         # Re-draw number, because we deleted it a few steps ago
         numpyGrid[coord[0]:coord[1],coord[2]:coord[3]] = drawNumber
 
-        # Remove all other modifications before ending
-        numpyGrid = numpyGridOriginal
+        return False
+
+def switchCoordinates(residentialArea, numpyGrid):
+
+    # Get residentialArea without water (avoiding problems)
+    residentialAreaNew = residentialArea[1:len(residentialArea)]
+
+    # Select random house
+    randomHouse1 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
+    randomHouse2 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
+
+    # Retry if both houses are the same or are the same type
+    while \
+    randomHouse1.uniqueID == randomHouse2.uniqueID or \
+    randomHouse1.type == randomHouse2.type:
+
+        # Select random house again
+        randomHouse1 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
+        randomHouse2 = residentialAreaNew[rd.randrange(len(residentialAreaNew))]
+        break
+
+    # Save old and new coordinates
+    oldCoordinates1 = (randomHouse1.yBegin, randomHouse1.xBegin)
+    oldCoordinates2 = (randomHouse2.yBegin, randomHouse2.xBegin)
+    newCoordinates1 = (randomHouse2.yBegin, randomHouse2.xBegin)
+    newCoordinates2 = (randomHouse1.yBegin, randomHouse1.xBegin)
+
+    # Remove houses from map and numpyGrid
+    randomHouse1.removeFromGridAndMap(numpyGrid)
+    randomHouse2.removeFromGridAndMap(numpyGrid)
+
+    # Loop over all objects (water + houses)
+    for object in range(len(residentialArea)):
+
+        # Give the current object an easy variable
+        currentObject = residentialArea[object]
+
+        # Fix rough free area removal
+        if currentObject.type != "water":
+            fixIncorrectVisualizations(currentObject, numpyGrid)
+
+    # Update coordinates
+    updateCoordinates(randomHouse1, newCoordinates1)
+    updateCoordinates(randomHouse2, newCoordinates2)
+
+    # Return valid random selected houses
+    return randomHouse1, randomHouse2, oldCoordinates1, oldCoordinates2
+
+def placeOnGridHill(currentObject, numpyGrid, residentialArea):
+
+    # Get coordinate variables
+    coord = coordinateVariables(currentObject)
+
+    # Specify drawNumbers
+    drawNumber = currentObject.uniqueID
+    fADrawNumber = 1
+
+    # Check for grid border problems
+    if currentObject.checkBorders() == True:
+
+        # Check for house and free area overlap
+        if \
+        checkOverlap(coord[0], coord[1], coord[2], coord[3], numpyGrid,
+                    "excludingFreeArea") == True and \
+        checkOverlap(coord[5], coord[6], coord[7], coord[8], numpyGrid,
+                    "includingFreeArea") == True:
+
+            return True
+
+        # Start over, because there are house and/or free area overlap issues
+        else:
+
+            return False
+
+    # Start over, because the house is overlining the border
+    else:
 
         return False
 
@@ -438,6 +419,32 @@ def fixIncorrectVisualizations(currentObject, numpyGrid):
     # Visualize house on top of free area
     visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
                     numpyGrid, drawNumber)
+
+def fixIncorrectVisualizationsTwo(residentialArea, numpyGrid):
+
+    # Exclude water
+    residentialAreaNew = residentialArea[1:len(residentialArea)]
+
+    # Loop over all houses
+    for object in range(len(residentialAreaNew)):
+
+        # Give the current object an easy variable
+        currentObject = residentialArea[object]
+
+        # Get coordinate variables
+        coord = coordinateVariables(currentObject)
+
+        # Specify drawNumbers
+        drawNumber = currentObject.uniqueID
+        fADrawNumber = 1
+
+        # The area is viable: draw free area first
+        visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
+                        numpyGrid, fADrawNumber)
+
+        # Visualize house on top of free area
+        visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
+                        numpyGrid, drawNumber)
 
 def getVideo(residentialArea):
 
@@ -516,6 +523,7 @@ def drawPlotObjects(residentialArea, object, ax):
     xBegin = object.xBegin
     xEnd = object.xEnd
     fA = object.freeArea
+    eFA = object.extraFreeArea
 
     # Define color for free area
     colorChoice = 'gray'
@@ -535,26 +543,26 @@ def drawPlotObjects(residentialArea, object, ax):
 
     # Create new rects for freeArea + house
     rectUpperRight = patches.Rectangle((xBegin,yBegin),         # (X,Y) tuple
-                             xEnd - xBegin + fA,                # width
-                             yEnd - yBegin + fA,                # height
+                             xEnd - xBegin + fA + eFA,                # width
+                             yEnd - yBegin + fA + eFA,                # height
                              color=colorChoice,
                              alpha=0.2)
 
-    rectUpperLeft = patches.Rectangle((xBegin - fA,yBegin),     # (X,Y) tuple
-                             xEnd - xBegin + fA,                # width
-                             yEnd - yBegin + fA,                # height
+    rectUpperLeft = patches.Rectangle((xBegin - fA - eFA,yBegin),     # (X,Y) tuple
+                             xEnd - xBegin + fA + eFA,                # width
+                             yEnd - yBegin + fA + eFA,                # height
                              color=colorChoice,
                              alpha=0.2)
 
-    rectLowerRight = patches.Rectangle((xEnd + fA,yEnd),        # (X,Y) tuple
-                             xBegin - xEnd - fA,                # width
-                             yBegin - yEnd - fA,                # height
+    rectLowerRight = patches.Rectangle((xEnd + fA + eFA,yEnd),        # (X,Y) tuple
+                             xBegin - xEnd - fA - eFA,                # width
+                             yBegin - yEnd - fA - eFA,                # height
                              color=colorChoice,
                              alpha=0.2)
 
     rectLowerLeft = patches.Rectangle((xEnd,yEnd),              # (X,Y) tuple
-                             xBegin - xEnd - fA,                # width
-                             yBegin - yEnd - fA,                # height
+                             xBegin - xEnd - fA - eFA,                # width
+                             yBegin - yEnd - fA - eFA,                # height
                              color=colorChoice,
                              alpha=0.2)
 

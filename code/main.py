@@ -1,11 +1,9 @@
-from hillclimber import *
+from algorithms import *
 from functions import *
+from models.templates import *
 import sys
 
 def main():
-
-    # Increase recursion maximum to obtain 60 house results easier
-    sys.setrecursionlimit(4000)
 
     # Initialize variables
     rounds = 200
@@ -33,14 +31,20 @@ def main():
 
     elif str(sys.argv[2]) == "random":
 
+        print(allResults)
+
         # Run random 'rounds' amount of times and display best results
         randomAlgorithm(allResults)
 
+        #getVideo(allResults["highestScoreMap"])
+        printPlot(allResults)
+
     elif str(sys.argv[2]) == "hillclimber":
 
-        #randomMap = initializeRandomMap()
-        #hillclimberAlgorithm(randomMap, allResults)
-        hillclimberAlgorithm(allResults)
+        hillClimberResults["rounds"] = rounds
+        hillClimberResults["roundsCounter"] = roundsCounter
+
+        hillclimberAlgorithm(hillClimberResults)
 
     else:
         print("Not a valid algorithm!")

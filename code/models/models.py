@@ -16,10 +16,11 @@ class Water(object):
     Contains all water properties and functions
     """
 
-    def __init__(self, type, freeArea, gridXLength, gridYLength, xBegin, xEnd, yBegin, yEnd, uniqueID):
+    def __init__(self, type, freeArea, extraFreeArea, gridXLength, gridYLength, xBegin, xEnd, yBegin, yEnd, uniqueID):
         self.totalSquareArea = 0.2 * int(gridXLength) * int(gridYLength)
         self.type = type
         self.freeArea = freeArea
+        self.extraFreeArea = extraFreeArea
         self.gridXLength = gridXLength
         self.gridYLength = gridYLength
         self.objectDimensions = (int(mt.sqrt(self.totalSquareArea)),
@@ -65,7 +66,7 @@ class House(object):
         xBegin = self.xBegin
         xEnd = self.xEnd
         freeArea = self.freeArea
-
+        
         fAYBegin = yBegin - freeArea
         fAYEnd = yEnd + freeArea
         fAXBegin = xBegin - freeArea
