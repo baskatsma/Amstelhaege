@@ -13,97 +13,8 @@ from timeit import default_timer as timer
 # Run random algorithm
 def randomAlgorithm(allResults):
 
-        # Update round
-        allResults["roundsCounter"] += 1
-
-        # Remove old output results
-        for png in glob.glob("tmp/*.png"):
-            os.remove(png)
-
-        for mp4 in glob.glob("tmp/*.mp4"):
-            os.remove(mp4)
-
-        # Measure algorithm time
-        timeStart = timer()
-
-        # Get a random map
-        randomMap = initializeRandomMap()
-
-        # Extract map and results
-        residentialArea = randomMap[0]
-        numpyGrid = randomMap[1]
-        currentResult = randomMap[2]
-
-        # Print score
-        print("The total score is:", currentResult["score"])
-
-        # Update algorithm runtime
-        timeEnd = timer()
-        runtime = (timeEnd - timeStart)
-
-        # Save current results
-        currentResult["runtime"] = runtime
-        currentResult["residentialArea"] = residentialArea
-
-        # Update allResults template with the current results
-        allResults["maxHouses"] = currentResult["maxHouses"]
-        allResults["totalRuntime"] += runtime
-
-        # Based on the current results, check for higher/lower scores and update
-        allResults = updateResults(currentResult, allResults)
-
-        # Print runtime
-        print("Total elapsed time (in seconds):",allResults["totalRuntime"])
-        print("")
-
-        # Only run 'rounds' amount of times
-        if allResults["roundsCounter"] < allResults["rounds"]:
-            randomAlgorithm(allResults)
-
-        else:
-            # Print high/low score & runtime
-            print("")
-            print("Rounds:", allResults["rounds"], "|| MaxHouses:", \
-            allResults["maxHouses"])
-            print("---------------------------------------------")
-            print("Highest score:", allResults["highestScore"])
-            print("Lowest score:", allResults["lowestScore"])
-            print("Average score:", allResults["averageScore"])
-            print("---------------------------------------------")
-            print("Fastest runtime (sec):", allResults["fastestRuntime"])
-            print("Slowest runtime (sec):", allResults["slowestRuntime"])
-            print("Average runtime (sec):", allResults["averageRuntime"])
-            print("---------------------------------------------")
-            print("Total runtime (sec):", allResults["totalRuntime"])
-            print("")
-            return allResults
-
-        # # TERMINAL
-        # rowCounter = 0
-        # print("")
-        # print("")
-        # print("        X →")
-        # print("        ",end="")
-        # for i in range(gridXLength):
-        #     if i < 10:
-        #         print(i," ",end="")
-        #     else:
-        #         print(i,"",end="")
-        # print("")
-        # print("  ↓ Y")
-        # for row in numpyGrid:
-        #     if rowCounter < 10:
-        #         print("   ",rowCounter," ", end="")
-        #     else:
-        #         print("  ",rowCounter," ", end="")
-        #
-        #     print(row)
-        #     rowCounter += 1
-        # print("")
-        # print("")
-
-# Run hillclimber algorithm
-def hillclimberAlgorithm(allResults):
+    # Update round
+    allResults["roundsCounter"] += 1
 
     # Remove old output results
     for png in glob.glob("tmp/*.png"):
@@ -123,12 +34,8 @@ def hillclimberAlgorithm(allResults):
     numpyGrid = randomMap[1]
     currentResult = randomMap[2]
 
-    # Define score to compare against
-    oldScore = currentResult["score"]
-
-    # Do hillclimber x amount of times
-    hillClimberResults = hillclimberCore(allResults, residentialArea,
-                                         numpyGrid, oldScore)
+    # Print score
+    print("The total score is:", currentResult["score"])
 
     # Update algorithm runtime
     timeEnd = timer()
@@ -138,13 +45,103 @@ def hillclimberAlgorithm(allResults):
     currentResult["runtime"] = runtime
     currentResult["residentialArea"] = residentialArea
 
-    # Update all results
+    # Update allResults template with the current results
+    allResults["maxHouses"] = currentResult["maxHouses"]
     allResults["totalRuntime"] += runtime
+
+    # Based on the current results, check for higher/lower scores and update
     allResults = updateResults(currentResult, allResults)
 
     # Print runtime
-    print("This round (in seconds):",currentResult["runtime"])
     print("Total elapsed time (in seconds):",allResults["totalRuntime"])
+    print("")
+
+    # Only run 'rounds' amount of times
+    if allResults["roundsCounter"] < allResults["rounds"]:
+        randomAlgorithm(allResults)
+
+    else:
+        # Print high/low score & runtime
+        print("")
+        print("Rounds:", allResults["rounds"], "|| MaxHouses:", \
+        allResults["maxHouses"])
+        print("---------------------------------------------")
+        print("Highest score:", allResults["highestScore"])
+        print("Lowest score:", allResults["lowestScore"])
+        print("Average score:", allResults["averageScore"])
+        print("---------------------------------------------")
+        print("Fastest runtime (sec):", allResults["fastestRuntime"])
+        print("Slowest runtime (sec):", allResults["slowestRuntime"])
+        print("Average runtime (sec):", allResults["averageRuntime"])
+        print("---------------------------------------------")
+        print("Total runtime (sec):", allResults["totalRuntime"])
+        print("")
+
+        return allResults
+
+    # # TERMINAL
+    # rowCounter = 0
+    # print("")
+    # print("")
+    # print("        X →")
+    # print("        ",end="")
+    # for i in range(gridXLength):
+    #     if i < 10:
+    #         print(i," ",end="")
+    #     else:
+    #         print(i,"",end="")
+    # print("")
+    # print("  ↓ Y")
+    # for row in numpyGrid:
+    #     if rowCounter < 10:
+    #         print("   ",rowCounter," ", end="")
+    #     else:
+    #         print("  ",rowCounter," ", end="")
+    #
+    #     print(row)
+    #     rowCounter += 1
+    # print("")
+    # print("")
+
+# Run hillclimber algorithm
+def hillclimberAlgorithm(allResults, randomResults):
+
+    # Remove old output results
+    for png in glob.glob("tmp/*.png"):
+        os.remove(png)
+
+    for mp4 in glob.glob("tmp/*.mp4"):
+        os.remove(mp4)
+
+    # Measure algorithm time
+    timeStart = timer()
+
+    # # Get a random map
+    # randomMap = initializeRandomMap()
+    #
+    # # Extract map and results
+    # residentialArea = randomMap[0]
+    # numpyGrid = randomMap[1]
+    # currentResult = randomMap[2]
+
+    # Extract map and results
+    residentialArea = randomResults["highestScoreMap"]
+    numpyGrid = randomResults["numpyGrid"]
+
+    # Define score to compare against
+    oldScore = randomResults["highestScore"]
+
+    # Do hillclimber x amount of times
+    hillclimberResults = hillclimberCore(allResults, residentialArea,
+                                         numpyGrid, oldScore)
+
+    # Update algorithm runtime
+    timeEnd = timer()
+    runtime = (timeEnd - timeStart)
+
+    # Print runtime
+    print("Total elapsed time (in seconds):",runtime)
+    print("Total swaps:",allResults["swaps"])
     print("")
 
     # Visualize grid with matplotlib
@@ -207,6 +204,7 @@ def hillclimberCore(allResults, residentialArea, numpyGrid, oldScore):
                 allResults["highestScore"] = newScore
                 allResults["highestScoreMap"] = []
                 allResults["highestScoreMap"] = residentialArea
+                allResults["swaps"] += 1
 
                 # Update score to compare against
                 oldScore = newScore

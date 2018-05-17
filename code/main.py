@@ -5,8 +5,11 @@ import sys
 
 def main():
 
+    # Avoid recursion errors
+    sys.setrecursionlimit(4000)
+
     # Initialize variables
-    rounds = 200
+    rounds = 1000
     roundsCounter = 0
 
     # Set result template
@@ -21,8 +24,27 @@ def main():
                     "slowestRuntime": 0,
                     "averageRuntime": 0,
                     "totalRuntime": 0,
-                    "rounds": rounds,
+                    "numpyGrid": 0,
+                    "rounds": rounds * 3,
                     "roundsCounter": roundsCounter,
+                    "maxHouses": 0,
+                    }
+
+    # Set result template
+    hillclimberResults = {
+                    "allScores": 0,
+                    "highestScore": 0,
+                    "highestScoreMap": [],
+                    "lowestScore": 1000000000,
+                    "averageScore": 0,
+                    "allRuntimes": 0,
+                    "fastestRuntime": 1000000000,
+                    "slowestRuntime": 0,
+                    "averageRuntime": 0,
+                    "totalRuntime": 0,
+                    "rounds": rounds * 2,
+                    "roundsCounter": roundsCounter,
+                    "swaps": 0,
                     "maxHouses": 0,
                     }
 
@@ -30,8 +52,6 @@ def main():
         print("You must provide the number of houses and the algorithm!")
 
     elif str(sys.argv[2]) == "random":
-
-        print(allResults)
 
         # Run random 'rounds' amount of times and display best results
         randomAlgorithm(allResults)
@@ -41,10 +61,11 @@ def main():
 
     elif str(sys.argv[2]) == "hillclimber":
 
-        hillClimberResults["rounds"] = rounds
-        hillClimberResults["roundsCounter"] = roundsCounter
+        # Run random 'rounds' amount of times and use best result
+        randomAlgorithm(allResults)
 
-        hillclimberAlgorithm(hillClimberResults)
+        # Run hillclimber 'rounds' amount of times and display best results
+        hillclimberAlgorithm(hillclimberResults, allResults)
 
     else:
         print("Not a valid algorithm!")

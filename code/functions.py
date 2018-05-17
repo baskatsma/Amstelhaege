@@ -41,6 +41,7 @@ def initializeRandomMap():
                     "score": 0,
                     "runtime": 0,
                     "residentialArea": [],
+                    "numpyGrid": 0,
                     "maxHouses": maxHouses,
                     }
 
@@ -93,6 +94,9 @@ def initializeRandomMap():
 
             # Then, calculate the new value of each house
             currentResult["score"] += currentObject.calculateScore()
+
+    # Save numpyGrid
+    currentResult["numpyGrid"] = numpyGrid
 
     return residentialArea, numpyGrid, currentResult
 
@@ -584,6 +588,7 @@ def updateResults(currentResult, allResults):
         allResults["highestScore"] = 0
         allResults["highestScore"] = currentResult["score"]
         allResults["highestScoreMap"] = currentResult["residentialArea"]
+        allResults["numpyGrid"] = currentResult["numpyGrid"]
 
     if currentResult["score"] < allResults["lowestScore"]:
         allResults["lowestScore"] = 0

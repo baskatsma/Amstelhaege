@@ -84,7 +84,7 @@ allResults = {
                 }
 
 # Set result template
-hillClimberResults = {
+hillclimberResults = {
                 "allScores": 0,
                 "highestScore": 0,
                 "highestScoreMap": [],
