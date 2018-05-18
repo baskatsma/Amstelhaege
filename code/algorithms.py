@@ -97,7 +97,7 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
 
     # Print runtime
     print("")
-    print("Rounds:",hillclimberResults.rounds)
+    print("Rounds:",int(hillclimberResults.rounds))
     print("Total elapsed time (in seconds):",runtime)
     print("Total swaps:",hillclimberResults.swaps)
     print("")

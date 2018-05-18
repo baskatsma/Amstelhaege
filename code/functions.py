@@ -1,4 +1,3 @@
-import glob
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,7 +6,6 @@ import random as rd
 import sys
 from models.models import *
 from models.templates import *
-from timeit import default_timer as timer
 
 def initializeRandomMap():
 

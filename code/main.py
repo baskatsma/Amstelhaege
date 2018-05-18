@@ -9,14 +9,14 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize variables
-    rounds = 50
+    rounds = 400
 
     # Initialize both algorithms results sheets
     randomResults = Results(**resultsTemplate)
     randomResults.rounds = rounds
 
     hillclimberResults = Results(**resultsTemplate)
-    hillclimberResults.rounds = rounds * 2
+    hillclimberResults.rounds = rounds * 1.5
 
     if len(sys.argv) < 3:
         print("You must provide the number of houses and the algorithm!")
