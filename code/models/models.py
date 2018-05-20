@@ -84,8 +84,8 @@ class House(object):
         if \
         (self.yEnd + self.freeArea + self.extraFreeArea) > self.gridYLength or \
         (self.xEnd + self.freeArea + self.extraFreeArea) > self.gridXLength or \
-        (self.xBegin - self.freeArea - self.extraFreeArea) < 0 or \
-        (self.yBegin - self.freeArea - self.extraFreeArea) < 0:
+        (self.xBegin - self.freeArea - self.extraFreeArea) <= 0 or \
+        (self.yBegin - self.freeArea - self.extraFreeArea) <= 0:
             return False
 
         # No grid border problems, continuing

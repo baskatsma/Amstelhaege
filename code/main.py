@@ -9,7 +9,7 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize variables
-    rounds = 400
+    rounds = 200
 
     # Initialize both algorithms results sheets
     randomResults = Results(**resultsTemplate)
@@ -42,7 +42,7 @@ def main():
         hillyResult = hillyAlgorithm()
 
         # Run hillclimber 'rounds' amount of times and display best results
-        hillclimberAlgorithm(hillclimberResults, hillyResult)
+        #hillclimberAlgorithm(hillclimberResults, hillyResult, "hilly")
 
     else:
         print("Not a valid algorithm!")

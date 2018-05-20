@@ -40,7 +40,7 @@ def hillyAlgorithm():
     # Initialize current score
     hillyResult = Results(**resultsTemplate)
 
-    maxEengezinshuizenOnRow = 15
+    maxEengezinshuizenOnRow = 17
     maxBungalowsOnRow = 2
     laneCounters = [0, 0, 0, maxEengezinshuizenOnRow, maxBungalowsOnRow]
 
@@ -73,7 +73,7 @@ def hillyAlgorithm():
 
             if currentObject.type == "eengezinswoning":
 
-                dimensions = (currentObject.objectDimensions[0] + (currentObject.freeArea * 2))
+                dimensions = (currentObject.objectDimensions[0] + currentObject.freeArea)
                 fixOnGrid(currentObject, numpyGrid, dimensions, laneCounters)
                 laneCounters[0] += 1
 
@@ -116,8 +116,10 @@ def hillyAlgorithm():
             numpyGridOriginal = numpyGrid
 
             # For each house, calculate its extra free area
-            checkAllFreeArea(currentObject, increase, numpyGrid,
-                             numpyGridOriginal)
+            # Don't check eengezinswoningen, because they are locked in as fuck
+            if currentObject.type != "eengezinswoning":
+                checkAllFreeArea(currentObject, increase, numpyGrid,
+                                numpyGridOriginal)
 
             # Then, calculate the new value of each house
             hillyResult.highestScore += currentObject.calculateScore()
@@ -127,7 +129,7 @@ def hillyAlgorithm():
     hillyResult.highestScoreMap = residentialArea
     hillyResult.numpyGrid = numpyGrid
 
-    #printPlot(currentResult)
+    printPlot(hillyResult)
     return hillyResult
 
 def fixOnGrid(currentObject, numpyGrid, dimensions, laneCounters):
@@ -139,22 +141,31 @@ def fixOnGrid(currentObject, numpyGrid, dimensions, laneCounters):
     # Define variables
     maxEengezinshuizenOnRow = laneCounters[3]
 
-    coordinates = (300, currentObject.freeArea + dimensions * laneCounters[0])
+    # Put eengezinswoningen on the first row
+    if laneCounters[0] < maxEengezinshuizenOnRow:
+        coordinates = (300, currentObject.freeArea
+                        + dimensions * laneCounters[0])
+
+    # Put eengezinswoningen on the second row
+    elif laneCounters[1] < maxEengezinshuizenOnRow:
+        coordinates = (300 - dimensions,
+        currentObject.freeArea + dimensions * laneCounters[1])
+
+    # Put eengezinswoningen on the third row
+    elif laneCounters[2] < maxEengezinshuizenOnRow:
+        coordinates = (300 - dimensions * 2,
+        currentObject.freeArea + dimensions * laneCounters[2])
+
+    # Update coordinats in self
     updateCoordinates(currentObject, coordinates)
-
-    # Check for grid border problems
-    if currentObject.checkBorders() != True:
-
-        if laneCounters[1] < maxEengezinshuizenOnRow:
-            coordinates = (300 - dimensions, currentObject.freeArea + dimensions * laneCounters[1])
-
-        else:
-            coordinates = (300 - dimensions * 2, currentObject.freeArea + dimensions * laneCounters[2])
-
-        updateCoordinates(currentObject, coordinates)
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
+
+    print("fA, eFA ||",currentObject.freeArea, currentObject.extraFreeArea)
+    print("xBegin, xEnd ||",coord[2], coord[3])
+    print("yBegin, yEnd ||",coord[0], coord[1])
+    print("")
 
     # The area is viable: draw free area first
     visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
@@ -227,7 +238,7 @@ def randomAlgorithm(randomResults):
         return randomResults
 
 # Run hillclimber algorithm
-def hillclimberAlgorithm(hillclimberResults, randomResults):
+def hillclimberAlgorithm(hillclimberResults, randomResults, choice):
 
     # Remove old output results
     for png in glob.glob("tmp/*.png"):
@@ -248,7 +259,7 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
 
     # Do hillclimber x amount of times
     hillclimberCore(hillclimberResults, residentialArea,
-                    numpyGrid, oldScore)
+                    numpyGrid, oldScore, choice)
 
     # Update algorithm runtime
     timeEnd = timer()
@@ -264,7 +275,7 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
     # Visualize grid with matplotlib
     printPlot(hillclimberResults)
 
-def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
+def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore, choice):
 
     # Update round
     hillclimberResults.roundsCounter += 1
@@ -326,7 +337,7 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
 
                 # Run hillclimber again
                 hillclimberCore(hillclimberResults, residentialArea,
-                                numpyGrid, oldScore)
+                                numpyGrid, oldScore, choice)
 
             # Else, score is lower
             else:
@@ -343,7 +354,7 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
 
                 # Run hillclimber again
                 hillclimberCore(hillclimberResults, residentialArea,
-                                numpyGrid, oldScore)
+                                numpyGrid, oldScore, choice)
 
         else:
 
@@ -356,7 +367,7 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
 
             # Run hillclimber again
             hillclimberCore(hillclimberResults, residentialArea,
-                            numpyGrid, oldScore)
+                            numpyGrid, oldScore, choice)
 
     else:
         return hillclimberResults
