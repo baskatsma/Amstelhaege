@@ -37,6 +37,13 @@ def main():
         # Run hillclimber 'rounds' amount of times and display best results
         hillclimberAlgorithm(hillclimberResults, randomResults)
 
+    elif str(sys.argv[2]) == "hilly":
+
+        hillyResult = hillyAlgorithm()
+
+        # Run hillclimber 'rounds' amount of times and display best results
+        hillclimberAlgorithm(hillclimberResults, hillyResult)
+
     else:
         print("Not a valid algorithm!")
 
