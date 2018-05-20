@@ -10,176 +10,6 @@ from models.models import *
 from models.templates import *
 from timeit import default_timer as timer
 
-def hillyAlgorithm():
-
-    # Get maxHouses
-    maxHouses = defineSettings()
-
-    # Create a grid helper instance
-    gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
-
-    # Create woonwijk
-    residentialArea = []
-
-    # Add one piece of water
-    residentialArea.append(Water(**waterTemplate))
-
-    # Create new houses based on the grid requirements
-    for maison in range(gridInformation.totalAmountMaisons):
-        residentialArea.append(House(**maisonTemplate))
-
-    for bungalow in range(gridInformation.totalAmountBungalows):
-        residentialArea.append(House(**bungalowTemplate))
-
-    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
-        residentialArea.append(House(**eengezinswoningTemplate))
-
-    # Initialize numpy grid (verticalY, horizontalX)
-    numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
-
-    # Initialize current score
-    hillyResult = Results(**resultsTemplate)
-
-    maxEengezinshuizenOnRow = 17
-    maxBungalowsOnRow = 2
-    laneCounters = [0, 0, 0, maxEengezinshuizenOnRow, maxBungalowsOnRow]
-
-    # Loop over all objects (water + houses)
-    for object in range(len(residentialArea)):
-
-        # Give the current object an easy variable
-        currentObject = residentialArea[object]
-
-        # Put water on numpy grid
-        if currentObject.type == "water":
-
-            # Set its coordinates and update uniqueID
-            updateCoordinates(currentObject, (0, 0))
-            currentObject.uniqueID = 200
-
-            # Define the number in the numpy grid
-            drawNumber = 3
-
-            # Immediately plot it, as the field is empty at the moment
-            visualizeOnGrid(currentObject.yBegin, currentObject.yEnd,
-                            currentObject.xBegin, currentObject.xEnd,
-                            numpyGrid, drawNumber)
-
-        # Put houses on grid and calculate score
-        else:
-
-            # Update uniqueID
-            currentObject.uniqueID = 10 + object
-
-            if currentObject.type == "eengezinswoning":
-
-                dimensions = (currentObject.objectDimensions[0] + currentObject.freeArea)
-                fixOnGrid(currentObject, numpyGrid, dimensions, laneCounters)
-                laneCounters[0] += 1
-
-                if laneCounters[0] > maxEengezinshuizenOnRow:
-                    laneCounters[1] += 1
-
-                if laneCounters[1] > maxEengezinshuizenOnRow:
-                    laneCounters[2] += 1
-
-            # Place houses on numpy grid
-            else:
-                print("other house, bitch")
-                #placeOnGrid(currentObject, numpyGrid)
-
-    # Loop over all objects (water + houses)
-    for object in range(len(residentialArea)):
-
-        # Give the current object an easy variable
-        currentObject = residentialArea[object]
-
-        # Put other houses on numpy grid
-        if currentObject.type == "water" or currentObject.type == "eengezinswoning":
-            print("no")
-        else:
-            placeOnGrid(currentObject, numpyGrid)
-
-    # After placing all houses, loop over them
-    for object in range(len(residentialArea)):
-
-        # Give the current object an easy variable
-        currentObject = residentialArea[object]
-
-        # Calculate score if current item is not water
-        if currentObject.type != "water":
-
-            # Find all extra free area per house per step of 2 meter
-            increase = (1 * 2)
-
-            # Create a numpyGrid copy
-            numpyGridOriginal = numpyGrid
-
-            # For each house, calculate its extra free area
-            # Don't check eengezinswoningen, because they are locked in as fuck
-            if currentObject.type != "eengezinswoning":
-                checkAllFreeArea(currentObject, increase, numpyGrid,
-                                numpyGridOriginal)
-
-            # Then, calculate the new value of each house
-            hillyResult.highestScore += currentObject.calculateScore()
-
-    # Save current results
-    hillyResult.maxHouses = maxHouses
-    hillyResult.highestScoreMap = residentialArea
-    hillyResult.numpyGrid = numpyGrid
-
-    printPlot(hillyResult)
-    return hillyResult
-
-def fixOnGrid(currentObject, numpyGrid, dimensions, laneCounters):
-
-    # Specify drawNumbers
-    drawNumber = currentObject.uniqueID
-    fADrawNumber = 1
-
-    # Define variables
-    maxEengezinshuizenOnRow = laneCounters[3]
-
-    # Put eengezinswoningen on the first row
-    if laneCounters[0] < maxEengezinshuizenOnRow:
-        coordinates = (300, currentObject.freeArea
-                        + dimensions * laneCounters[0])
-
-    # Put eengezinswoningen on the second row
-    elif laneCounters[1] < maxEengezinshuizenOnRow:
-        coordinates = (300 - dimensions,
-        currentObject.freeArea + dimensions * laneCounters[1])
-
-    # Put eengezinswoningen on the third row
-    elif laneCounters[2] < maxEengezinshuizenOnRow:
-        coordinates = (300 - dimensions * 2,
-        currentObject.freeArea + dimensions * laneCounters[2])
-
-    # Update coordinats in self
-    updateCoordinates(currentObject, coordinates)
-
-    # Get coordinate variables
-    coord = coordinateVariables(currentObject)
-
-    print("fA, eFA ||",currentObject.freeArea, currentObject.extraFreeArea)
-    print("xBegin, xEnd ||",coord[2], coord[3])
-    print("yBegin, yEnd ||",coord[0], coord[1])
-    print("")
-
-    # The area is viable: draw free area first
-    visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
-                    numpyGrid, fADrawNumber)
-
-    # Visualize house on top of free area
-    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
-                    numpyGrid, drawNumber)
-
-def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumber):
-
-    # Select a specific grid area and fill it
-    numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] = drawNumber
-
 # Run random algorithm
 def randomAlgorithm(randomResults):
 
@@ -238,7 +68,7 @@ def randomAlgorithm(randomResults):
         return randomResults
 
 # Run hillclimber algorithm
-def hillclimberAlgorithm(hillclimberResults, randomResults, choice):
+def hillclimberAlgorithm(hillclimberResults, randomResults):
 
     # Remove old output results
     for png in glob.glob("tmp/*.png"):
@@ -259,7 +89,7 @@ def hillclimberAlgorithm(hillclimberResults, randomResults, choice):
 
     # Do hillclimber x amount of times
     hillclimberCore(hillclimberResults, residentialArea,
-                    numpyGrid, oldScore, choice)
+                    numpyGrid, oldScore)
 
     # Update algorithm runtime
     timeEnd = timer()
@@ -275,7 +105,7 @@ def hillclimberAlgorithm(hillclimberResults, randomResults, choice):
     # Visualize grid with matplotlib
     printPlot(hillclimberResults)
 
-def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore, choice):
+def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
 
     # Update round
     hillclimberResults.roundsCounter += 1
@@ -337,7 +167,7 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore, ch
 
                 # Run hillclimber again
                 hillclimberCore(hillclimberResults, residentialArea,
-                                numpyGrid, oldScore, choice)
+                                numpyGrid, oldScore)
 
             # Else, score is lower
             else:
@@ -354,7 +184,7 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore, ch
 
                 # Run hillclimber again
                 hillclimberCore(hillclimberResults, residentialArea,
-                                numpyGrid, oldScore, choice)
+                                numpyGrid, oldScore)
 
         else:
 
@@ -367,7 +197,274 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore, ch
 
             # Run hillclimber again
             hillclimberCore(hillclimberResults, residentialArea,
-                            numpyGrid, oldScore, choice)
+                            numpyGrid, oldScore)
 
     else:
         return hillclimberResults
+
+def hillyAlgorithm(hillyTemplate):
+
+    # Get maxHouses
+    maxHouses = defineSettings()
+
+    # Create a grid helper instance
+    gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
+
+    # Create woonwijk
+    residentialArea = []
+
+    # Add one piece of water
+    residentialArea.append(Water(**waterTemplate))
+
+    # Create new houses based on the grid requirements
+    for maison in range(gridInformation.totalAmountMaisons):
+        residentialArea.append(House(**maisonTemplate))
+
+    for bungalow in range(gridInformation.totalAmountBungalows):
+        residentialArea.append(House(**bungalowTemplate))
+
+    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
+        residentialArea.append(House(**eengezinswoningTemplate))
+
+    # Initialize numpy grid (verticalY, horizontalX)
+    numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
+
+    # Define variables
+    maxEengezinshuizenOnRow = 17
+    maxBungalowsOnRow = 7
+    eengzRowCounters = [0, 0, 0, maxEengezinshuizenOnRow]
+    bungaRowCounters = [0, 0, 0, maxBungalowsOnRow]
+
+    # Loop over all objects (water + houses)
+    for object in range(len(residentialArea)):
+
+        # Give the current object an easy variable
+        currentObject = residentialArea[object]
+
+        # Put water on numpy grid
+        if currentObject.type == "water":
+
+            # Set its coordinates and update uniqueID
+            updateCoordinates(currentObject, (0, 0))
+            currentObject.uniqueID = 200
+
+            # Define the number in the numpy grid
+            drawNumber = 3
+
+            # Immediately plot it, as the field is empty at the moment
+            visualizeOnGrid(currentObject.yBegin, currentObject.yEnd,
+                            currentObject.xBegin, currentObject.xEnd,
+                            numpyGrid, drawNumber)
+
+        # Put houses on grid and calculate score
+        else:
+
+            # Update uniqueID
+            currentObject.uniqueID = 10 + object
+
+            # Place eengezinswoningen
+            if currentObject.type == "eengezinswoning":
+
+                dimensions = (currentObject.objectDimensions[0] + currentObject.freeArea)
+                createHillyGrid(currentObject, numpyGrid, dimensions, eengzRowCounters)
+                eengzRowCounters[0] += 1
+
+                if eengzRowCounters[0] > maxEengezinshuizenOnRow:
+                    eengzRowCounters[1] += 1
+
+                if eengzRowCounters[1] > maxEengezinshuizenOnRow:
+                    eengzRowCounters[2] += 1
+
+            # Place bungalows
+            elif currentObject.type == "bungalow":
+
+                dimensions = (currentObject.objectDimensions[0] + currentObject.freeArea)
+                createHillyGrid(currentObject, numpyGrid, dimensions, bungaRowCounters)
+                bungaRowCounters[0] += 1
+
+                if bungaRowCounters[0] > maxBungalowsOnRow:
+                    bungaRowCounters[1] += 1
+
+                if bungaRowCounters[1] > maxBungalowsOnRow:
+                    bungaRowCounters[2] += 1
+
+                if bungaRowCounters[2] > maxBungalowsOnRow:
+                    bungaRowCounters[3] += 1
+
+    # Put maisons on numpy grid
+    for object in range(len(residentialArea)):
+        currentObject = residentialArea[object]
+
+        if currentObject.type == "maison":
+            placeOnGrid(currentObject, numpyGrid)
+
+    # After placing all houses, loop over them
+    for object in range(len(residentialArea)):
+
+        # Give the current object an easy variable
+        currentObject = residentialArea[object]
+
+        # Calculate score if current item is not water
+        if currentObject.type != "water":
+
+            # Find all extra free area per house per step of 2 meter
+            increase = (1 * 2)
+
+            # Create a numpyGrid copy
+            numpyGridOriginal = numpyGrid
+
+            # ONLY check maisons, because the rest is locked in as fuck
+            if currentObject.type == "maison":
+                checkAllFreeArea(currentObject, increase, numpyGrid,
+                                numpyGridOriginal)
+
+            # Then, calculate the new value of each house
+            hillyTemplate.highestScore += currentObject.calculateScore()
+
+    # Save current results
+    hillyTemplate.maxHouses = maxHouses
+    hillyTemplate.highestScoreMap = residentialArea
+    hillyTemplate.numpyGrid = numpyGrid
+
+    oldScore = hillyTemplate.highestScore
+    moveThatHoe(hillyTemplate, oldScore)
+
+    return hillyTemplate
+
+def moveThatHoe(hillyTemplate, oldScore):
+
+    # Update round
+    hillyTemplate.roundsCounter += 1
+
+    # Only run 'rounds' amount of times
+    if hillyTemplate.roundsCounter < hillyTemplate.rounds:
+
+        # Extract map and results
+        residentialArea = hillyTemplate.highestScoreMap
+        numpyGrid = hillyTemplate.numpyGrid
+
+        # Get residentialArea without water (avoiding problems)
+        residentialAreaNew = residentialArea[1:len(residentialArea)]
+
+        # Get specific house
+        randomHouse = getHouse(residentialArea)
+        while randomHouse.type != "maison":
+            randomHouse = getHouse(residentialArea)
+
+        # Randomly pick direction to move in
+        direction = rd.randrange(0,4)       # 0: left, 1: right, 2: up, 3: down
+
+        # Save old begin coordinates (y, x tuple)
+        oldCoordinates = (randomHouse.yBegin, randomHouse.xBegin)
+
+        # Remove old position and fix the mess it left behind
+        randomHouse.removeFromGridAndMap(numpyGrid)
+        fixIncorrectVisualizations(residentialArea, numpyGrid)
+
+        # Update house coordinates 2m in that direction
+        if direction == 0:      # Go 2m to the left
+            yBegin = oldCoordinates[0]
+            xBegin = oldCoordinates[1] + 2
+
+        elif direction == 1:    # Go 2m to the right
+            yBegin = oldCoordinates[0]
+            xBegin = oldCoordinates[1] - 2
+
+        elif direction == 2:    # Go 2m up
+            yBegin = oldCoordinates[0] + 2
+            xBegin = oldCoordinates[1]
+
+        elif direction == 3:    # Go 2m down
+            yBegin = oldCoordinates[0] - 2
+            xBegin = oldCoordinates[1]
+
+        # Update new coordinates in self
+        updateCoordinates(randomHouse, (yBegin, xBegin))
+
+        # Check restrictions
+        if checkAvailableArea(randomHouse, numpyGrid, residentialArea) == True:
+
+            # Move house on numpyGrid
+            placeOnHillGrid(randomHouse, numpyGrid)
+
+            # Initialize the score of this round
+            newScore = 0
+
+            # After placing all houses, loop over them
+            residentialAreaNew = residentialArea[1:len(residentialArea)]
+            for object in range(len(residentialAreaNew)):
+
+                # Give the current object an easy variable
+                currentObject = residentialAreaNew[object]
+
+                # Remove old value to avoid unexpected overlap
+                currentObject.extraFreeArea = 0
+
+                # Find all extra free area per house
+                increase = (1 * 2)
+                numpyGridOriginal = numpyGrid
+                checkAllFreeArea(currentObject, increase, numpyGrid,
+                                 numpyGridOriginal)
+
+                # Then, calculate the new value of each house
+                newScore += currentObject.calculateScore()
+
+            # If the score is higher, leave the houses on their new spot!
+            if newScore >= oldScore:
+
+                print("++ Score:", newScore, "vs.", oldScore, "|| Round:",
+                hillyTemplate.roundsCounter)
+
+                # Update scores
+                hillyTemplate.highestScore = newScore
+                hillyTemplate.highestScoreMap = residentialArea
+                hillyTemplate.swaps += 1
+
+                # Update score to compare against
+                oldScore = newScore
+
+                # Run hilly again
+                moveThatHoe(hillyTemplate, oldScore)
+
+            # Else, score is lower
+            else:
+
+                print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
+                hillyTemplate.roundsCounter)
+
+                # Revert to old coordinates and fix numpyGrid
+                # Remove houses from numpyGrid and map
+                randomHouse.removeFromGridAndMap(numpyGrid)
+
+                # Revert to old coordinates
+                updateCoordinates(randomHouse, oldCoordinates)
+
+                # Clean-up some bugs and plot old location back
+                fixIncorrectVisualizations(residentialArea, numpyGrid)
+
+                # Re-calculate extra free area for this old situation
+                recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+
+                # Run hillclimber again
+                moveThatHoe(hillyTemplate, oldScore)
+
+        else:
+
+            # Revert to old coordinates and fix numpyGrid
+            # Remove houses from numpyGrid and map
+            randomHouse.removeFromGridAndMap(numpyGrid)
+
+            # Revert to old coordinates
+            updateCoordinates(randomHouse, oldCoordinates)
+
+            # Clean-up some bugs and plot old location back
+            fixIncorrectVisualizations(residentialArea, numpyGrid)
+
+            # Re-calculate extra free area for this old situation
+            recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+
+            # Run hillclimber again
+            moveThatHoe(hillyTemplate, oldScore)
+
+    else:
+        return hillyTemplate

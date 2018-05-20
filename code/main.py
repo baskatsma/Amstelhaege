@@ -9,14 +9,17 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize variables
-    rounds = 200
+    rounds = 1000
 
     # Initialize both algorithms results sheets
     randomResults = Results(**resultsTemplate)
-    randomResults.rounds = rounds
+    randomResults.rounds = int(rounds)
+
+    hillyTemplate = Results(**resultsTemplate)
+    hillyTemplate.rounds = int(rounds * 1.5)
 
     hillclimberResults = Results(**resultsTemplate)
-    hillclimberResults.rounds = rounds * 1.5
+    hillclimberResults.rounds = int(rounds * 1.5)
 
     if len(sys.argv) < 3:
         print("You must provide the number of houses and the algorithm!")
@@ -39,7 +42,8 @@ def main():
 
     elif str(sys.argv[2]) == "hilly":
 
-        hillyResult = hillyAlgorithm()
+        hillyAlgorithm(hillyTemplate)
+        printPlot(hillyTemplate)
 
         # Run hillclimber 'rounds' amount of times and display best results
         #hillclimberAlgorithm(hillclimberResults, hillyResult, "hilly")

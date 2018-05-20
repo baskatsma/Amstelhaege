@@ -142,6 +142,7 @@ def getCoordinates(currentObject):
     currentObject.xBegin = beginCoordinates[1]
     currentObject.xEnd = endCoordinates[1]
 
+# Deliver coordinates in (y, x tuple)
 def updateCoordinates(currentObject, coordinates):
 
     # Extract object dimension (x, y tuple) values
@@ -212,6 +213,61 @@ def placeOnGrid(currentObject, numpyGrid):
     # Start over, because the house is overlining the border
     else:
         placeOnGrid(currentObject, numpyGrid)
+
+def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
+
+    # Specify drawNumbers
+    drawNumber = currentObject.uniqueID
+    fADrawNumber = 1
+
+    # Define variables
+    maxHousesOnRow = houseCounter[3]
+
+    if currentObject.type == "eengezinswoning":
+
+        # Put eengezinswoningen on the first row
+        if houseCounter[0] < maxHousesOnRow:
+            coordinates = (300, currentObject.freeArea
+                            + dimensions * houseCounter[0])
+
+        # Put eengezinswoningen on the second row
+        elif houseCounter[1] < maxHousesOnRow:
+            coordinates = (300 - dimensions,
+            currentObject.freeArea + dimensions * houseCounter[1])
+
+        # Put eengezinswoningen on the third row
+        elif houseCounter[2] < maxHousesOnRow:
+            coordinates = (300 - dimensions * 2,
+            currentObject.freeArea + dimensions * houseCounter[2])
+
+    else:
+
+        # Put bungalows on the map
+        if houseCounter[0] < maxHousesOnRow:
+            coordinates = (currentObject.freeArea,
+            158 + dimensions * houseCounter[0])
+
+        elif houseCounter[1] < maxHousesOnRow:
+            coordinates = (currentObject.freeArea + dimensions,
+            158 + dimensions * houseCounter[1])
+
+        elif houseCounter[2] < maxHousesOnRow:
+            coordinates = (currentObject.freeArea + dimensions * 2,
+            158 + dimensions * houseCounter[2])
+
+    # Update coordinats in self
+    updateCoordinates(currentObject, coordinates)
+
+    # Get coordinate variables
+    coord = coordinateVariables(currentObject)
+
+    # The area is viable: draw free area first
+    visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
+                    numpyGrid, fADrawNumber)
+
+    # Visualize house on top of free area
+    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
+                    numpyGrid, drawNumber)
 
 def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumber):
 
@@ -295,6 +351,12 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
 
         return False
 
+def getHouse(residentialArea):
+
+    # Select and return a random house
+    oneRandomHouse = residentialArea[rd.randrange(len(residentialArea))]
+    return oneRandomHouse
+
 def switchCoordinates(residentialArea, numpyGrid):
 
     # Get residentialArea without water (avoiding problems)
@@ -325,7 +387,7 @@ def switchCoordinates(residentialArea, numpyGrid):
     randomHouse2.removeFromGridAndMap(numpyGrid)
 
     # Fix rough free area removal
-    #fixIncorrectVisualizations(residentialArea, numpyGrid)
+    fixIncorrectVisualizations(residentialArea, numpyGrid)
 
     # Update coordinates
     updateCoordinates(randomHouse1, newCoordinates1)
@@ -353,12 +415,10 @@ def checkAvailableArea(currentObject, numpyGrid, residentialArea):
 
         # Start over, because there are house and/or free area overlap issues
         else:
-
             return False
 
     # Start over, because the house is overlining the border
     else:
-
         return False
 
 def placeOnHillGrid(currentObject, numpyGrid):
