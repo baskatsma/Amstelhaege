@@ -73,7 +73,10 @@ def randomAlgorithm(randomResults):
 # Run hillclimber algorithm
 def hillclimberAlgorithm(hillclimberResults, randomResults):
 
-    # Update results
+    # Measure algorithm time
+    timeStart = timer()
+
+    # Update template
     hillclimberResults.algorithm = "hillclimber"
     hillclimberResults.maxHouses = randomResults.maxHouses
     hillclimberResults.lowestScore = randomResults.highestScore
@@ -96,7 +99,14 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
     hillclimberCore(hillclimberResults, residentialArea,
                     numpyGrid, oldScore)
 
+    # Update algorithm runtime
+    timeEnd = timer()
+    runtime = (timeEnd - timeStart)
+    hillclimberResults.averageRuntime = runtime
+
     # Print runtime
+    print("")
+    print("Total elapsed time (in seconds):",runtime)
     print("Rounds:",int(hillclimberResults.rounds))
     print("Total swaps:",int(hillclimberResults.swaps))
     print("")
@@ -105,9 +115,6 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
     printPlot(hillclimberResults)
 
 def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
-
-    # Measure algorithm time
-    timeStart = timer()
 
     # Update round
     hillclimberResults.roundsCounter += 1
@@ -203,27 +210,14 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
 
     else:
 
-        # Update algorithm runtime
-        timeEnd = timer()
-        runtime = (timeEnd - timeStart)
-
-        # Update current results and compare with all results
-        currentResult = Results(**resultsTemplate)
-        currentResult.maxHouses = hillclimberResults.maxHouses
-        currentResult.highestScore = oldScore
-        currentResult.highestScoreMap = residentialArea
-        currentResult.numpyGrid = numpyGrid
-        currentResult.fastestRuntime = runtime
-
-        hillclimberResults = updateResults(currentResult, hillclimberResults)
-
-        print("")
-        print("Total elapsed time (in seconds):",runtime)
-
         return hillclimberResults
 
 def hillyAlgorithm(hillyTemplate, choice):
 
+    # Measure algorithm time
+    timeStart = timer()
+
+    # Update template
     hillyTemplate.algorithm = "hilly"
 
     # Get maxHouses
@@ -344,6 +338,7 @@ def hillyAlgorithm(hillyTemplate, choice):
             hillyTemplate.highestScore += currentObject.calculateScore()
 
     # Save current results
+    hillyTemplate.lowestScore = hillyTemplate.highestScore
     hillyTemplate.maxHouses = maxHouses
     hillyTemplate.highestScoreMap = residentialArea
     hillyTemplate.numpyGrid = numpyGrid
@@ -355,6 +350,11 @@ def hillyAlgorithm(hillyTemplate, choice):
 
     elif choice == "simmy":
         simmyAnnealing(hillyTemplate, oldScore)
+
+    # Update runtime
+    timeEnd = timer()
+    runtime = (timeEnd - timeStart)
+    hillyTemplate.averageRuntime = runtime
 
     return hillyTemplate
 

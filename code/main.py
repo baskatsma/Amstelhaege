@@ -10,7 +10,7 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize variables
-    rounds = 20
+    rounds = 1000
 
     # Initialize algorithms results sheets
     randomResults = Results(**resultsTemplate)
