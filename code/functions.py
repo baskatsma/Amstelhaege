@@ -227,17 +227,17 @@ def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
 
         # Put eengezinswoningen on the first row
         if houseCounter[0] < maxHousesOnRow:
-            coordinates = (300, currentObject.freeArea
+            coordinates = (300, int(22500/320) + currentObject.freeArea
                             + dimensions * houseCounter[0])
 
         # Put eengezinswoningen on the second row
         elif houseCounter[1] < maxHousesOnRow:
-            coordinates = (300 - dimensions,
+            coordinates = (300 - dimensions, int(22500/320) +
             currentObject.freeArea + dimensions * houseCounter[1])
 
         # Put eengezinswoningen on the third row
         elif houseCounter[2] < maxHousesOnRow:
-            coordinates = (300 - dimensions * 2,
+            coordinates = (300 - dimensions * 2, int(22500/320) +
             currentObject.freeArea + dimensions * houseCounter[2])
 
     else:
@@ -245,15 +245,15 @@ def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
         # Put bungalows on the map
         if houseCounter[0] < maxHousesOnRow:
             coordinates = (currentObject.freeArea,
-            158 + dimensions * houseCounter[0])
+            int(22500/320) + currentObject.freeArea + dimensions * houseCounter[0])
 
         elif houseCounter[1] < maxHousesOnRow:
             coordinates = (currentObject.freeArea + dimensions,
-            158 + dimensions * houseCounter[1])
+            int(22500/320) + currentObject.freeArea + dimensions * houseCounter[1])
 
         elif houseCounter[2] < maxHousesOnRow:
             coordinates = (currentObject.freeArea + dimensions * 2,
-            158 + dimensions * houseCounter[2])
+            int(22500/320) + currentObject.freeArea + dimensions * houseCounter[2])
 
     # Update coordinats in self
     updateCoordinates(currentObject, coordinates)

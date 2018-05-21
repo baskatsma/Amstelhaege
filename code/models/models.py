@@ -24,8 +24,12 @@ class Water(object):
         self.extraFreeArea = extraFreeArea
         self.gridXLength = gridXLength
         self.gridYLength = gridYLength
-        self.objectDimensions = (int(mt.sqrt(self.totalSquareArea)),
-                                int(mt.sqrt(self.totalSquareArea)))
+        self.objectDimensions = (int(22500/320),
+                                320)
+        # self.objectDimensions = (int(mt.sqrt(self.totalSquareArea)),
+        #                         int(mt.sqrt(self.totalSquareArea)))
+
+                                #22500/320
         self.xBegin = xBegin
         self.xEnd = xEnd
         self.yBegin = yBegin
@@ -87,6 +91,13 @@ class House(object):
         (self.xBegin - self.freeArea - self.extraFreeArea) <= 0 or \
         (self.yBegin - self.freeArea - self.extraFreeArea) <= 0:
             return False
+        # # Check for grid border problems
+        # if \
+        # (self.yEnd + self.freeArea) > self.gridYLength or \
+        # (self.xEnd + self.freeArea) > self.gridXLength or \
+        # (self.xBegin - self.freeArea) <= 0 or \
+        # (self.yBegin - self.freeArea) <= 0:
+        #     return False
 
         # No grid border problems, continuing
         else:
@@ -124,13 +135,14 @@ class Results(object):
     Class that contains all results
     """
 
-    def __init__(self, maxHouses, rounds, roundsCounter, swaps, allScores,
+    def __init__(self, maxHouses, rounds, roundsCounter, swaps, startTValues, allScores,
     highestScore, highestScoreMap, numpyGrid, lowestScore, averageScore, allRuntimes,
     fastestRuntime, slowestRuntime, averageRuntime, totalRuntime):
         self.maxHouses = maxHouses
         self.rounds = rounds
         self.roundsCounter = roundsCounter
         self.swaps = swaps
+        self.startTValues = startTValues
         self.allScores = allScores
         self.highestScore = highestScore
         self.highestScoreMap = highestScoreMap

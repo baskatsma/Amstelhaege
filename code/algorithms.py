@@ -1,4 +1,5 @@
 import glob
+import math
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
@@ -202,7 +203,7 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
     else:
         return hillclimberResults
 
-def hillyAlgorithm(hillyTemplate):
+def hillyAlgorithm(hillyTemplate, choice):
 
     # Get maxHouses
     maxHouses = defineSettings()
@@ -230,8 +231,8 @@ def hillyAlgorithm(hillyTemplate):
     numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
 
     # Define variables
-    maxEengezinshuizenOnRow = 17
-    maxBungalowsOnRow = 7
+    maxEengezinshuizenOnRow = 14
+    maxBungalowsOnRow = 10
     eengzRowCounters = [0, 0, 0, maxEengezinshuizenOnRow]
     bungaRowCounters = [0, 0, 0, maxBungalowsOnRow]
 
@@ -327,7 +328,12 @@ def hillyAlgorithm(hillyTemplate):
     hillyTemplate.numpyGrid = numpyGrid
 
     oldScore = hillyTemplate.highestScore
-    moveThatHoe(hillyTemplate, oldScore)
+
+    if choice == "hilly":
+        moveThatHoe(hillyTemplate, oldScore)
+
+    elif choice == "simmy":
+        simmyAnnealing(hillyTemplate, oldScore)
 
     return hillyTemplate
 
@@ -351,8 +357,8 @@ def moveThatHoe(hillyTemplate, oldScore):
         while randomHouse.type != "maison":
             randomHouse = getHouse(residentialArea)
 
-        # Randomly pick direction to move in
-        direction = rd.randrange(0,4)       # 0: left, 1: right, 2: up, 3: down
+        # Randomly pick orientation to move in
+        orientation = rd.randrange(0,4)       # 0: left, 1: right, 2: up, 3: down
 
         # Save old begin coordinates (y, x tuple)
         oldCoordinates = (randomHouse.yBegin, randomHouse.xBegin)
@@ -361,20 +367,20 @@ def moveThatHoe(hillyTemplate, oldScore):
         randomHouse.removeFromGridAndMap(numpyGrid)
         fixIncorrectVisualizations(residentialArea, numpyGrid)
 
-        # Update house coordinates 2m in that direction
-        if direction == 0:      # Go 2m to the left
+        # Update house coordinates 2m in that orientation
+        if orientation == 0:      # Go 2m to the left
             yBegin = oldCoordinates[0]
             xBegin = oldCoordinates[1] + 2
 
-        elif direction == 1:    # Go 2m to the right
+        elif orientation == 1:    # Go 2m to the right
             yBegin = oldCoordinates[0]
             xBegin = oldCoordinates[1] - 2
 
-        elif direction == 2:    # Go 2m up
+        elif orientation == 2:    # Go 2m up
             yBegin = oldCoordinates[0] + 2
             xBegin = oldCoordinates[1]
 
-        elif direction == 3:    # Go 2m down
+        elif orientation == 3:    # Go 2m down
             yBegin = oldCoordinates[0] - 2
             xBegin = oldCoordinates[1]
 
@@ -403,13 +409,15 @@ def moveThatHoe(hillyTemplate, oldScore):
                 # Find all extra free area per house
                 increase = (1 * 2)
                 numpyGridOriginal = numpyGrid
-                checkAllFreeArea(currentObject, increase, numpyGrid,
-                                 numpyGridOriginal)
+
+                if currentObject.type == "maison":
+                    checkAllFreeArea(currentObject, increase, numpyGrid,
+                                    numpyGridOriginal)
 
                 # Then, calculate the new value of each house
                 newScore += currentObject.calculateScore()
 
-            # If the score is higher, leave the houses on their new spot!
+            # If the score is higher or equal, leave the house on its new spot!
             if newScore >= oldScore:
 
                 print("++ Score:", newScore, "vs.", oldScore, "|| Round:",
@@ -468,3 +476,195 @@ def moveThatHoe(hillyTemplate, oldScore):
 
     else:
         return hillyTemplate
+
+def simmyAnnealing(hillyTemplate, oldScore):
+
+    # cooling scheme: (verkorting / temperature)
+    temperature = 1.0
+    minimumTemperature = 0.1
+    loop = 0
+
+    # Only run 'rounds' amount of times
+    while temperature > minimumTemperature:
+
+        # Extract map and results
+        residentialArea = hillyTemplate.highestScoreMap
+        numpyGrid = hillyTemplate.numpyGrid
+
+        # Get residentialArea without water (avoiding problems)
+        residentialAreaNew = residentialArea[1:len(residentialArea)]
+
+        # Get specific house
+        randomHouse = getHouse(residentialArea)
+        while randomHouse.type != "maison":
+            randomHouse = getHouse(residentialArea)
+
+        # Randomly pick orientation to move in
+        orientation = rd.randrange(0,4)       # 0: left, 1: right, 2: up, 3: down
+
+        # Save old begin coordinates (y, x tuple)
+        oldCoordinates = (randomHouse.yBegin, randomHouse.xBegin)
+
+        # Remove old position and fix the mess it left behind
+        randomHouse.removeFromGridAndMap(numpyGrid)
+        fixIncorrectVisualizations(residentialArea, numpyGrid)
+
+        # Update house coordinates 2m in that orientation
+        if orientation == 0:      # Go 2m to the left
+            yBegin = oldCoordinates[0]
+            xBegin = oldCoordinates[1] + 2
+
+        elif orientation == 1:    # Go 2m to the right
+            yBegin = oldCoordinates[0]
+            xBegin = oldCoordinates[1] - 2
+
+        elif orientation == 2:    # Go 2m up
+            yBegin = oldCoordinates[0] + 2
+            xBegin = oldCoordinates[1]
+
+        elif orientation == 3:    # Go 2m down
+            yBegin = oldCoordinates[0] - 2
+            xBegin = oldCoordinates[1]
+
+        # Update new coordinates in self
+        updateCoordinates(randomHouse, (yBegin, xBegin))
+
+        # Check restrictions
+        if checkAvailableArea(randomHouse, numpyGrid, residentialArea) == True:
+
+            # Initialize the score of this round
+            newScore = 0
+
+            # Move house on numpyGrid
+            placeOnHillGrid(randomHouse, numpyGrid)
+
+            # After placing all houses, loop over them
+            residentialAreaNew = residentialArea[1:len(residentialArea)]
+            for object in range(len(residentialAreaNew)):
+
+                # Give the current object an easy variable
+                currentObject = residentialAreaNew[object]
+
+                # Remove old value to avoid unexpected overlap
+                currentObject.extraFreeArea = 0
+
+                # Find all extra free area per house
+                increase = (1 * 2)
+                numpyGridOriginal = numpyGrid
+
+                if currentObject.type == "maison":
+                    checkAllFreeArea(currentObject, increase, numpyGrid,
+                                    numpyGridOriginal)
+
+                # Then, calculate the new value of each house
+                newScore += currentObject.calculateScore()
+
+            # If the score is higher or equal, leave the house on its new spot!
+            if newScore >= oldScore:
+
+                print("++ Score:", newScore, "vs.", oldScore, "|| Round:",
+                hillyTemplate.roundsCounter,"|| Temp:",temperature)
+
+                # Update scores
+                hillyTemplate.highestScore = newScore
+                hillyTemplate.highestScoreMap = residentialArea
+                hillyTemplate.swaps += 1
+
+                # Update score to compare against
+                oldScore = newScore
+
+            # Else, score is lower
+            else:
+
+                # if determineAcception(oldScore, newScore,
+                # startTValues, hillyTemplate) == True:
+                if acceptanceProbability(oldScore, newScore, temperature) == True:
+
+                    print("random0to1 <= acceptanceProbability")
+                    print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
+                    hillyTemplate.roundsCounter,"|| Temp:",temperature)
+
+                    # Update scores
+                    hillyTemplate.highestScore = newScore
+                    hillyTemplate.highestScoreMap = residentialArea
+                    hillyTemplate.swaps += 1
+
+                    # Update score to compare against
+                    oldScore = newScore
+
+                else:
+
+                    print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
+                    hillyTemplate.roundsCounter,"|| Temp:",temperature)
+
+                    # Revert to old coordinates and fix numpyGrid
+                    # Remove houses from numpyGrid and map
+                    randomHouse.removeFromGridAndMap(numpyGrid)
+
+                    # Revert to old coordinates
+                    updateCoordinates(randomHouse, oldCoordinates)
+
+                    # Clean-up some bugs and plot old location back
+                    fixIncorrectVisualizations(residentialArea, numpyGrid)
+
+                    # Re-calculate extra free area for this old situation
+                    recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+
+        else:
+
+            # Revert to old coordinates and fix numpyGrid
+            # Remove houses from numpyGrid and map
+            randomHouse.removeFromGridAndMap(numpyGrid)
+
+            # Revert to old coordinates
+            updateCoordinates(randomHouse, oldCoordinates)
+
+            # Clean-up some bugs and plot old location back
+            fixIncorrectVisualizations(residentialArea, numpyGrid)
+
+            # Re-calculate extra free area for this old situation
+            recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+
+        loop += 1
+        temperature = temperature * 0.99
+
+    else:
+        print("loops:",loop)
+        return hillyTemplate
+
+"""
+Temp. variabelen initializeren
+We loopen net zo lang totdat de minimum temperatuur is bereikt
+
+    We pakken een random maison +++++++
+    We pakken een random richting (0 - 3) +++++++
+    Moven we dit maison in die richting +++++++
+    Checks uitvoeren of dit mogelijk is +++++++
+        Ja: score berekenen +++++++
+            Als de newScore hoger of gelijk is dan de oldScore: accepteren +++++++
+            Als de newScore lager is dan de oldScore: acceptanceProbability() +++++++
+                if aP returns True: +++++++
+                    plaatsen +++++++
+                else +++++++
+                    terugplaatsen +++++++
+                Temperatuur updaten
+        Nee: terugplaatsen +++++++
+"""
+
+def acceptanceProbability(oldScore, newScore, temperature):
+
+    # Pak een float nummer tussen de 0 en 1
+    random0to1 = rd.uniform(0,1)
+    delta = oldScore/newScore
+
+    # Acceptatiekans: e ^ (verkorting / temperature)
+    # acceptanceProbability = math.exp((newScore - oldScore) / temperature)
+    acceptanceProbability = math.e**(delta / temperature)
+    print(random0to1)
+    print(acceptanceProbability)
+
+    if acceptanceProbability >= random0to1 :
+        return True
+
+    else:
+        return False

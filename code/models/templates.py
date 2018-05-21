@@ -70,6 +70,7 @@ resultsTemplate = {
     "rounds": 0,
     "roundsCounter": 0,
     "swaps": 0,
+    "startTValues": (0, 0),
     "allScores": 0,
     "highestScore": 0,
     "highestScoreMap": [],
