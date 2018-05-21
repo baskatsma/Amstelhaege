@@ -18,18 +18,15 @@ class Water(object):
 
     def __init__(self, type, freeArea, extraFreeArea, gridXLength, gridYLength,
                 xBegin, xEnd, yBegin, yEnd, uniqueID):
-        self.totalSquareArea = 0.2 * int(gridXLength) * int(gridYLength)
+        #self.totalSquareArea = 0.2 * int(gridXLength) * int(gridYLength)
         self.type = type
         self.freeArea = freeArea
         self.extraFreeArea = extraFreeArea
         self.gridXLength = gridXLength
         self.gridYLength = gridYLength
-        self.objectDimensions = (int(22500/320),
-                                320)
+        self.objectDimensions = (int(23040/296), 296)
         # self.objectDimensions = (int(mt.sqrt(self.totalSquareArea)),
         #                         int(mt.sqrt(self.totalSquareArea)))
-
-                                #22500/320
         self.xBegin = xBegin
         self.xEnd = xEnd
         self.yBegin = yBegin
@@ -135,22 +132,21 @@ class Results(object):
     Class that contains all results
     """
 
-    def __init__(self, algorithm, maxHouses, rounds, roundsCounter, swaps, allScores,
-    highestScore, highestScoreMap, numpyGrid, lowestScore, averageScore, allRuntimes,
-    fastestRuntime, slowestRuntime, averageRuntime, totalRuntime):
+    def __init__(self, algorithm, maxHouses, rounds, roundsCounter, swaps, moves,
+    allScores, highestScore, highestScoreMap, numpyGrid, lowestScore, averageScore,
+    fastestRuntime, slowestRuntime, totalRuntime):
         self.algorithm = algorithm
         self.maxHouses = maxHouses
         self.rounds = rounds
         self.roundsCounter = roundsCounter
         self.swaps = swaps
+        self.moves = moves
         self.allScores = allScores
         self.highestScore = highestScore
         self.highestScoreMap = highestScoreMap
         self.numpyGrid = numpyGrid
         self.lowestScore = lowestScore
         self.averageScore = averageScore
-        self.allRuntimes = allRuntimes
         self.fastestRuntime = fastestRuntime
         self.slowestRuntime = slowestRuntime
-        self.averageRuntime = averageRuntime
         self.totalRuntime = totalRuntime

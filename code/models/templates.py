@@ -1,4 +1,8 @@
 # Grid dimensions in meters
+# Total oppervlak: 320 * 360 = 115.200
+# 20% oppervlak = 0.2 * 115.200 = 23.040
+# sqrt(23.040) = 151,7893276881
+# 300 x 76,8
 gridXLength = 180 * 2
 gridYLength = 160 * 2
 
@@ -71,15 +75,14 @@ resultsTemplate = {
     "rounds": 0,
     "roundsCounter": 0,
     "swaps": 0,
+    "moves": 0,
     "allScores": 0,
     "highestScore": 0,
     "highestScoreMap": [],
     "numpyGrid": 0,
     "lowestScore": 1000000000,
     "averageScore": 0,
-    "allRuntimes": 0,
     "fastestRuntime": 1000000000,
     "slowestRuntime": 0,
-    "averageRuntime": 0,
     "totalRuntime": 0
 }

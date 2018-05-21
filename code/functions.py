@@ -1,3 +1,4 @@
+import csv
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
@@ -6,8 +7,12 @@ import random as rd
 import sys
 from models.models import *
 from models.templates import *
+from timeit import default_timer as timer
 
 def initializeRandomMap():
+
+    # Measure algorithm time
+    timeStart = timer()
 
     # Get maxHouses
     maxHouses = defineSettings()
@@ -32,7 +37,7 @@ def initializeRandomMap():
         residentialArea.append(House(**eengezinswoningTemplate))
 
     # Initialize numpy grid (verticalY, horizontalX)
-    numpyGrid = np.zeros((gridYLength,gridXLength), dtype='object')
+    numpyGrid = np.zeros((gridYLength,gridXLength), dtype="object")
 
     # Initialize current score
     currentResult = Results(**resultsTemplate)
@@ -87,12 +92,16 @@ def initializeRandomMap():
             # Then, calculate the new value of each house
             currentResult.highestScore += currentObject.calculateScore()
 
+    # Update algorithm runtimes
+    timeEnd = timer()
+    runtime = (timeEnd - timeStart)
+
     # Save current results
     currentResult.maxHouses = maxHouses
     currentResult.highestScoreMap = residentialArea
     currentResult.numpyGrid = numpyGrid
+    currentResult.totalRuntime = runtime
 
-    # return residentialArea, numpyGrid, currentResult
     return currentResult
 
 # Define residential area size (either 20, 40 or 60 houses at max)
@@ -224,20 +233,21 @@ def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
     maxHousesOnRow = houseCounter[3]
 
     if currentObject.type == "eengezinswoning":
+        maxHousesOnNextRows = houseCounter[4]
 
         # Put eengezinswoningen on the first row
         if houseCounter[0] < maxHousesOnRow:
-            coordinates = (300, int(22500/320) + currentObject.freeArea
+            coordinates = (300, currentObject.freeArea
                             + dimensions * houseCounter[0])
 
         # Put eengezinswoningen on the second row
-        elif houseCounter[1] < maxHousesOnRow:
-            coordinates = (300 - dimensions, int(22500/320) +
+        elif houseCounter[1] < maxHousesOnNextRows:
+            coordinates = (300 - dimensions, int(23040/296) +
             currentObject.freeArea + dimensions * houseCounter[1])
 
         # Put eengezinswoningen on the third row
-        elif houseCounter[2] < maxHousesOnRow:
-            coordinates = (300 - dimensions * 2, int(22500/320) +
+        elif houseCounter[2] < maxHousesOnNextRows:
+            coordinates = (300 - dimensions * 2, int(23040/296) +
             currentObject.freeArea + dimensions * houseCounter[2])
 
     else:
@@ -245,15 +255,15 @@ def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
         # Put bungalows on the map
         if houseCounter[0] < maxHousesOnRow:
             coordinates = (currentObject.freeArea,
-            int(22500/320) + currentObject.freeArea + dimensions * houseCounter[0])
+            int(23040/296) + currentObject.freeArea + dimensions * houseCounter[0])
 
         elif houseCounter[1] < maxHousesOnRow:
             coordinates = (currentObject.freeArea + dimensions,
-            int(22500/320) + currentObject.freeArea + dimensions * houseCounter[1])
+            int(23040/296) + currentObject.freeArea + dimensions * houseCounter[1])
 
         elif houseCounter[2] < maxHousesOnRow:
             coordinates = (currentObject.freeArea + dimensions * 2,
-            int(22500/320) + currentObject.freeArea + dimensions * houseCounter[2])
+            int(23040/296) + currentObject.freeArea + dimensions * houseCounter[2])
 
     # Update coordinats in self
     updateCoordinates(currentObject, coordinates)
@@ -280,7 +290,7 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
     # dus IETS wat ook maar geen 0 is (aka niet leeg), wordt gelijk gecanceld.
     if choice == "excludingFreeArea":
 
-        # Check house dimension area if it's completely empty
+        # Check house dimension area if it"s completely empty
         if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
             return False
 
@@ -328,7 +338,7 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
-    # Change uniqueID drawnumber to 1's for this method to work
+    # Change uniqueID drawnumber to 1"s for this method to work
     numpyGrid[coord[0]:coord[1],coord[2]:coord[3]] = fADrawNumber
 
     # Check if new area contains only empty-values or free area-values
@@ -517,8 +527,8 @@ def GIFPlot(residentialArea, indexPhoto):
     plt.ylim([0, gridYLength])
 
     # Save pic
-    pictureName = '{:03}'.format(indexPhoto)
-    plt.savefig('tmp/'+pictureName, dpi=200, bbox_inches='tight')
+    pictureName = "{:03}".format(indexPhoto)
+    plt.savefig("tmp/"+pictureName, dpi=200, bbox_inches="tight")
     plt.close(fig)
 
 def printPlot(allResults):
@@ -531,7 +541,9 @@ def printPlot(allResults):
     ax = fig.add_subplot(111)
 
     # Add score title
-    plt.title(str(totalScore) + " euro")
+    title = allResults.algorithm + " — " + str(allResults.maxHouses) + \
+    " houses: " + str(totalScore) + " euro"
+    plt.title(title)
 
     # Loop over all objects
     for object in residentialArea:
@@ -541,7 +553,9 @@ def printPlot(allResults):
 
     # Set figure dimensions
     plt.xlim([0, gridXLength])
+    plt.xlabel("width")
     plt.ylim([0, gridYLength])
+    plt.ylabel("height")
 
     # Show matplotlib
     plt.show()
@@ -558,20 +572,20 @@ def drawPlotObjects(residentialArea, object, ax):
     eFA = object.extraFreeArea
 
     # Define color for free area
-    colorChoice = 'gray'
+    colorChoice = "gray"
 
     # Define color for house
     if object.type == "eengezinswoning":
-        colorChoice2 = 'red'
+        colorChoice2 = "red"
 
     elif object.type == "bungalow":
-        colorChoice2 = 'green'
+        colorChoice2 = "green"
 
     elif object.type == "maison":
-        colorChoice2 = 'yellow'
+        colorChoice2 = "yellow"
 
     elif object.type == "water":
-        colorChoice2 = 'blue'
+        colorChoice2 = "blue"
 
     # Create new rects for freeArea + house
     rectUpperRight = patches.Rectangle((xBegin,yBegin),               # (X,Y) tuple
@@ -616,11 +630,10 @@ def updateResults(currentResult, allResults):
     # Update all results
     allResults.maxHouses = currentResult.maxHouses
     allResults.allScores += currentResult.highestScore
-    allResults.allRuntimes += currentResult.fastestRuntime
+    allResults.totalRuntime += currentResult.totalRuntime
 
     # Update avg results
     allResults.averageScore = int((allResults.allScores/allResults.rounds))
-    allResults.averageRuntime = (allResults.allRuntimes/allResults.rounds)
 
     # Update score results
     if currentResult.highestScore > allResults.highestScore:
@@ -639,3 +652,35 @@ def updateResults(currentResult, allResults):
         allResults.slowestRuntime = currentResult.fastestRuntime
 
     return allResults
+
+def writeResults(results):
+
+    # Open scores.csv
+    with open("scores.csv", "a", newline="") as csvfile:
+        fieldnames = [
+            "algorithm",
+            "number of houses",
+            "rounds",
+            "highest score",
+            "lowest score",
+            "swaps",
+            "moves",
+            "total runtime"
+            ]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        # Only write headers if file is empty
+        if os.stat("scores.csv").st_size == 0:
+            writer.writeheader()
+
+        # Write the rest
+        writer.writerow({
+            "algorithm": results.algorithm,
+            "number of houses": results.maxHouses,
+            "rounds": results.rounds,
+            "highest score": results.highestScore,
+            "lowest score": results.lowestScore,
+            "swaps": results.swaps,
+            "moves": results.moves,
+            "total runtime": results.totalRuntime
+            })

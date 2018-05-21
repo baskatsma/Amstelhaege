@@ -10,26 +10,27 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize variables
-    rounds = 1000
+    rounds = 10
 
     # Initialize algorithms results sheets
-    randomResults = Results(**resultsTemplate)
-    randomResults.rounds = int(rounds)
+    randomTemplate = Results(**resultsTemplate)
+    randomTemplate.rounds = int(rounds)
 
     hillyTemplate = Results(**resultsTemplate)
     hillyTemplate.rounds = int(rounds * 1.5)
 
-    hillclimberResults = Results(**resultsTemplate)
-    hillclimberResults.rounds = int(rounds * 1.5)
+    hillclimberTemplate = Results(**resultsTemplate)
+    hillclimberTemplate.rounds = int(rounds * 1.5)
 
     if len(sys.argv) < 3:
         print("You must provide the number of houses and the algorithm!")
 
     elif str(sys.argv[2]) == "random":
 
-        # Run random 'rounds' amount of times and display best results
-        randomAlgorithm(randomResults)
+        # Run random "rounds" amount of times and display best results
+        randomResults = randomAlgorithm(randomTemplate)
 
+        # Visualize grid with matplotlib
         #getVideo(randomResults.highestScoreMap)
         printPlot(randomResults)
 
@@ -37,11 +38,14 @@ def main():
 
     elif str(sys.argv[2]) == "hillclimber":
 
-        # Run random 'rounds' amount of times and use best result
-        randomAlgorithm(randomResults)
+        # Run random "rounds" amount of times and use best result
+        randomResults = randomAlgorithm(randomTemplate)
 
-        # Run hillclimber 'rounds' amount of times and display best results
-        hillclimberAlgorithm(hillclimberResults, randomResults)
+        # Run hillclimber "rounds" amount of times and display best results
+        hillclimberResults = hillclimberAlgorithm(hillclimberTemplate, randomResults)
+
+        # Visualize grid with matplotlib
+        printPlot(hillclimberResults)
 
         return hillclimberResults
 
@@ -65,30 +69,4 @@ def main():
 if __name__ == "__main__":
     results = main()
 
-    # Open scores.csv
-    with open('scores.csv', 'a', newline='') as csvfile:
-        fieldnames = [
-            'algorithm',
-            'maxHouses',
-            'rounds',
-            'highestScore',
-            'lowestScore',
-            'swaps',
-            'averageRuntime'
-            ]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-        # Only write headers if file is empty
-        if os.stat("scores.csv").st_size == 0:
-            writer.writeheader()
-
-        # Write the rest
-        writer.writerow({
-            'algorithm': results.algorithm,
-            'maxHouses': results.maxHouses,
-            'rounds': results.rounds,
-            'highestScore': results.highestScore,
-            'lowestScore': results.lowestScore,
-            'swaps': results.swaps,
-            'averageRuntime': results.averageRuntime
-            })
+    writeResults(results)
