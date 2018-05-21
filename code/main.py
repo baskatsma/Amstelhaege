@@ -26,8 +26,15 @@ def main():
 
     elif str(sys.argv[2]) == "random":
 
+        with open('scores.csv', 'w', newline='') as csvfile:
+            fieldnames = ['algorithm', 'highestScore', 'lowestScore', 'averageScore', 'runtime', 'maxHouses']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
         # Run random 'rounds' amount of times and display best results
-        randomAlgorithm(randomResults)
+            randomAlgorithm(randomResults)
+
+            writer.writeheader()
+            writer.writerow({'algorithm': 'Random', 'highestScore': randomResults.highestScore, 'lowestScore': randomResults.lowestScore, 'averageScore': randomResults.averageScore, 'runtime': randomResults.averageRuntime, 'maxHouses': randomResults.runtime})
 
         #getVideo(randomResults.highestScoreMap)
         printPlot(randomResults)
