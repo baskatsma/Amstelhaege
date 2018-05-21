@@ -1,0 +1,3 @@
+algorithm,maxHouses,rounds,highestScore,lowestScore,swaps,averageRuntime
+hillclimber,20,30,11988840,11069040,8,6.436651650195321e-08
+hillclimber,20,30,11764020,11188260,5,4.9200025387108326e-08

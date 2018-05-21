@@ -12,7 +12,7 @@ def main():
     # Initialize variables
     rounds = 20
 
-    # Initialize both algorithms results sheets
+    # Initialize algorithms results sheets
     randomResults = Results(**resultsTemplate)
     randomResults.rounds = int(rounds)
 
@@ -69,11 +69,12 @@ if __name__ == "__main__":
     with open('scores.csv', 'a', newline='') as csvfile:
         fieldnames = [
             'algorithm',
+            'maxHouses',
+            'rounds',
             'highestScore',
             'lowestScore',
-            'averageScore',
-            'averageRuntime',
-            'maxHouses'
+            'swaps',
+            'averageRuntime'
             ]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -84,9 +85,10 @@ if __name__ == "__main__":
         # Write the rest
         writer.writerow({
             'algorithm': results.algorithm,
+            'maxHouses': results.maxHouses,
+            'rounds': results.rounds,
             'highestScore': results.highestScore,
             'lowestScore': results.lowestScore,
-            'averageScore': results.averageScore,
-            'averageRuntime': results.averageRuntime,
-            'maxHouses': results.maxHouses
+            'swaps': results.swaps,
+            'averageRuntime': results.averageRuntime
             })

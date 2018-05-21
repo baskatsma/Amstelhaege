@@ -73,7 +73,10 @@ def randomAlgorithm(randomResults):
 # Run hillclimber algorithm
 def hillclimberAlgorithm(hillclimberResults, randomResults):
 
+    # Update results
     hillclimberResults.algorithm = "hillclimber"
+    hillclimberResults.maxHouses = randomResults.maxHouses
+    hillclimberResults.lowestScore = randomResults.highestScore
 
     # Remove old output results
     for png in glob.glob("tmp/*.png"):
@@ -81,9 +84,6 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
 
     for mp4 in glob.glob("tmp/*.mp4"):
         os.remove(mp4)
-
-    # Measure algorithm time
-    timeStart = timer()
 
     # Extract map and results
     residentialArea = randomResults.highestScoreMap
@@ -96,21 +96,18 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
     hillclimberCore(hillclimberResults, residentialArea,
                     numpyGrid, oldScore)
 
-    # Update algorithm runtime
-    timeEnd = timer()
-    runtime = (timeEnd - timeStart)
-
     # Print runtime
-    print("")
     print("Rounds:",int(hillclimberResults.rounds))
-    print("Total elapsed time (in seconds):",runtime)
-    print("Total swaps:",hillclimberResults.swaps)
+    print("Total swaps:",int(hillclimberResults.swaps))
     print("")
 
     # Visualize grid with matplotlib
     printPlot(hillclimberResults)
 
 def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
+
+    # Measure algorithm time
+    timeStart = timer()
 
     # Update round
     hillclimberResults.roundsCounter += 1
@@ -205,6 +202,24 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
                             numpyGrid, oldScore)
 
     else:
+
+        # Update algorithm runtime
+        timeEnd = timer()
+        runtime = (timeEnd - timeStart)
+
+        # Update current results and compare with all results
+        currentResult = Results(**resultsTemplate)
+        currentResult.maxHouses = hillclimberResults.maxHouses
+        currentResult.highestScore = oldScore
+        currentResult.highestScoreMap = residentialArea
+        currentResult.numpyGrid = numpyGrid
+        currentResult.fastestRuntime = runtime
+
+        hillclimberResults = updateResults(currentResult, hillclimberResults)
+
+        print("")
+        print("Total elapsed time (in seconds):",runtime)
+
         return hillclimberResults
 
 def hillyAlgorithm(hillyTemplate, choice):
