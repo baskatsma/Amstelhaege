@@ -665,7 +665,7 @@ def writeResults(results):
             "lowest score",
             "swaps",
             "moves",
-            "total runtime"
+            "total runtime (sec)"
             ]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -682,5 +682,5 @@ def writeResults(results):
             "lowest score": results.lowestScore,
             "swaps": results.swaps,
             "moves": results.moves,
-            "total runtime": results.totalRuntime
+            "total runtime (sec)": results.totalRuntime
             })

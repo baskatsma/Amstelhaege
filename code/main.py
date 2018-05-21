@@ -9,18 +9,18 @@ def main():
     # Avoid recursion errors
     sys.setrecursionlimit(5000)
 
-    # Initialize variables
-    rounds = 10
+    # Initialize amount of rounds
+    rounds = 1000
 
     # Initialize algorithms results sheets
     randomTemplate = Results(**resultsTemplate)
     randomTemplate.rounds = int(rounds)
 
-    hillyTemplate = Results(**resultsTemplate)
-    hillyTemplate.rounds = int(rounds * 1.5)
-
     hillclimberTemplate = Results(**resultsTemplate)
-    hillclimberTemplate.rounds = int(rounds * 1.5)
+    hillclimberTemplate.rounds = int(rounds)
+
+    hillyTemplate = Results(**resultsTemplate)
+    hillyTemplate.rounds = int(rounds)
 
     if len(sys.argv) < 3:
         print("You must provide the number of houses and the algorithm!")
@@ -51,17 +51,23 @@ def main():
 
     elif str(sys.argv[2]) == "hilly":
 
-        hillyAlgorithm(hillyTemplate, "hilly")
-        printPlot(hillyTemplate)
+        # Run hilly "rounds" amount of times and display best results
+        hillyResults = hillyAlgorithm(hillyTemplate, "hilly")
 
-        return hillyTemplate
+        # Visualize grid with matplotlib
+        printPlot(hillyResults)
+
+        return hillyResults
 
     elif str(sys.argv[2]) == "simmy":
 
-        hillyAlgorithm(hillyTemplate, "simmy")
-        printPlot(hillyTemplate)
+        # Run simmy "rounds" amount of times and display best results
+        simmyResults = hillyAlgorithm(hillyTemplate, "simmy")
 
-        return hillyTemplate
+        # Visualize grid with matplotlib
+        printPlot(simmyResults)
+
+        return simmyResults
 
     else:
         print("Not a valid algorithm!")

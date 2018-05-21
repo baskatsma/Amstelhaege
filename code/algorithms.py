@@ -32,7 +32,7 @@ def randomAlgorithm(randomResults):
 
     # Print current score and total runtime
     runtimeDecimal = "%.3f" % randomResults.totalRuntime
-    print("Total runtime (sec.):",
+    print("Total runtime (sec):",
     runtimeDecimal,"|| Score:",currentResult.highestScore,
     "|| Round:",randomResults.roundsCounter)
 
