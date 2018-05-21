@@ -15,69 +15,65 @@ from timeit import default_timer as timer
 # Run random algorithm
 def randomAlgorithm(randomResults):
 
-    with open('scores.csv', 'w', newline='') as csvfile:
-        fieldnames = ['algorithm', 'highestScore', 'lowestScore', 'averageScore', 'runtime', 'maxHouses']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    # Update round
+    randomResults.algorithm = "random"
+    randomResults.roundsCounter += 1
 
-        # Update round
-        randomResults.roundsCounter += 1
+    # Remove old output results
+    for png in glob.glob("tmp/*.png"):
+        os.remove(png)
 
-        # Remove old output results
-        for png in glob.glob("tmp/*.png"):
-            os.remove(png)
+    for mp4 in glob.glob("tmp/*.mp4"):
+        os.remove(mp4)
 
-        for mp4 in glob.glob("tmp/*.mp4"):
-            os.remove(mp4)
+    # Measure algorithm time
+    timeStart = timer()
 
-        # Measure algorithm time
-        timeStart = timer()
+    # Get a random map and its results
+    currentResult = initializeRandomMap()
 
-        # Get a random map and its results
-        currentResult = initializeRandomMap()
+    # Update algorithm runtimes
+    timeEnd = timer()
+    runtime = (timeEnd - timeStart)
+    currentResult.fastestRuntime = runtime
+    randomResults.totalRuntime += runtime
 
-        # Update algorithm runtimes
-        timeEnd = timer()
-        runtime = (timeEnd - timeStart)
-        currentResult.fastestRuntime = runtime
-        randomResults.totalRuntime += runtime
+    # Based on the current results, check for higher/lower scores and update
+    randomResults = updateResults(currentResult, randomResults)
 
-        # Based on the current results, check for higher/lower scores and update
-        randomResults = updateResults(currentResult, randomResults)
+    # Print current score and total runtime
+    runtimeDecimal = "%.3f" % randomResults.totalRuntime
+    print("Total runtime (sec.):",
+    runtimeDecimal,"|| Score:",currentResult.highestScore,
+    "|| Round:",randomResults.roundsCounter)
 
-        # Print current score and total runtime
-        runtimeDecimal = "%.3f" % randomResults.totalRuntime
-        print("Total runtime (sec.):",
-        runtimeDecimal,"|| Score:",currentResult.highestScore,
-        "|| Round:",randomResults.roundsCounter)
+    # Only run 'rounds' amount of times
+    if randomResults.roundsCounter < randomResults.rounds:
+        randomAlgorithm(randomResults)
 
-        # Only run 'rounds' amount of times
-        if randomResults.roundsCounter < randomResults.rounds:
-            randomAlgorithm(randomResults)
+    else:
+        # Print high/low score & runtime
+        print("")
+        print("Rounds:", randomResults.rounds, "|| MaxHouses:", \
+        randomResults.maxHouses)
+        print("---------------------------------------------")
+        print("Highest score:", randomResults.highestScore)
+        print("Lowest score:", randomResults.lowestScore)
+        print("Average score:", randomResults.averageScore)
+        print("---------------------------------------------")
+        print("Fastest runtime (sec):", randomResults.fastestRuntime)
+        print("Slowest runtime (sec):", randomResults.slowestRuntime)
+        print("Average runtime (sec):", randomResults.averageRuntime)
+        print("---------------------------------------------")
+        print("Total runtime (sec):", randomResults.totalRuntime)
+        print("")
 
-        else:
-            # Print high/low score & runtime
-            print("")
-            print("Rounds:", randomResults.rounds, "|| MaxHouses:", \
-            randomResults.maxHouses)
-            print("---------------------------------------------")
-            print("Highest score:", randomResults.highestScore)
-            print("Lowest score:", randomResults.lowestScore)
-            print("Average score:", randomResults.averageScore)
-            print("---------------------------------------------")
-            print("Fastest runtime (sec):", randomResults.fastestRuntime)
-            print("Slowest runtime (sec):", randomResults.slowestRuntime)
-            print("Average runtime (sec):", randomResults.averageRuntime)
-            print("---------------------------------------------")
-            print("Total runtime (sec):", randomResults.totalRuntime)
-            print("")
-
-            writer.writeheader()
-            writer.writerow({'algorithm': 'Random', 'highestScore': randomResults.highestScore, 'lowestScore': randomResults.lowestScore, 'averageScore': randomResults.averageScore, 'runtime': randomResults.averageRuntime, 'maxHouses': randomResults.runtime})
-
-        return randomResults
+    return randomResults
 
 # Run hillclimber algorithm
 def hillclimberAlgorithm(hillclimberResults, randomResults):
+
+    hillclimberResults.algorithm = "hillclimber"
 
     # Remove old output results
     for png in glob.glob("tmp/*.png"):
@@ -212,6 +208,8 @@ def hillclimberCore(hillclimberResults, residentialArea, numpyGrid, oldScore):
         return hillclimberResults
 
 def hillyAlgorithm(hillyTemplate, choice):
+
+    hillyTemplate.algorithm = "hilly"
 
     # Get maxHouses
     maxHouses = defineSettings()

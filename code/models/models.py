@@ -135,14 +135,14 @@ class Results(object):
     Class that contains all results
     """
 
-    def __init__(self, maxHouses, rounds, roundsCounter, swaps, startTValues, allScores,
+    def __init__(self, algorithm, maxHouses, rounds, roundsCounter, swaps, allScores,
     highestScore, highestScoreMap, numpyGrid, lowestScore, averageScore, allRuntimes,
     fastestRuntime, slowestRuntime, averageRuntime, totalRuntime):
+        self.algorithm = algorithm
         self.maxHouses = maxHouses
         self.rounds = rounds
         self.roundsCounter = roundsCounter
         self.swaps = swaps
-        self.startTValues = startTValues
         self.allScores = allScores
         self.highestScore = highestScore
         self.highestScoreMap = highestScoreMap

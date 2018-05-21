@@ -1,6 +1,7 @@
 from algorithms import *
 from functions import *
 from models.templates import *
+import os
 import sys
 
 def main():
@@ -9,7 +10,7 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize variables
-    rounds = 500
+    rounds = 20
 
     # Initialize both algorithms results sheets
     randomResults = Results(**resultsTemplate)
@@ -26,18 +27,13 @@ def main():
 
     elif str(sys.argv[2]) == "random":
 
-        with open('scores.csv', 'w', newline='') as csvfile:
-            fieldnames = ['algorithm', 'highestScore', 'lowestScore', 'averageScore', 'runtime', 'maxHouses']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
         # Run random 'rounds' amount of times and display best results
-            randomAlgorithm(randomResults)
-
-            writer.writeheader()
-            writer.writerow({'algorithm': 'Random', 'highestScore': randomResults.highestScore, 'lowestScore': randomResults.lowestScore, 'averageScore': randomResults.averageScore, 'runtime': randomResults.averageRuntime, 'maxHouses': randomResults.runtime})
+        randomAlgorithm(randomResults)
 
         #getVideo(randomResults.highestScoreMap)
         printPlot(randomResults)
+
+        return randomResults
 
     elif str(sys.argv[2]) == "hillclimber":
 
@@ -47,18 +43,50 @@ def main():
         # Run hillclimber 'rounds' amount of times and display best results
         hillclimberAlgorithm(hillclimberResults, randomResults)
 
+        return hillclimberResults
+
     elif str(sys.argv[2]) == "hilly":
 
         hillyAlgorithm(hillyTemplate, "hilly")
         printPlot(hillyTemplate)
+
+        return hillyTemplate
 
     elif str(sys.argv[2]) == "simmy":
 
         hillyAlgorithm(hillyTemplate, "simmy")
         printPlot(hillyTemplate)
 
+        return hillyTemplate
+
     else:
         print("Not a valid algorithm!")
 
 if __name__ == "__main__":
-    main()
+    results = main()
+
+    # Open scores.csv
+    with open('scores.csv', 'a', newline='') as csvfile:
+        fieldnames = [
+            'algorithm',
+            'highestScore',
+            'lowestScore',
+            'averageScore',
+            'averageRuntime',
+            'maxHouses'
+            ]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        # Only write headers if file is empty
+        if os.stat("scores.csv").st_size == 0:
+            writer.writeheader()
+
+        # Write the rest
+        writer.writerow({
+            'algorithm': results.algorithm,
+            'highestScore': results.highestScore,
+            'lowestScore': results.lowestScore,
+            'averageScore': results.averageScore,
+            'averageRuntime': results.averageRuntime,
+            'maxHouses': results.maxHouses
+            })
