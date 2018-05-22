@@ -518,12 +518,12 @@ def hillyMove(hillyTemplate, oldScore):
 def simmyAnnealing(hillyTemplate, oldScore):
 
     # cooling scheme: (verkorting / temperature)
-    temperature = 1.0
+    maximumTemperature = 1.0
     minimumTemperature = 0.1
-    loop = 0
+    temperature = 1.0
 
     # Only run "rounds" amount of times
-    while temperature > minimumTemperature:
+    for round in range(100):
 
         # Extract map and results
         residentialArea = hillyTemplate.highestScoreMap
@@ -663,8 +663,8 @@ def simmyAnnealing(hillyTemplate, oldScore):
             # Re-calculate extra free area for this old situation
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-        loop += 1
-        temperature = temperature * 0.99
+        # temperature = temperature * 0.99
+        temperature = (temperature - maximumTemperature) * (round + 1/ 101)
 
     else:
         return hillyTemplate
@@ -673,11 +673,11 @@ def acceptanceProbability(oldScore, newScore, temperature):
 
     # Pak een float nummer tussen de 0 en 1
     random0to1 = rd.uniform(0,1)
-    delta = oldScore/newScore
+    #delta = newScore - oldScore
 
     # Acceptatiekans: e ^ (verkorting / temperature)
-    # acceptanceProbability = math.exp((newScore - oldScore) / temperature)
-    acceptanceProbability = math.e**(delta / temperature)
+    acceptanceProbability = math.exp((newScore - oldScore) / temperature)
+    #acceptanceProbability = math.e**(delta / temperature)
     print(random0to1)
     print(acceptanceProbability)
 
