@@ -26,25 +26,10 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 
 
 ## Vereisten
-
-> * **macOS, Windows** of **Linux**
-
-> * **[Atom 1.26.1](https://atom.io/)** of een andere soortgelijke texteditor
-
-> * **[Python 3.6.5](https://www.python.org/downloads/)**
-
-> * **[numpy 1.14.2](http://www.numpy.org/)**
-
+Dit project is geschreven in Python 3.6.5. In requirements.txt staan de benodigde packages om de code uit te voeren. Deze packages zijn te installeren door het runnen van de volgende command:
 ```
-pip3 install numpy
+pip3 install -r requirements.txt
 ```
-
-> * **[matplotlib 2.2.2](https://matplotlib.org/index.html/)**
-
-```
-python3 -mpip install matplotlib
-```
-
 
 ## Gebruik
 ```
