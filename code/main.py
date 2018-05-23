@@ -5,9 +5,10 @@ import os
 import sys
 
 def main():
-    '''
-    functie beschrijving
-    '''
+    """
+    Calls the chosen algorithm to create a residential area
+    containing 20, 40 or 60 houses.
+    """
 
     # Avoid recursion errors
     sys.setrecursionlimit(5000)
@@ -25,6 +26,7 @@ def main():
     hillyTemplate = Results(**resultsTemplate)
     hillyTemplate.rounds = int(rounds)
 
+    # Check whether user inputs the correct amount of arguments
     if len(sys.argv) < 3:
         print("You must provide the number of houses and the algorithm!")
 
@@ -45,7 +47,8 @@ def main():
         randomResults = randomAlgorithm(randomTemplate)
 
         # Run hillclimber "rounds" amount of times and display best results
-        hillclimberResults = hillclimberAlgorithm(hillclimberTemplate, randomResults)
+        hillclimberResults = hillclimberAlgorithm(hillclimberTemplate, \
+        randomResults)
 
         # Visualize grid with matplotlib
         printPlot(hillclimberResults)
@@ -73,7 +76,8 @@ def main():
         return simmyResults
 
     else:
-        print("Not a valid algorithm! Choose among: ")
+        print("Not a valid algorithm! Choose among: random, hillclimber, hilly\
+        or simmy")
 
 if __name__ == "__main__":
     results = main()
