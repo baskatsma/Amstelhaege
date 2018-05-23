@@ -540,14 +540,15 @@ def simAnnealing(hillMovesTemplate, oldScore):
     """
 
     # cooling scheme: (verkorting / temperature)
+    #temperature = 10000
     temperature = 10
     minimumTemperature = 1
 
-    cooling = 0.05
+    cooling = 0.003
     round = 0
 
-    # # Only run "rounds" amount of times
-    # for round in range(100):
+    # Set variable to keep track of best score found
+    bestScore = 0
 
     while temperature >= 1:
 
@@ -637,10 +638,13 @@ def simAnnealing(hillMovesTemplate, oldScore):
                 # Update score to compare against
                 oldScore = newScore
 
+                # keep track of best solution found
+                if newScore > bestScore:
+                    bestScore = newScore
+                    print ("BEST SCORE =", bestScore)
+
             # Else, score is lower
             else:
-
-                computeProb(oldScore, newScore, temperature)
 
                 # if determineAcception(oldScore, newScore,
                 # startTValues, hillyTemplate) == True:
@@ -676,7 +680,8 @@ def simAnnealing(hillMovesTemplate, oldScore):
                     # Re-calculate extra free area for this old situation
                     recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-            temperature = temperature - (cooling * round)
+            # Temperature = temperature * cooling factor
+            temperature *= 1 - cooling
             round += 1
 
         else:
@@ -694,11 +699,8 @@ def simAnnealing(hillMovesTemplate, oldScore):
             # Re-calculate extra free area for this old situation
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-        # temperature = temperature * 0.99
-        #temperature = (temperature - maximumTemperature) * (round + 1/ 101)
-
-
     else:
+        print ("BEST SCORE = ", bestScore)
         return hillMovesTemplate
 
 def computeProb(oldScore, newScore, temperature):
@@ -707,40 +709,20 @@ def computeProb(oldScore, newScore, temperature):
     random0to1 = rd.uniform(0,1)
 
     # Compute difference between old score and new score
-    delta = newScore - oldScore
+    delta = (newScore - oldScore) / 100000
 
-    # ACCEPTATIEKANS BLIJFT GELIJK?!
-    
-    # Acceptatiekans: e ^ (verkorting / temperature)
+    # Calculate the acceptance probability
     acceptanceProb = math.exp(delta / temperature)
-
-    #acceptanceProbability = math.e**(delta / temperature)
 
     print(random0to1)
     print(acceptanceProb)
 
-    if acceptanceProb < random0to1:
+    #
+    if acceptanceProb >= random0to1:
         return True
 
     else:
         return False
-
-    # if acceptanceProbability >= random0to1 :
-    #     return True
-    #
-    # else:
-    #     return False
-
-    # ALGEMENE ACCEPTANCE FUNCTIE
-    # def acceptance_probability(old_cost, new_cost, temperature):
-
-    # accept if new score is better
-    # if delta > 0:
-    #     return True
-
-    # give a probability
-    # else:
-    #     return math.exp((old_cost - new_cost) / temperature)
 
 """
 Temp. variabelen initializeren +++++++
