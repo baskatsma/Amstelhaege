@@ -21,8 +21,8 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 - [x] Verplichte vrijstand toegevoegd (zonder pythagoras)
 - [X] Extra vrijstand calculator functie toegevoegd
 - [X] Water toegevoegd
-- [ ] Random algoritme optimaliseren
-- [ ] Nieuwe algoritmes toepassen
+- [X] Random algoritme optimaliseren
+- [X] Nieuwe algoritmes toepassen
 
 
 ## Vereisten
