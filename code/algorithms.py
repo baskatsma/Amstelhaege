@@ -540,7 +540,6 @@ def simAnnealing(hillMovesTemplate, oldScore):
     """
 
     # cooling scheme: (verkorting / temperature)
-<<<<<<< HEAD
     temperature = 10
     minimumTemperature = 1
 
@@ -551,14 +550,6 @@ def simAnnealing(hillMovesTemplate, oldScore):
     # for round in range(100):
 
     while temperature >= 1:
-=======
-    temperature = 1.0
-    minimumTemperature = 0.1
-    loop = 0
-
-    # Only run "rounds" amount of times
-    while temperature > minimumTemperature:
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
 
         # Extract map and results
         residentialArea = hillMovesTemplate.highestScoreMap
@@ -636,11 +627,7 @@ def simAnnealing(hillMovesTemplate, oldScore):
             if newScore >= oldScore:
 
                 print("++ Score:", newScore, "vs.", oldScore, "|| Round:",
-<<<<<<< HEAD
                 round,"|| Temp:",temperature)
-=======
-                hillMovesTemplate.roundsCounter,"|| Temp:",temperature)
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
 
                 # Update scores
                 hillMovesTemplate.highestScore = newScore
@@ -656,21 +643,12 @@ def simAnnealing(hillMovesTemplate, oldScore):
                 computeProb(oldScore, newScore, temperature)
 
                 # if determineAcception(oldScore, newScore,
-<<<<<<< HEAD
                 # startTValues, hillyTemplate) == True:
                 if computeProb(oldScore, newScore, temperature) == True:
-=======
-                # startTValues, hillMovesTemplate) == True:
-                if acceptProbability(oldScore, newScore, temperature) == True:
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
 
                     print("random0to1 <= acceptProbability")
                     print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
-<<<<<<< HEAD
                     round,"|| Temp:",temperature)
-=======
-                    hillMovesTemplate.roundsCounter,"|| Temp:",temperature)
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
 
                     # Update scores
                     hillMovesTemplate.highestScore = newScore
@@ -683,11 +661,7 @@ def simAnnealing(hillMovesTemplate, oldScore):
                 else:
 
                     print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
-<<<<<<< HEAD
                     round,"|| Temp:",temperature)
-=======
-                    hillMovesTemplate.roundsCounter,"|| Temp:",temperature)
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
 
                     # Revert to old coordinates and fix numpyGrid
                     # Remove houses from numpyGrid and map
@@ -720,54 +694,32 @@ def simAnnealing(hillMovesTemplate, oldScore):
             # Re-calculate extra free area for this old situation
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-<<<<<<< HEAD
         # temperature = temperature * 0.99
         #temperature = (temperature - maximumTemperature) * (round + 1/ 101)
 
-=======
-        loop += 1
-        temperature = temperature * 0.99
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
 
     else:
         return hillMovesTemplate
 
-<<<<<<< HEAD
 def computeProb(oldScore, newScore, temperature):
-=======
-def acceptProbability(oldScore, newScore, temperature):
-    """
-    This function GEEN IDEEEEEEE
-    """
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
 
     # Get a random float number between 0 and 1
     random0to1 = rd.uniform(0,1)
-<<<<<<< HEAD
 
     # Compute difference between old score and new score
     delta = newScore - oldScore
 
+    # ACCEPTATIEKANS BLIJFT GELIJK?!
+    
     # Acceptatiekans: e ^ (verkorting / temperature)
-    acceptanceProbability = math.exp(delta / temperature)
+    acceptanceProb = math.exp(delta / temperature)
 
     #acceptanceProbability = math.e**(delta / temperature)
 
-=======
-    delta = oldScore/newScore
-
-    # Acceptatiekans: e ^ (verkorting / temperature)
-    # acceptProbability = math.exp((newScore - oldScore) / temperature)
-    acceptProbability = math.e**(delta / temperature)
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
     print(random0to1)
-    print(acceptProbability)
+    print(acceptanceProb)
 
-<<<<<<< HEAD
-    if acceptanceProbability < random0to1:
-=======
-    if acceptProbability >= random0to1 :
->>>>>>> cee488d3e92d0a26821a29fcc411a5c6dcaf83ad
+    if acceptanceProb < random0to1:
         return True
 
     else:
@@ -778,6 +730,17 @@ def acceptProbability(oldScore, newScore, temperature):
     #
     # else:
     #     return False
+
+    # ALGEMENE ACCEPTANCE FUNCTIE
+    # def acceptance_probability(old_cost, new_cost, temperature):
+
+    # accept if new score is better
+    # if delta > 0:
+    #     return True
+
+    # give a probability
+    # else:
+    #     return math.exp((old_cost - new_cost) / temperature)
 
 """
 Temp. variabelen initializeren +++++++
