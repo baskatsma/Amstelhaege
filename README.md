@@ -21,40 +21,31 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 - [x] Verplichte vrijstand toegevoegd (zonder pythagoras)
 - [X] Extra vrijstand calculator functie toegevoegd
 - [X] Water toegevoegd
-- [ ] Random algoritme optimaliseren
-- [ ] Nieuwe algoritmes toepassen
+- [X] Random algoritme optimaliseren
+- [X] Nieuwe algoritmes toepassen
 
 
 ## Vereisten
-
-> * **macOS, Windows** of **Linux**
-
-> * **[Atom 1.26.1](https://atom.io/)** of een andere soortgelijke texteditor
-
-> * **[Python 3.6.5](https://www.python.org/downloads/)**
-
-> * **[numpy 1.14.2](http://www.numpy.org/)**
-
+Dit project is geschreven in Python 3.6.5. In requirements.txt staan de benodigde packages om de code uit te voeren. Deze packages zijn te installeren door het runnen van de volgende command:
 ```
-pip3 install numpy
+pip3 install -r requirements.txt
 ```
-
-> * **[matplotlib 2.2.2](https://matplotlib.org/index.html/)**
-
-```
-python3 -mpip install matplotlib
-```
-
 
 ## Gebruik
+De code wordt uitgevoerd door het runnen van de volgende command:
 ```
 python3 main.py '#HOUSES' 'ALGORITHM'
 ```
+In deze command staat #HOUSES voor het aantal huizen dat de woonwijk kan bevatten.
+Dit kunnen er 20, 40 of 60 zijn. Als er geen aantal wordt meegegeven, of als er een ongeldig aantal wordt meegegeven, zal de code automatisch doorgaan met 20 huizen. Verder staat ALGORITHM voor het gewenste algoritme waarmee de woonwijk gecreëerd wordt. Voor een random algoritme moet "random" worden ingevoerd. Voor een hillclimber algoritme dient "hillSwaps" te worden ingevoerd. Voor een heuristisch hillclimber algoritme moet "hillMoves" worden ingevoerd. Voor een simulated annealing algoritme dient "simAnnealing" te worden ingevoerd.
+
+
 **Voorbeelden:**
 ```
+python3 main.py 20 simAnnealing
 python3 main.py 40 random
-python3 main.py 60 hillclimber
+python3 main.py 60 hillSwaps
 ```
 
 ## Dankwoord
-Wij willen graag onze assistent Nicole Silverio bedanken voor de assistentie, hulp en mentale support!
+Wij willen graag onze assistent Nicole Ferreira Silverio bedanken voor de assistentie, hulp en mentale support! Verder bedanken wij Daan van den Berg voor de leerzame colleges!
