@@ -32,13 +32,19 @@ pip3 install -r requirements.txt
 ```
 
 ## Gebruik
+De code wordt uitgevoerd door het runnen van de volgende command:
 ```
 python3 main.py '#HOUSES' 'ALGORITHM'
 ```
+In deze command staat #HOUSES voor het aantal huizen dat de woonwijk kan bevatten.
+Dit kunnen er 20, 40 of 60 zijn. Verder staat ALGORITHM voor het gewenste algoritme waarmee de woonwijk gecreëerd wordt. Voor een random algoritme dient "random" te worden ingevoerd. Voor een hillclimber algoritme dient "hillSwaps" of "hillMoves" te worden ingevoerd. Voor een simulated annealing algoritme dient "simAnnealing" te worden ingevoerd.
+
+
 **Voorbeelden:**
 ```
+python3 main.py 20 simAnnealing
 python3 main.py 40 random
-python3 main.py 60 hillclimber
+python3 main.py 60 hillSwaps
 ```
 
 ## Dankwoord
