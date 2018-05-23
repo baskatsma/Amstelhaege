@@ -48,4 +48,4 @@ python3 main.py 60 hillSwaps
 ```
 
 ## Dankwoord
-Wij willen graag onze assistent Nicole Silverio bedanken voor de assistentie, hulp en mentale support!
+Wij willen graag onze assistent Nicole Ferreira Silverio bedanken voor de assistentie, hulp en mentale support! Verder bedanken wij Daan van den Berg voor de leerzame colleges!
