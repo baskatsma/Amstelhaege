@@ -57,19 +57,19 @@ def randomAlgorithm(randomResults):
 
     return randomResults
 
-# Run hillclimber algorithm
-def hillclimberAlgorithm(hillclimberResults, randomResults):
+# Run hillSwaps algorithm
+def hillSwapsAlgorithm(hillSwapsResults, randomResults):
 
     # Measure algorithm time
     timeStart = timer()
 
     # Update template
-    hillclimberResults.algorithm = "hillclimber"
-    hillclimberResults.maxHouses = randomResults.maxHouses
-    hillclimberResults.lowestScore = randomResults.highestScore
-    hillclimberResults.highestScoreMap = randomResults.highestScoreMap
-    hillclimberResults.numpyGrid = randomResults.numpyGrid
-    hillclimberResults.totalRuntime = randomResults.totalRuntime
+    hillSwapsResults.algorithm = "hillSwaps"
+    hillSwapsResults.maxHouses = randomResults.maxHouses
+    hillSwapsResults.lowestScore = randomResults.highestScore
+    hillSwapsResults.highestScoreMap = randomResults.highestScoreMap
+    hillSwapsResults.numpyGrid = randomResults.numpyGrid
+    hillSwapsResults.totalRuntime = randomResults.totalRuntime
 
     # Remove old output results
     for png in glob.glob("tmp/*.png"):
@@ -81,41 +81,41 @@ def hillclimberAlgorithm(hillclimberResults, randomResults):
     # Extract result
     oldScore = randomResults.highestScore
 
-    # Do hillclimber "rounds" amount of times
-    hillclimberCore(hillclimberResults, oldScore)
+    # Do hillSwaps "rounds" amount of times
+    hillSwapsCore(hillSwapsResults, oldScore)
 
     # Update algorithm runtime
     timeEnd = timer()
     runtime = (timeEnd - timeStart)
-    hillclimberResults.totalRuntime += runtime
+    hillSwapsResults.totalRuntime += runtime
 
     # Print high/low score & runtime
     print("")
-    print("Rounds:", hillclimberResults.rounds, "|| MaxHouses:", \
-    hillclimberResults.maxHouses)
+    print("Rounds:", hillSwapsResults.rounds, "|| MaxHouses:", \
+    hillSwapsResults.maxHouses)
     print("---------------------------------------------")
-    print("Total swaps:",int(hillclimberResults.swaps))
+    print("Total swaps:",int(hillSwapsResults.swaps))
     print("---------------------------------------------")
-    print("Highest score:", hillclimberResults.highestScore)
-    print("Lowest score:", hillclimberResults.lowestScore)
-    print("Average score:", hillclimberResults.averageScore)
+    print("Highest score:", hillSwapsResults.highestScore)
+    print("Lowest score:", hillSwapsResults.lowestScore)
+    print("Average score:", hillSwapsResults.averageScore)
     print("---------------------------------------------")
-    print("Total runtime (sec):", hillclimberResults.totalRuntime)
+    print("Total runtime (sec):", hillSwapsResults.totalRuntime)
     print("")
 
-    return hillclimberResults
+    return hillSwapsResults
 
-def hillclimberCore(hillclimberResults, oldScore):
+def hillSwapsCore(hillSwapsResults, oldScore):
 
     # Extract map and grid
-    residentialArea = hillclimberResults.highestScoreMap
-    numpyGrid = hillclimberResults.numpyGrid
+    residentialArea = hillSwapsResults.highestScoreMap
+    numpyGrid = hillSwapsResults.numpyGrid
 
     # Update round
-    hillclimberResults.roundsCounter += 1
+    hillSwapsResults.roundsCounter += 1
 
     # Only run "rounds" amount of times
-    if hillclimberResults.roundsCounter <= hillclimberResults.rounds:
+    if hillSwapsResults.roundsCounter <= hillSwapsResults.rounds:
 
         # Pick random houses & update new coordinates
         results = switchCoordinates(residentialArea, numpyGrid)
@@ -159,25 +159,25 @@ def hillclimberCore(hillclimberResults, oldScore):
             if newScore > oldScore:
 
                 print("++ Score:", newScore, "vs.", oldScore, "|| Round:",
-                hillclimberResults.roundsCounter)
+                hillSwapsResults.roundsCounter)
 
                 # Update scores
-                hillclimberResults.highestScore = newScore
-                hillclimberResults.highestScoreMap = residentialArea
-                hillclimberResults.numpyGrid = numpyGrid
-                hillclimberResults.swaps += 1
+                hillSwapsResults.highestScore = newScore
+                hillSwapsResults.highestScoreMap = residentialArea
+                hillSwapsResults.numpyGrid = numpyGrid
+                hillSwapsResults.swaps += 1
 
                 # Update score to compare against
                 oldScore = newScore
 
-                # Run hillclimber again
-                hillclimberCore(hillclimberResults, oldScore)
+                # Run hillSwaps again
+                hillSwapsCore(hillSwapsResults, oldScore)
 
             # Else, score is lower
             else:
 
                 print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
-                hillclimberResults.roundsCounter)
+                hillSwapsResults.roundsCounter)
 
                 # Revert to old coordinates and fix numpyGrid
                 revertSituation(randomHouse1, randomHouse2, oldCoordinates1,
@@ -186,8 +186,8 @@ def hillclimberCore(hillclimberResults, oldScore):
                 # Re-calculate extra free area for this old situation
                 recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-                # Run hillclimber again
-                hillclimberCore(hillclimberResults, oldScore)
+                # Run hillSwaps again
+                hillSwapsCore(hillSwapsResults, oldScore)
 
         else:
 
@@ -198,20 +198,20 @@ def hillclimberCore(hillclimberResults, oldScore):
             # Re-calculate extra free area for this old situation
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-            # Run hillclimber again
-            hillclimberCore(hillclimberResults, oldScore)
+            # Run hillSwaps again
+            hillSwapsCore(hillSwapsResults, oldScore)
 
     else:
 
-        return hillclimberResults
+        return hillSwapsResults
 
-def hillyAlgorithm(hillyTemplate, choice):
+def hillMovesAlgorithm(hillMovesTemplate, choice):
 
     # Measure algorithm time
     timeStart = timer()
 
     # Update template
-    hillyTemplate.algorithm = "hilly"
+    hillMovesTemplate.algorithm = "hillMoves"
 
     # Get maxHouses
     maxHouses = defineSettings()
@@ -281,7 +281,7 @@ def hillyAlgorithm(hillyTemplate, choice):
                 dimensions = (currentObject.objectDimensions[0]
                             + currentObject.freeArea)
                 print(currentObject.objectDimensions[0] + currentObject.freeArea * 2)
-                createHillyGrid(currentObject, numpyGrid,
+                createhillMovesGrid(currentObject, numpyGrid,
                                 dimensions, eengzRowCounters)
                 eengzRowCounters[0] += 1
 
@@ -296,7 +296,7 @@ def hillyAlgorithm(hillyTemplate, choice):
 
                 dimensions = (currentObject.objectDimensions[0]
                             + currentObject.freeArea)
-                createHillyGrid(currentObject, numpyGrid,
+                createhillMovesGrid(currentObject, numpyGrid,
                                 dimensions, bungaRowCounters)
                 bungaRowCounters[0] += 1
 
@@ -337,55 +337,55 @@ def hillyAlgorithm(hillyTemplate, choice):
                                 numpyGridOriginal)
 
             # Then, calculate the new value of each house
-            hillyTemplate.highestScore += currentObject.calculateScore()
+            hillMovesTemplate.highestScore += currentObject.calculateScore()
 
     # Save current results
-    hillyTemplate.lowestScore = hillyTemplate.highestScore
-    hillyTemplate.maxHouses = maxHouses
-    hillyTemplate.highestScoreMap = residentialArea
-    hillyTemplate.numpyGrid = numpyGrid
+    hillMovesTemplate.lowestScore = hillMovesTemplate.highestScore
+    hillMovesTemplate.maxHouses = maxHouses
+    hillMovesTemplate.highestScoreMap = residentialArea
+    hillMovesTemplate.numpyGrid = numpyGrid
 
     # Define score to compare against
-    oldScore = hillyTemplate.highestScore
+    oldScore = hillMovesTemplate.highestScore
 
-    if choice == "hilly":
-        hillyMove(hillyTemplate, oldScore)
+    if choice == "hillMoves":
+        hillMovesMove(hillMovesTemplate, oldScore)
 
-    elif choice == "simmy":
-        simmyAnnealing(hillyTemplate, oldScore)
+    elif choice == "simAnnealing":
+        simAnnealing(hillMovesTemplate, oldScore)
 
     # Update runtime
     timeEnd = timer()
     runtime = (timeEnd - timeStart)
-    hillyTemplate.totalRuntime = runtime
+    hillMovesTemplate.totalRuntime = runtime
 
     # Print high/low score & runtime
     print("")
-    print("Rounds:", hillyTemplate.rounds, "|| MaxHouses:", \
-    hillyTemplate.maxHouses)
+    print("Rounds:", hillMovesTemplate.rounds, "|| MaxHouses:", \
+    hillMovesTemplate.maxHouses)
     print("---------------------------------------------")
-    print("Total moves:",int(hillyTemplate.moves))
+    print("Total moves:",int(hillMovesTemplate.moves))
     print("---------------------------------------------")
-    print("Highest score:", hillyTemplate.highestScore)
-    print("Lowest score:", hillyTemplate.lowestScore)
-    print("Average score:", hillyTemplate.averageScore)
+    print("Highest score:", hillMovesTemplate.highestScore)
+    print("Lowest score:", hillMovesTemplate.lowestScore)
+    print("Average score:", hillMovesTemplate.averageScore)
     print("---------------------------------------------")
-    print("Total runtime (sec):", hillyTemplate.totalRuntime)
+    print("Total runtime (sec):", hillMovesTemplate.totalRuntime)
     print("")
 
-    return hillyTemplate
+    return hillMovesTemplate
 
-def hillyMove(hillyTemplate, oldScore):
+def hillMovesMove(hillMovesTemplate, oldScore):
 
     # Update round
-    hillyTemplate.roundsCounter += 1
+    hillMovesTemplate.roundsCounter += 1
 
     # Only run "rounds" amount of times
-    if hillyTemplate.roundsCounter < hillyTemplate.rounds:
+    if hillMovesTemplate.roundsCounter < hillMovesTemplate.rounds:
 
         # Extract map and results
-        residentialArea = hillyTemplate.highestScoreMap
-        numpyGrid = hillyTemplate.numpyGrid
+        residentialArea = hillMovesTemplate.highestScoreMap
+        numpyGrid = hillMovesTemplate.numpyGrid
 
         # Get residentialArea without water (avoiding problems)
         residentialAreaNew = residentialArea[1:len(residentialArea)]
@@ -459,24 +459,24 @@ def hillyMove(hillyTemplate, oldScore):
             if newScore >= oldScore:
 
                 print("++ Score:", newScore, "vs.", oldScore, "|| Round:",
-                hillyTemplate.roundsCounter)
+                hillMovesTemplate.roundsCounter)
 
                 # Update scores
-                hillyTemplate.highestScore = newScore
-                hillyTemplate.highestScoreMap = residentialArea
-                hillyTemplate.moves += 1
+                hillMovesTemplate.highestScore = newScore
+                hillMovesTemplate.highestScoreMap = residentialArea
+                hillMovesTemplate.moves += 1
 
                 # Update score to compare against
                 oldScore = newScore
 
-                # Run hilly again
-                hillyMove(hillyTemplate, oldScore)
+                # Run hillMoves again
+                hillMovesMove(hillMovesTemplate, oldScore)
 
             # Else, score is lower
             else:
 
                 print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
-                hillyTemplate.roundsCounter)
+                hillMovesTemplate.roundsCounter)
 
                 # Revert to old coordinates and fix numpyGrid
                 # Remove houses from numpyGrid and map
@@ -491,8 +491,8 @@ def hillyMove(hillyTemplate, oldScore):
                 # Re-calculate extra free area for this old situation
                 recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-                # Run hillclimber again
-                hillyMove(hillyTemplate, oldScore)
+                # Run hillSwaps again
+                hillMovesMove(hillMovesTemplate, oldScore)
 
         else:
 
@@ -509,25 +509,25 @@ def hillyMove(hillyTemplate, oldScore):
             # Re-calculate extra free area for this old situation
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-            # Run hillclimber again
-            hillyMove(hillyTemplate, oldScore)
+            # Run hillSwaps again
+            hillMovesMove(hillMovesTemplate, oldScore)
 
     else:
-        return hillyTemplate
+        return hillMovesTemplate
 
-def simmyAnnealing(hillyTemplate, oldScore):
+def simAnnealing(hillMovesTemplate, oldScore):
 
     # cooling scheme: (verkorting / temperature)
-    maximumTemperature = 1.0
-    minimumTemperature = 0.1
     temperature = 1.0
+    minimumTemperature = 0.1
+    loop = 0
 
     # Only run "rounds" amount of times
-    for round in range(100):
+    while temperature > minimumTemperature:
 
         # Extract map and results
-        residentialArea = hillyTemplate.highestScoreMap
-        numpyGrid = hillyTemplate.numpyGrid
+        residentialArea = hillMovesTemplate.highestScoreMap
+        numpyGrid = hillMovesTemplate.numpyGrid
 
         # Get residentialArea without water (avoiding problems)
         residentialAreaNew = residentialArea[1:len(residentialArea)]
@@ -601,12 +601,12 @@ def simmyAnnealing(hillyTemplate, oldScore):
             if newScore >= oldScore:
 
                 print("++ Score:", newScore, "vs.", oldScore, "|| Round:",
-                hillyTemplate.roundsCounter,"|| Temp:",temperature)
+                hillMovesTemplate.roundsCounter,"|| Temp:",temperature)
 
                 # Update scores
-                hillyTemplate.highestScore = newScore
-                hillyTemplate.highestScoreMap = residentialArea
-                hillyTemplate.moves += 1
+                hillMovesTemplate.highestScore = newScore
+                hillMovesTemplate.highestScoreMap = residentialArea
+                hillMovesTemplate.moves += 1
 
                 # Update score to compare against
                 oldScore = newScore
@@ -615,17 +615,17 @@ def simmyAnnealing(hillyTemplate, oldScore):
             else:
 
                 # if determineAcception(oldScore, newScore,
-                # startTValues, hillyTemplate) == True:
+                # startTValues, hillMovesTemplate) == True:
                 if acceptanceProbability(oldScore, newScore, temperature) == True:
 
                     print("random0to1 <= acceptanceProbability")
                     print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
-                    hillyTemplate.roundsCounter,"|| Temp:",temperature)
+                    hillMovesTemplate.roundsCounter,"|| Temp:",temperature)
 
                     # Update scores
-                    hillyTemplate.highestScore = newScore
-                    hillyTemplate.highestScoreMap = residentialArea
-                    hillyTemplate.swaps += 1
+                    hillMovesTemplate.highestScore = newScore
+                    hillMovesTemplate.highestScoreMap = residentialArea
+                    hillMovesTemplate.swaps += 1
 
                     # Update score to compare against
                     oldScore = newScore
@@ -633,7 +633,7 @@ def simmyAnnealing(hillyTemplate, oldScore):
                 else:
 
                     print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
-                    hillyTemplate.roundsCounter,"|| Temp:",temperature)
+                    hillMovesTemplate.roundsCounter,"|| Temp:",temperature)
 
                     # Revert to old coordinates and fix numpyGrid
                     # Remove houses from numpyGrid and map
@@ -663,21 +663,21 @@ def simmyAnnealing(hillyTemplate, oldScore):
             # Re-calculate extra free area for this old situation
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-        # temperature = temperature * 0.99
-        temperature = (temperature - maximumTemperature) * (round + 1/ 101)
+        loop += 1
+        temperature = temperature * 0.99
 
     else:
-        return hillyTemplate
+        return hillMovesTemplate
 
 def acceptanceProbability(oldScore, newScore, temperature):
 
     # Pak een float nummer tussen de 0 en 1
     random0to1 = rd.uniform(0,1)
-    #delta = newScore - oldScore
+    delta = oldScore/newScore
 
     # Acceptatiekans: e ^ (verkorting / temperature)
-    acceptanceProbability = math.exp((newScore - oldScore) / temperature)
-    #acceptanceProbability = math.e**(delta / temperature)
+    # acceptanceProbability = math.exp((newScore - oldScore) / temperature)
+    acceptanceProbability = math.e**(delta / temperature)
     print(random0to1)
     print(acceptanceProbability)
 

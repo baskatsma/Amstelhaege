@@ -10,6 +10,11 @@ from models.templates import *
 from timeit import default_timer as timer
 
 def initializeRandomMap():
+    """
+    This function creates an array for the residential area and places
+    the houses within the array on the grid. It calculates the corresponding
+    score. The function returns the current results.
+    """
 
     # Measure algorithm time
     timeStart = timer()
@@ -62,8 +67,6 @@ def initializeRandomMap():
             visualizeOnGrid(currentObject.yBegin, currentObject.yEnd,
                             currentObject.xBegin, currentObject.xEnd,
                             numpyGrid, drawNumber)
-
-        # Put houses on grid and calculate score
         else:
 
             # Update uniqueID and place houses on numpy grid
@@ -106,6 +109,11 @@ def initializeRandomMap():
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
+    """
+    This function sets and returns the amount of houses in the residential area.
+    The amount depends on the user input and if the user does not input
+    a valid number, the function will set 20 houses by default.
+    """
 
     # 20 houses by default, unless specified
     maxHouses = 20
@@ -131,6 +139,10 @@ def defineSettings():
     return maxHouses
 
 def getCoordinates(currentObject):
+    """
+    This function generates random coordinates for the current object in the
+    residential area.
+    """
 
     # Set new begin coordinates (y, x tuple) and save them in self
     currentObject.yBegin = rd.randrange(currentObject.gridYLength)
@@ -151,8 +163,10 @@ def getCoordinates(currentObject):
     currentObject.xBegin = beginCoordinates[1]
     currentObject.xEnd = endCoordinates[1]
 
-# Deliver coordinates in (y, x tuple)
 def updateCoordinates(currentObject, coordinates):
+    """
+    This function generates the coordinates in a (y, x) tuple.
+    """
 
     # Extract object dimension (x, y tuple) values
     objectYLength = currentObject.objectDimensions[1]
@@ -169,6 +183,9 @@ def updateCoordinates(currentObject, coordinates):
     currentObject.xEnd = endCoordinates[1]
 
 def coordinateVariables(currentObject):
+    """
+    This function adjusts the coordinates for the free area and returns them.
+    """
 
     # Define coordinate variables
     yBegin = currentObject.yBegin
@@ -177,7 +194,7 @@ def coordinateVariables(currentObject):
     xEnd = currentObject.xEnd
     freeArea = currentObject.freeArea
 
-    # Define (coordinate incl. free area) variables
+    # Define coordinate variables including free area
     fAYBegin = yBegin - freeArea
     fAYEnd = yEnd + freeArea
     fAXBegin = xBegin - freeArea
@@ -187,6 +204,10 @@ def coordinateVariables(currentObject):
     fAXEnd
 
 def placeOnGrid(currentObject, numpyGrid):
+    """
+    This function places the current object in the residential area on the grid.
+    It checks the requirements for overlap and borders.
+    """
 
     # Get random coordinates and update in self
     getCoordinates(currentObject)
@@ -200,12 +221,14 @@ def placeOnGrid(currentObject, numpyGrid):
 
     # Check for grid border problems
     if currentObject.checkBorders() == True:
-        #x =
+
         # Check for house and free area overlap
-        if checkOverlap(coord[0], coord[1], coord[2], coord[3], \
-            numpyGrid, "excludingFreeArea") == True and \
-            checkOverlap(coord[5], coord[6], coord[7], coord[8], \
-            numpyGrid, "includingFreeArea") == True:
+        check1 = checkOverlap(coord[0], coord[1], coord[2], coord[3], \
+        numpyGrid, "excludingFreeArea")
+        check2 = checkOverlap(coord[5], coord[6], coord[7], coord[8], \
+        numpyGrid, "includingFreeArea")
+
+        if check1 == True and check2 == True:
 
             # The area is viable: draw free area first
             visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
@@ -223,7 +246,10 @@ def placeOnGrid(currentObject, numpyGrid):
     else:
         placeOnGrid(currentObject, numpyGrid)
 
-def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
+def createhillMovesGrid(currentObject, numpyGrid, dimensions, houseCounter):
+    """
+    This function creates the grid for the hillclimber algorithm.
+    """
 
     # Specify drawNumbers
     drawNumber = currentObject.uniqueID

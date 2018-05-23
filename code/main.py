@@ -6,7 +6,7 @@ import sys
 
 def main():
     """
-    Calls the chosen algorithm to create a residential area
+    This function calls the chosen algorithm to create a residential area
     containing 20, 40 or 60 houses.
     """
 
@@ -20,11 +20,11 @@ def main():
     randomTemplate = Results(**resultsTemplate)
     randomTemplate.rounds = int(rounds)
 
-    hillclimberTemplate = Results(**resultsTemplate)
-    hillclimberTemplate.rounds = int(rounds)
+    hillSwapsTemplate = Results(**resultsTemplate)
+    hillSwapsTemplate.rounds = int(rounds)
 
-    hillyTemplate = Results(**resultsTemplate)
-    hillyTemplate.rounds = int(rounds)
+    hillMovesTemplate = Results(**resultsTemplate)
+    hillMovesTemplate.rounds = int(rounds)
 
     # Check whether user inputs the correct amount of arguments
     if len(sys.argv) < 3:
@@ -41,43 +41,45 @@ def main():
 
         return randomResults
 
-    elif str(sys.argv[2]) == "hillclimber":
+    elif str(sys.argv[2]) == "hillSwaps":
 
         # Run random "rounds" amount of times and use best result
         randomResults = randomAlgorithm(randomTemplate)
 
         # Run hillclimber "rounds" amount of times and display best results
-        hillclimberResults = hillclimberAlgorithm(hillclimberTemplate, \
+        hillSwapsResults = hillSwapsAlgorithm(hillSwapsTemplate, \
         randomResults)
 
         # Visualize grid with matplotlib
-        printPlot(hillclimberResults)
+        printPlot(hillSwapsResults)
 
-        return hillclimberResults
+        return hillSwapsResults
 
-    elif str(sys.argv[2]) == "hilly":
+    elif str(sys.argv[2]) == "hillMoves":
 
         # Run hilly "rounds" amount of times and display best results
-        hillyResults = hillyAlgorithm(hillyTemplate, "hilly")
+        hillMovesResults = hillMovesAlgorithm(hillMovesTemplate, \
+        "hillMoves")
 
         # Visualize grid with matplotlib
-        printPlot(hillyResults)
+        printPlot(hillMovesResults)
 
-        return hillyResults
+        return hillMovesResults
 
-    elif str(sys.argv[2]) == "simmy":
+    elif str(sys.argv[2]) == "simAnnealing":
 
-        # Run simmy "rounds" amount of times and display best results
-        simmyResults = hillyAlgorithm(hillyTemplate, "simmy")
+        # Run simAnnealing "rounds" amount of times and display best results
+        simAnnealingResults = hillMovesAlgorithm(hillMovesTemplate, \
+        "simAnnealing")
 
         # Visualize grid with matplotlib
-        printPlot(simmyResults)
+        printPlot(simAnnealingResults)
 
-        return simmyResults
+        return simAnnealingResults
 
     else:
-        print("Not a valid algorithm! Choose among: random, hillclimber, hilly\
-        or simmy")
+        print("Not a valid algorithm! Choose among: random, hillSwaps," \
+        " hillMoves or simAnnealing")
 
 if __name__ == "__main__":
     results = main()
