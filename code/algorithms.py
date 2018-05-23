@@ -13,6 +13,9 @@ from timeit import default_timer as timer
 
 # Run random algorithm
 def randomAlgorithm(randomResults):
+    """
+    This algorithm creates a random solution to organize a residental area.
+    """
 
     # Update results sheet
     randomResults.algorithm = "random"
@@ -59,6 +62,10 @@ def randomAlgorithm(randomResults):
 
 # Run hillSwaps algorithm
 def hillSwapsAlgorithm(hillSwapsResults, randomResults):
+    """
+    This algorithm creates an hillclimber solution to organize a
+    residental area.
+    """
 
     # Measure algorithm time
     timeStart = timer()
@@ -106,6 +113,9 @@ def hillSwapsAlgorithm(hillSwapsResults, randomResults):
     return hillSwapsResults
 
 def hillSwapsCore(hillSwapsResults, oldScore):
+    """
+    THIS FUNCTION GEEN IDEE XXX
+    """
 
     # Extract map and grid
     residentialArea = hillSwapsResults.highestScoreMap
@@ -124,10 +134,11 @@ def hillSwapsCore(hillSwapsResults, oldScore):
         oldCoordinates1 = results[2]
         oldCoordinates2 = results[3]
 
+        check1 = checkAvailableArea(randomHouse1, numpyGrid, residentialArea)
+        check2 = checkAvailableArea(randomHouse2, numpyGrid, residentialArea)
+
         # Check restrictions
-        if \
-        checkAvailableArea(randomHouse1, numpyGrid, residentialArea) == True and \
-        checkAvailableArea(randomHouse2, numpyGrid, residentialArea) == True:
+        if check1 == True and check2 == True:
 
             # Place houses on numpyGrid
             placeOnHillGrid(randomHouse1, numpyGrid)
@@ -206,6 +217,10 @@ def hillSwapsCore(hillSwapsResults, oldScore):
         return hillSwapsResults
 
 def hillMovesAlgorithm(hillMovesTemplate, choice):
+    """
+    This algorithm creates an heuristic hillclimber solution to organize a
+    residental area.
+    """
 
     # Measure algorithm time
     timeStart = timer()
@@ -376,6 +391,9 @@ def hillMovesAlgorithm(hillMovesTemplate, choice):
     return hillMovesTemplate
 
 def hillMovesMove(hillMovesTemplate, oldScore):
+    """
+    THIS FUNCTION GEEEEEEN IDEEEEEEE
+    """
 
     # Update round
     hillMovesTemplate.roundsCounter += 1
@@ -396,7 +414,7 @@ def hillMovesMove(hillMovesTemplate, oldScore):
             randomHouse = getHouse(residentialArea)
 
         # Randomly pick orientation to move in
-        orientation = rd.randrange(0,4)       # 0: left, 1: right, 2: up, 3: down
+        orientation = rd.randrange(0,4)      # 0: left, 1: right, 2: up, 3: down
 
         # Save old begin coordinates (y, x tuple)
         oldCoordinates = (randomHouse.yBegin, randomHouse.xBegin)
@@ -516,6 +534,10 @@ def hillMovesMove(hillMovesTemplate, oldScore):
         return hillMovesTemplate
 
 def simAnnealing(hillMovesTemplate, oldScore):
+    """
+    This algorithm creates a simulated annealing solution to organize a
+    residental area.
+    """
 
     # cooling scheme: (verkorting / temperature)
     temperature = 1.0
@@ -538,7 +560,7 @@ def simAnnealing(hillMovesTemplate, oldScore):
             randomHouse = getHouse(residentialArea)
 
         # Randomly pick orientation to move in
-        orientation = rd.randrange(0,4)       # 0: left, 1: right, 2: up, 3: down
+        orientation = rd.randrange(0,4)      # 0: left, 1: right, 2: up, 3: down
 
         # Save old begin coordinates (y, x tuple)
         oldCoordinates = (randomHouse.yBegin, randomHouse.xBegin)
@@ -616,9 +638,9 @@ def simAnnealing(hillMovesTemplate, oldScore):
 
                 # if determineAcception(oldScore, newScore,
                 # startTValues, hillMovesTemplate) == True:
-                if acceptanceProbability(oldScore, newScore, temperature) == True:
+                if acceptProbability(oldScore, newScore, temperature) == True:
 
-                    print("random0to1 <= acceptanceProbability")
+                    print("random0to1 <= acceptProbability")
                     print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
                     hillMovesTemplate.roundsCounter,"|| Temp:",temperature)
 
@@ -669,19 +691,22 @@ def simAnnealing(hillMovesTemplate, oldScore):
     else:
         return hillMovesTemplate
 
-def acceptanceProbability(oldScore, newScore, temperature):
+def acceptProbability(oldScore, newScore, temperature):
+    """
+    This function GEEN IDEEEEEEE
+    """
 
     # Pak een float nummer tussen de 0 en 1
     random0to1 = rd.uniform(0,1)
     delta = oldScore/newScore
 
     # Acceptatiekans: e ^ (verkorting / temperature)
-    # acceptanceProbability = math.exp((newScore - oldScore) / temperature)
-    acceptanceProbability = math.e**(delta / temperature)
+    # acceptProbability = math.exp((newScore - oldScore) / temperature)
+    acceptProbability = math.e**(delta / temperature)
     print(random0to1)
-    print(acceptanceProbability)
+    print(acceptProbability)
 
-    if acceptanceProbability >= random0to1 :
+    if acceptProbability >= random0to1 :
         return True
 
     else:
@@ -697,7 +722,7 @@ We loopen net zo lang totdat de minimum temperatuur is bereikt +++++++
     Checks uitvoeren of dit mogelijk is +++++++
         Ja: score berekenen +++++++
             Als de newScore hoger of gelijk is dan de oldScore: accepteren +++++++
-            Als de newScore lager is dan de oldScore: acceptanceProbability() +++++++
+            Als de newScore lager is dan de oldScore: acceptProbability() +++++++
                 if aP returns True: +++++++
                     plaatsen +++++++
                 else +++++++
