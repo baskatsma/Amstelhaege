@@ -183,7 +183,8 @@ def coordinateVariables(currentObject):
     fAXBegin = xBegin - freeArea
     fAXEnd = xEnd + freeArea
 
-    return yBegin, yEnd, xBegin, xEnd, freeArea, fAYBegin, fAYEnd, fAXBegin, fAXEnd
+    return yBegin, yEnd, xBegin, xEnd, freeArea, fAYBegin, fAYEnd, fAXBegin, \
+    fAXEnd
 
 def placeOnGrid(currentObject, numpyGrid):
 
@@ -199,13 +200,12 @@ def placeOnGrid(currentObject, numpyGrid):
 
     # Check for grid border problems
     if currentObject.checkBorders() == True:
-
+        #x =
         # Check for house and free area overlap
-        if \
-        checkOverlap(coord[0], coord[1], coord[2], coord[3],
-                    numpyGrid, "excludingFreeArea") == True and \
-        checkOverlap(coord[5], coord[6], coord[7], coord[8],
-                    numpyGrid, "includingFreeArea") == True:
+        if checkOverlap(coord[0], coord[1], coord[2], coord[3], \
+            numpyGrid, "excludingFreeArea") == True and \
+            checkOverlap(coord[5], coord[6], coord[7], coord[8], \
+            numpyGrid, "includingFreeArea") == True:
 
             # The area is viable: draw free area first
             visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],

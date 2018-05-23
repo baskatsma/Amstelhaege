@@ -5,6 +5,9 @@ import os
 import sys
 
 def main():
+    '''
+    functie beschrijving
+    '''
 
     # Avoid recursion errors
     sys.setrecursionlimit(5000)
@@ -70,9 +73,10 @@ def main():
         return simmyResults
 
     else:
-        print("Not a valid algorithm!")
+        print("Not a valid algorithm! Choose among: ")
 
 if __name__ == "__main__":
     results = main()
 
-    writeResults(results)
+    if results != None:
+        writeResults(results)
