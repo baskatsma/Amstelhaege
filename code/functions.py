@@ -10,6 +10,11 @@ from models.templates import *
 from timeit import default_timer as timer
 
 def initializeRandomMap():
+    """
+    This function creates an array for the residential area and places
+    the houses within the array on the grid. It calculates the corresponding
+    score. The function returns the current results.
+    """
 
     # Measure algorithm time
     timeStart = timer()
@@ -62,8 +67,6 @@ def initializeRandomMap():
             visualizeOnGrid(currentObject.yBegin, currentObject.yEnd,
                             currentObject.xBegin, currentObject.xEnd,
                             numpyGrid, drawNumber)
-
-        # Put houses on grid and calculate score
         else:
 
             # Update uniqueID and place houses on numpy grid
@@ -106,6 +109,11 @@ def initializeRandomMap():
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
+    """
+    This function sets and returns the amount of houses in the residential area.
+    The amount depends on the user input and if the user does not input
+    a valid number, the function will set 20 houses by default.
+    """
 
     # 20 houses by default, unless specified
     maxHouses = 20
@@ -131,6 +139,10 @@ def defineSettings():
     return maxHouses
 
 def getCoordinates(currentObject):
+    """
+    This function generates random coordinates for the current object in the
+    residential area.
+    """
 
     # Set new begin coordinates (y, x tuple) and save them in self
     currentObject.yBegin = rd.randrange(currentObject.gridYLength)
@@ -151,8 +163,10 @@ def getCoordinates(currentObject):
     currentObject.xBegin = beginCoordinates[1]
     currentObject.xEnd = endCoordinates[1]
 
-# Deliver coordinates in (y, x tuple)
 def updateCoordinates(currentObject, coordinates):
+    """
+    This function generates the coordinates in a (y, x) tuple.
+    """
 
     # Extract object dimension (x, y tuple) values
     objectYLength = currentObject.objectDimensions[1]
@@ -169,6 +183,9 @@ def updateCoordinates(currentObject, coordinates):
     currentObject.xEnd = endCoordinates[1]
 
 def coordinateVariables(currentObject):
+    """
+    This function adjusts the coordinates for the free area and returns them.
+    """
 
     # Define coordinate variables
     yBegin = currentObject.yBegin
@@ -177,7 +194,7 @@ def coordinateVariables(currentObject):
     xEnd = currentObject.xEnd
     freeArea = currentObject.freeArea
 
-    # Define (coordinate incl. free area) variables
+    # Define coordinate variables including free area
     fAYBegin = yBegin - freeArea
     fAYEnd = yEnd + freeArea
     fAXBegin = xBegin - freeArea
@@ -187,6 +204,10 @@ def coordinateVariables(currentObject):
     fAXEnd
 
 def placeOnGrid(currentObject, numpyGrid):
+    """
+    This function places the current object in the residential area on the grid.
+    It checks the requirements for overlap and borders.
+    """
 
     # Get random coordinates and update in self
     getCoordinates(currentObject)
@@ -200,12 +221,14 @@ def placeOnGrid(currentObject, numpyGrid):
 
     # Check for grid border problems
     if currentObject.checkBorders() == True:
-        #x =
+
         # Check for house and free area overlap
-        if checkOverlap(coord[0], coord[1], coord[2], coord[3], \
-            numpyGrid, "excludingFreeArea") == True and \
-            checkOverlap(coord[5], coord[6], coord[7], coord[8], \
-            numpyGrid, "includingFreeArea") == True:
+        check1 = checkOverlap(coord[0], coord[1], coord[2], coord[3], \
+        numpyGrid, "excludingFreeArea")
+        check2 = checkOverlap(coord[5], coord[6], coord[7], coord[8], \
+        numpyGrid, "includingFreeArea")
+
+        if check1 == True and check2 == True:
 
             # The area is viable: draw free area first
             visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
@@ -223,7 +246,10 @@ def placeOnGrid(currentObject, numpyGrid):
     else:
         placeOnGrid(currentObject, numpyGrid)
 
-def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
+def createhillMovesGrid(currentObject, numpyGrid, dimensions, houseCounter):
+    """
+    This function creates the grid for the hillclimber-moves algorithm.
+    """
 
     # Specify drawNumbers
     drawNumber = currentObject.uniqueID
@@ -255,15 +281,18 @@ def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
         # Put bungalows on the map
         if houseCounter[0] < maxHousesOnRow:
             coordinates = (currentObject.freeArea,
-            int(23040/296) + currentObject.freeArea + dimensions * houseCounter[0])
+            int(23040/296) + currentObject.freeArea + dimensions * \
+            houseCounter[0])
 
         elif houseCounter[1] < maxHousesOnRow:
             coordinates = (currentObject.freeArea + dimensions,
-            int(23040/296) + currentObject.freeArea + dimensions * houseCounter[1])
+            int(23040/296) + currentObject.freeArea + dimensions * \
+            houseCounter[1])
 
         elif houseCounter[2] < maxHousesOnRow:
             coordinates = (currentObject.freeArea + dimensions * 2,
-            int(23040/296) + currentObject.freeArea + dimensions * houseCounter[2])
+            int(23040/296) + currentObject.freeArea + dimensions * \
+            houseCounter[2])
 
     # Update coordinats in self
     updateCoordinates(currentObject, coordinates)
@@ -279,12 +308,19 @@ def createHillyGrid(currentObject, numpyGrid, dimensions, houseCounter):
     visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
                     numpyGrid, drawNumber)
 
-def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, drawNumber):
+def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, \
+    drawNumber):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Select a specific grid area and fill it
     numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] = drawNumber
 
 def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # ALLES moet hier 0 zijn in dit gebied om een huis te plaatsen,
     # dus IETS wat ook maar geen 0 is (aka niet leeg), wordt gelijk gecanceld.
@@ -309,6 +345,9 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
             return False
 
 def recalculateAllExtraFreeArea(residentialArea, numpyGrid):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # After placing all houses, loop over them
     residentialAreaNew = residentialArea[1:len(residentialArea)]
@@ -327,6 +366,9 @@ def recalculateAllExtraFreeArea(residentialArea, numpyGrid):
                          numpyGridOriginal)
 
 def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Remove all (increase) modifications before (re)starting
     numpyGrid = numpyGridOriginal
@@ -362,12 +404,18 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
         return False
 
 def getHouse(residentialArea):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Select and return a random house
     oneRandomHouse = residentialArea[rd.randrange(len(residentialArea))]
     return oneRandomHouse
 
 def switchCoordinates(residentialArea, numpyGrid):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Get residentialArea without water (avoiding problems)
     residentialAreaNew = residentialArea[1:len(residentialArea)]
@@ -407,6 +455,9 @@ def switchCoordinates(residentialArea, numpyGrid):
     return randomHouse1, randomHouse2, oldCoordinates1, oldCoordinates2
 
 def checkAvailableArea(currentObject, numpyGrid, residentialArea):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
@@ -432,6 +483,9 @@ def checkAvailableArea(currentObject, numpyGrid, residentialArea):
         return False
 
 def placeOnHillGrid(currentObject, numpyGrid):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
@@ -449,6 +503,9 @@ def placeOnHillGrid(currentObject, numpyGrid):
                     numpyGrid, drawNumber)
 
 def fixIncorrectVisualizations(residentialArea, numpyGrid):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Create list without water to avoid problems
     residentialAreaNew = residentialArea[1:len(residentialArea)]
@@ -474,8 +531,11 @@ def fixIncorrectVisualizations(residentialArea, numpyGrid):
         visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
                         numpyGrid, drawNumber)
 
-def revertSituation(randomHouse1, randomHouse2, oldCoordinates1, oldCoordinates2,
-                    numpyGrid, residentialArea):
+def revertSituation(randomHouse1, randomHouse2, oldCoordinates1, \
+    oldCoordinates2, numpyGrid, residentialArea):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Remove houses from numpyGrid and map
     randomHouse1.removeFromGridAndMap(numpyGrid)
@@ -489,6 +549,9 @@ def revertSituation(randomHouse1, randomHouse2, oldCoordinates1, oldCoordinates2
     fixIncorrectVisualizations(residentialArea, numpyGrid)
 
 def getVideo(residentialArea):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Get video output
     for indexPhoto in range(len(residentialArea)):
@@ -500,6 +563,9 @@ def getVideo(residentialArea):
     "-c:v libx264 -r 30 tmp/__output.mp4")
 
 def GIFPlot(residentialArea, indexPhoto):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Initialize matplotlib and figure
     fig = plt.figure()
@@ -532,6 +598,9 @@ def GIFPlot(residentialArea, indexPhoto):
     plt.close(fig)
 
 def printPlot(allResults):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     residentialArea = allResults.highestScoreMap
     totalScore = allResults.highestScore
@@ -562,6 +631,9 @@ def printPlot(allResults):
     plt.close(fig)
 
 def drawPlotObjects(residentialArea, object, ax):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Initialize variables
     yBegin = object.yBegin
@@ -588,34 +660,34 @@ def drawPlotObjects(residentialArea, object, ax):
         colorChoice2 = "blue"
 
     # Create new rects for freeArea + house
-    rectUpperRight = patches.Rectangle((xBegin,yBegin),               # (X,Y) tuple
-                             xEnd - xBegin + fA + eFA,                # width
-                             yEnd - yBegin + fA + eFA,                # height
+    rectUpperRight = patches.Rectangle((xBegin,yBegin),            # (X,Y) tuple
+                             xEnd - xBegin + fA + eFA,             # width
+                             yEnd - yBegin + fA + eFA,             # height
                              color=colorChoice,
                              alpha=0.2)
 
-    rectUpperLeft = patches.Rectangle((xBegin - fA - eFA,yBegin),     # (X,Y) tuple
-                             xEnd - xBegin + fA + eFA,                # width
-                             yEnd - yBegin + fA + eFA,                # height
+    rectUpperLeft = patches.Rectangle((xBegin - fA - eFA,yBegin),  # (X,Y) tuple
+                             xEnd - xBegin + fA + eFA,             # width
+                             yEnd - yBegin + fA + eFA,             # height
                              color=colorChoice,
                              alpha=0.2)
 
-    rectLowerRight = patches.Rectangle((xEnd + fA + eFA,yEnd),        # (X,Y) tuple
-                             xBegin - xEnd - fA - eFA,                # width
-                             yBegin - yEnd - fA - eFA,                # height
+    rectLowerRight = patches.Rectangle((xEnd + fA + eFA,yEnd),     # (X,Y) tuple
+                             xBegin - xEnd - fA - eFA,             # width
+                             yBegin - yEnd - fA - eFA,             # height
                              color=colorChoice,
                              alpha=0.2)
 
-    rectLowerLeft = patches.Rectangle((xEnd,yEnd),                    # (X,Y) tuple
-                             xBegin - xEnd - fA - eFA,                # width
-                             yBegin - yEnd - fA - eFA,                # height
+    rectLowerLeft = patches.Rectangle((xEnd,yEnd),                 # (X,Y) tuple
+                             xBegin - xEnd - fA - eFA,             # width
+                             yBegin - yEnd - fA - eFA,             # height
                              color=colorChoice,
                              alpha=0.2)
 
     # Create new rect for house only
-    rectHouse = patches.Rectangle((xBegin,yBegin),                    # (X,Y) tuple
-                             (xEnd - xBegin),                         # width
-                             (yEnd - yBegin),                         # height
+    rectHouse = patches.Rectangle((xBegin,yBegin),                 # (X,Y) tuple
+                             (xEnd - xBegin),                      # width
+                             (yEnd - yBegin),                      # height
                              color=colorChoice2,)
 
     # Add the rects
@@ -626,6 +698,9 @@ def drawPlotObjects(residentialArea, object, ax):
     ax.add_patch(rectHouse)
 
 def updateResults(currentResult, allResults):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Update all results
     allResults.maxHouses = currentResult.maxHouses
@@ -654,6 +729,9 @@ def updateResults(currentResult, allResults):
     return allResults
 
 def writeResults(results):
+    """
+    This function COMMENNTTTTTTTTT
+    """
 
     # Open scores.csv
     with open("scores.csv", "a", newline="") as csvfile:
