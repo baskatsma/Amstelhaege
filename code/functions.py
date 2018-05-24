@@ -1,4 +1,5 @@
 import csv
+import glob
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
@@ -19,30 +20,11 @@ def initializeRandomMap():
     # Measure algorithm time
     timeStart = timer()
 
-    # Get maxHouses
-    maxHouses = defineSettings()
-
-    # Create a grid helper instance
-    gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
-
-    # Create woonwijk
-    residentialArea = []
-
-    # Add one piece of water
-    residentialArea.append(Water(**waterTemplate))
-
-    # Create new houses based on the grid requirements
-    for maison in range(gridInformation.totalAmountMaisons):
-        residentialArea.append(House(**maisonTemplate))
-
-    for bungalow in range(gridInformation.totalAmountBungalows):
-        residentialArea.append(House(**bungalowTemplate))
-
-    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
-        residentialArea.append(House(**eengezinswoningTemplate))
-
-    # Initialize numpy grid (verticalY, horizontalX)
-    numpyGrid = np.zeros((gridYLength,gridXLength), dtype="object")
+    # Set-up residentialArea
+    results = setUpResidentialAreaPlusGrid()
+    residentialArea = results[0]
+    numpyGrid = results[1]
+    maxHouses = results[2]
 
     # Initialize current score
     currentResult = Results(**resultsTemplate)
@@ -106,6 +88,35 @@ def initializeRandomMap():
     currentResult.totalRuntime = runtime
 
     return currentResult
+
+def setUpResidentialAreaPlusGrid():
+
+    # Get maxHouses
+    maxHouses = defineSettings()
+
+    # Create a grid helper instance
+    gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
+
+    # Create woonwijk
+    residentialArea = []
+
+    # Add one piece of water
+    residentialArea.append(Water(**waterTemplate))
+
+    # Create new houses based on the grid requirements
+    for maison in range(gridInformation.totalAmountMaisons):
+        residentialArea.append(House(**maisonTemplate))
+
+    for bungalow in range(gridInformation.totalAmountBungalows):
+        residentialArea.append(House(**bungalowTemplate))
+
+    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
+        residentialArea.append(House(**eengezinswoningTemplate))
+
+    # Initialize numpy grid (verticalY, horizontalX)
+    numpyGrid = np.zeros((gridYLength,gridXLength), dtype="object")
+
+    return residentialArea, numpyGrid, maxHouses
 
 # Define residential area size (either 20, 40 or 60 houses at max)
 def defineSettings():
@@ -547,6 +558,16 @@ def revertSituation(randomHouse1, randomHouse2, oldCoordinates1, \
 
     # Clean-up some bugs and plot old location back
     fixIncorrectVisualizations(residentialArea, numpyGrid)
+
+def deleteOldImages():
+
+    # Remove all .png's
+    for png in glob.glob("tmp/*.png"):
+        os.remove(png)
+
+    # Remove all .mp4's
+    for mp4 in glob.glob("tmp/*.mp4"):
+        os.remove(mp4)
 
 def getVideo(residentialArea):
     """

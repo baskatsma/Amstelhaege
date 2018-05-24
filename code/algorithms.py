@@ -1,4 +1,3 @@
-import glob
 import math
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
@@ -21,11 +20,7 @@ def randomAlgorithm(randomResults):
     randomResults.algorithm = "random"
 
     # Remove old output results
-    for png in glob.glob("tmp/*.png"):
-        os.remove(png)
-
-    for mp4 in glob.glob("tmp/*.mp4"):
-        os.remove(mp4)
+    deleteOldImages()
 
     # Get a random map and its results
     currentResult = initializeRandomMap()
@@ -83,11 +78,7 @@ def hillSwapsAlgorithm(hillSwapsResults, randomResults):
     hillSwapsResults.totalRuntime = randomResults.totalRuntime
 
     # Remove old output results
-    for png in glob.glob("tmp/*.png"):
-        os.remove(png)
-
-    for mp4 in glob.glob("tmp/*.mp4"):
-        os.remove(mp4)
+    deleteOldImages()
 
     # Extract result
     oldScore = randomResults.highestScore
@@ -233,30 +224,11 @@ def hillMovesAlgorithm(hillMovesResults, choice):
     # Measure algorithm time
     timeStart = timer()
 
-    # Get maxHouses
-    maxHouses = defineSettings()
-
-    # Create a grid helper instance
-    gridInformation = GridInformation(gridXLength, gridYLength, maxHouses)
-
-    # Create woonwijk
-    residentialArea = []
-
-    # Add one piece of water
-    residentialArea.append(Water(**waterTemplate))
-
-    # Create new houses based on the grid requirements
-    for maison in range(gridInformation.totalAmountMaisons):
-        residentialArea.append(House(**maisonTemplate))
-
-    for bungalow in range(gridInformation.totalAmountBungalows):
-        residentialArea.append(House(**bungalowTemplate))
-
-    for eengezinswoning in range(gridInformation.totalAmountEengezinswoningen):
-        residentialArea.append(House(**eengezinswoningTemplate))
-
-    # Initialize numpy grid (verticalY, horizontalX)
-    numpyGrid = np.zeros((gridYLength,gridXLength), dtype="object")
+    # Set-up residentialArea
+    results = setUpResidentialAreaPlusGrid()
+    residentialArea = results[0]
+    numpyGrid = results[1]
+    maxHouses = results[2]
 
     # Define variables
     maxEengezinshuizenOnFirstRow = 17
