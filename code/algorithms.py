@@ -675,7 +675,7 @@ def simAnnealing(hillMovesTemplate, oldScore):
                     # Re-calculate extra free area for this old situation
                     recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
-            # Temperature = temperature * cooling factor
+            # Update temperature and round
             temperature *= 1 - cooling
             round += 1
 
