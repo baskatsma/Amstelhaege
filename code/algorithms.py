@@ -516,7 +516,7 @@ def simAnnealing(simAnnealingResults, oldScore):
     """
 
     # Set up temperature, minimum temperature, cooling and counter for rounds
-    temperature = 10
+    temperature = 20
     minimumTemperature = 1
     cooling = 0.003
     round = 0
