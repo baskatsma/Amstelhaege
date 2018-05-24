@@ -548,7 +548,7 @@ def hillMovesMove(hillMovesResults, oldScore):
     else:
         return hillMovesResults
 
-def simAnnealing(hillMovesResults, oldScore):
+def simAnnealing(simAnnealingResults, oldScore):
     """
     This algorithm creates a simulated annealing solution to organize a
     residental area. It loops and searches for solutions until minimum
@@ -566,8 +566,8 @@ def simAnnealing(hillMovesResults, oldScore):
     while temperature >= minimumTemperature:
 
         # Extract map and results
-        residentialArea = hillMovesResults.currentScoreMap
-        numpyGrid = hillMovesResults.numpyGrid
+        residentialArea = simAnnealingResults.currentScoreMap
+        numpyGrid = simAnnealingResults.numpyGrid
 
         # Get residentialArea without water (avoiding problems)
         residentialAreaNew = residentialArea[1:len(residentialArea)]
@@ -644,20 +644,20 @@ def simAnnealing(hillMovesResults, oldScore):
                 round,"|| Temp:",temperature)
 
                 # Update scores and maps
-                hillMovesResults.currentScore = newScore
-                hillMovesResults.currentScoreMap = residentialArea
-                hillMovesResults.numpyGrid = numpyGrid
-                hillMovesResults.moves += 1
+                simAnnealingResults.currentScore = newScore
+                simAnnealingResults.currentScoreMap = residentialArea
+                simAnnealingResults.numpyGrid = numpyGrid
+                simAnnealingResults.moves += 1
 
                 # Update score to compare against
                 oldScore = newScore
 
                 # Keep track of best solution found
-                if newScore > hillMovesResults.highestScore:
-                    hillMovesResults.highestScore = newScore
-                    hillMovesResults.highestScoreMap = residentialArea
+                if newScore > simAnnealingResults.highestScore:
+                    simAnnealingResults.highestScore = newScore
+                    simAnnealingResults.highestScoreMap = residentialArea
 
-                    print ("NEW BEST SCORE =", hillMovesResults.highestScore)
+                    print ("NEW BEST SCORE =", simAnnealingResults.highestScore)
 
             # Else, score is lower
             else:
@@ -668,10 +668,10 @@ def simAnnealing(hillMovesResults, oldScore):
                     round,"|| Temp:",temperature)
 
                     # Update scores and maps
-                    hillMovesResults.currentScore = newScore
-                    hillMovesResults.currentScoreMap = residentialArea
-                    hillMovesResults.numpyGrid = numpyGrid
-                    hillMovesResults.swaps += 1
+                    simAnnealingResults.currentScore = newScore
+                    simAnnealingResults.currentScoreMap = residentialArea
+                    simAnnealingResults.numpyGrid = numpyGrid
+                    simAnnealingResults.moves += 1
 
                     # Update score to compare against
                     oldScore = newScore
@@ -714,7 +714,7 @@ def simAnnealing(hillMovesResults, oldScore):
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
     else:
-        return hillMovesResults
+        return simAnnealingResults
 
 def acceptProbability(oldScore, newScore, temperature):
     """

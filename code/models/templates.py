@@ -80,7 +80,5 @@ resultsTemplate = {
     "numpyGrid": 0,
     "lowestScore": 1000000000,
     "scoreDifference": 0,
-    "fastestRuntime": 1000000000,
-    "slowestRuntime": 0,
     "totalRuntime": 0
 }

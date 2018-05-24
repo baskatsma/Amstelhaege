@@ -719,13 +719,6 @@ def updateResults(currentResult, allResults):
     if currentResult.highestScore < allResults.lowestScore:
         allResults.lowestScore = currentResult.highestScore
 
-    # Update runtime results
-    if currentResult.fastestRuntime < allResults.fastestRuntime:
-        allResults.fastestRuntime = currentResult.fastestRuntime
-
-    if currentResult.fastestRuntime > allResults.slowestRuntime:
-        allResults.slowestRuntime = currentResult.fastestRuntime
-
     return allResults
 
 def writeResults(results):
