@@ -77,6 +77,7 @@ resultsTemplate = {
     "swaps": 0,
     "moves": 0,
     "allScores": 0,
+    "currentScore": 0,
     "highestScore": 0,
     "highestScoreMap": [],
     "numpyGrid": 0,

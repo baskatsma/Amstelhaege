@@ -547,9 +547,6 @@ def simAnnealing(hillMovesTemplate, oldScore):
     cooling = 0.003
     round = 0
 
-    # Set variable to keep track of best score found
-    bestScore = 0
-
     while temperature >= 1:
 
         # Extract map and results
@@ -631,17 +628,17 @@ def simAnnealing(hillMovesTemplate, oldScore):
                 round,"|| Temp:",temperature)
 
                 # Update scores
-                hillMovesTemplate.highestScore = newScore
-                hillMovesTemplate.highestScoreMap = residentialArea
+                hillMovesTemplate.currentScore = newScore
                 hillMovesTemplate.moves += 1
 
                 # Update score to compare against
                 oldScore = newScore
 
                 # keep track of best solution found
-                if newScore > bestScore:
-                    bestScore = newScore
-                    print ("BEST SCORE =", bestScore)
+                if newScore > hillMovesTemplate.highestScore:
+                    hillMovesTemplate.highestScore = newScore
+                    hillMovesTemplate.highestScoreMap = residentialArea
+                    print ("NEW BEST SCORE =", hillMovesTemplate.highestScore)
 
             # Else, score is lower
             else:
@@ -655,8 +652,7 @@ def simAnnealing(hillMovesTemplate, oldScore):
                     round,"|| Temp:",temperature)
 
                     # Update scores
-                    hillMovesTemplate.highestScore = newScore
-                    hillMovesTemplate.highestScoreMap = residentialArea
+                    hillMovesTemplate.currentScore = newScore
                     hillMovesTemplate.swaps += 1
 
                     # Update score to compare against
@@ -700,7 +696,6 @@ def simAnnealing(hillMovesTemplate, oldScore):
             recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
     else:
-        print ("BEST SCORE = ", bestScore)
         return hillMovesTemplate
 
 def computeProb(oldScore, newScore, temperature):
