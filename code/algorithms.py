@@ -539,15 +539,14 @@ def simAnnealing(hillMovesTemplate, oldScore):
     residental area.
     """
 
-    # cooling scheme: (verkorting / temperature)
-    #temperature = 10000
+    # Set up temperature, minimum temperature, cooling and counter for rounds
     temperature = 10
     minimumTemperature = 1
-
     cooling = 0.003
     round = 0
 
-    while temperature >= 1:
+    # Loop until minimum temperature is reached
+    while temperature >= minimumTemperature:
 
         # Extract map and results
         residentialArea = hillMovesTemplate.highestScoreMap
