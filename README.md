@@ -26,18 +26,27 @@ Echter, omdat dit *ooit in het verre verleden* een beschermd natuurgebied was, z
 
 
 ## Vereisten
-Dit project is geschreven in Python 3.6.5. In requirements.txt staan de benodigde packages om de code uit te voeren. Deze packages zijn te installeren door het runnen van de volgende command:
+Dit project is volledig geschreven in **Python 3.6.5**.
+In *requirements.txt* staan de benodigde packages om de code uit te voeren.
+Deze packages zijn te installeren door het runnen van het volgende commando:
 ```
 pip3 install -r requirements.txt
 ```
 
 ## Gebruik
-De code wordt uitgevoerd door het runnen van de volgende command:
+De code wordt uitgevoerd door het runnen van het volgende commando:
 ```
 python3 main.py '#HOUSES' 'ALGORITHM'
 ```
-In deze command staat #HOUSES voor het aantal huizen dat de woonwijk kan bevatten.
-Dit kunnen er 20, 40 of 60 zijn. Als er geen aantal wordt meegegeven, of als er een ongeldig aantal wordt meegegeven, zal de code automatisch doorgaan met 20 huizen. Verder staat ALGORITHM voor het gewenste algoritme waarmee de woonwijk gecreëerd wordt. Voor een random algoritme moet "random" worden ingevoerd. Voor een hillclimber algoritme dient "hillSwaps" te worden ingevoerd. Voor een heuristisch hillclimber algoritme moet "hillMoves" worden ingevoerd. Voor een simulated annealing algoritme dient "simAnnealing" te worden ingevoerd.
+In dit commando staat **#HOUSES** voor het aantal huizen dat de woonwijk kan bevatten. Dit kunnen er 20, 40 of 60 zijn.
+
+Als er geen aantal wordt meegegeven, of als er een ongeldig aantal wordt meegegeven, zal de code automatisch doorgaan met 20 huizen als default.
+
+Verder staat **ALGORITHM** voor het gewenste algoritme waarmee de woonwijk wordt gecreëerd.
+- Voor een random algoritme moet "**random**" worden ingevoerd
+- Voor een hillclimber algoritme dient "**hillSwaps**" te worden ingevoerd
+- Voor een heuristisch hillclimber algoritme moet "**hillMoves**" worden ingevoerd
+- Voor een simulated annealing algoritme dient "**simAnnealing**" te worden ingevoerd
 
 
 **Voorbeelden:**
