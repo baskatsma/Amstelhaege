@@ -566,21 +566,31 @@ def deleteOldImages():
     for mp4 in glob.glob("tmp/*.mp4"):
         os.remove(mp4)
 
-def getVideo(residentialArea):
+def getVideo(results, choice):
     """
     This function COMMENNTTTTTTTTT
     """
 
+    # Extract variable
+    residentialArea = results.highestScoreMap
+
     # Get video output
-    for indexPhoto in range(len(residentialArea)):
-        GIFPlot(residentialArea, indexPhoto)
-        indexPhoto += 1
+    if choice == "random":
+        for GIFindex in range(len(residentialArea)):
+            GIFCore(residentialArea, choice, GIFindex, results)
+            GIFindex += 1
+
+    else:
+        GIFCore(residentialArea, choice, GIFindex, results)
 
     # Create video output
+    FFmpeg()
+
+def FFmpeg():
     os.system("ffmpeg -framerate 1/0.15 -i tmp/%03d.png "+
     "-c:v libx264 -r 30 tmp/__output.mp4")
 
-def GIFPlot(residentialArea, indexPhoto):
+def GIFCore(residentialArea, choice, GIFindex, results):
     """
     This function COMMENNTTTTTTTTT
     """
@@ -589,31 +599,57 @@ def GIFPlot(residentialArea, indexPhoto):
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    # Display score
-    newScore = 0
-
-    # Loop over all objects
-    for object in residentialArea[0:indexPhoto+1]:
-
-        # Update score
-        if object.type != "water":
-            currentScore = object.calculateScore()
-            newScore += currentScore
-
-        # Draw water, houses and free area
-        drawPlotObjects(residentialArea, object, ax)
+    # Get score and visualize houses and water
+    newScore = getPlotObjects(residentialArea, choice, GIFindex, fig, ax)
 
     # Add current score title
-    plt.title(str(newScore) + " euro")
+    title = results.algorithm + " — " + str(results.maxHouses) + \
+    " houses: " + str(newScore) + " euro"
+    plt.title(title)
 
     # Set figure dimensions
     plt.xlim([0, gridXLength])
+    plt.xlabel("width")
     plt.ylim([0, gridYLength])
+    plt.ylabel("height")
 
     # Save pic
-    pictureName = "{:03}".format(indexPhoto)
-    plt.savefig("tmp/"+pictureName, dpi=200, bbox_inches="tight")
+    pictureName = "{:03}".format(GIFindex)
+    plt.savefig("tmp/"+pictureName, dpi=135, bbox_inches="tight")
     plt.close(fig)
+
+def getPlotObjects(residentialArea, choice, GIFindex, fig, ax):
+
+    # Display score
+    newScore = 0
+
+    if choice != "random":
+
+        # Loop over all objects
+        for object in residentialArea:
+
+            # Update score
+            if object.type != "water":
+                currentScore = object.calculateScore()
+                newScore += currentScore
+
+            # Draw water, houses and free area
+            drawPlotObjects(residentialArea, object, ax)
+
+    else:
+
+        # Loop over index+1 objects
+        for object in residentialArea[0:GIFindex+1]:
+
+            # Update score
+            if object.type != "water":
+                currentScore = object.calculateScore()
+                newScore += currentScore
+
+            # Draw water, houses and free area
+            drawPlotObjects(residentialArea, object, ax)
+
+    return newScore
 
 def printPlot(allResults):
     """
