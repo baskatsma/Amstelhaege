@@ -190,11 +190,10 @@ def hillSwapsCore(hillSwapsResults, oldScore):
                 hillSwapsResults.roundsCounter)
 
                 # Revert to old coordinates and fix numpyGrid
-                revertSituation(randomHouse1, randomHouse2, oldCoordinates1,
-                                oldCoordinates2, numpyGrid, residentialArea)
-
-                # Re-calculate extra free area for this old situation
-                recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+                revertSingleHouse(randomHouse1, oldCoordinates1,
+                residentialArea, numpyGrid)
+                revertSingleHouse(randomHouse2, oldCoordinates2,
+                residentialArea, numpyGrid)
 
                 # Run hillSwaps again
                 hillSwapsCore(hillSwapsResults, oldScore)
@@ -202,11 +201,10 @@ def hillSwapsCore(hillSwapsResults, oldScore):
         else:
 
             # Revert to old coordinates and fix numpyGrid
-            revertSituation(randomHouse1, randomHouse2, oldCoordinates1,
-                            oldCoordinates2, numpyGrid, residentialArea)
-
-            # Re-calculate extra free area for this old situation
-            recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+            revertSingleHouse(randomHouse1, oldCoordinates1, residentialArea,
+            numpyGrid)
+            revertSingleHouse(randomHouse2, oldCoordinates2, residentialArea,
+            numpyGrid)
 
             # Run hillSwaps again
             hillSwapsCore(hillSwapsResults, oldScore)
@@ -484,17 +482,8 @@ def hillMovesMove(hillMovesResults, oldScore):
                 hillMovesResults.roundsCounter)
 
                 # Revert to old coordinates and fix numpyGrid
-                # Remove houses from numpyGrid and map
-                randomHouse.removeFromGridAndMap(numpyGrid)
-
-                # Revert to old coordinates
-                updateCoordinates(randomHouse, oldCoordinates)
-
-                # Clean-up some bugs and plot old location back
-                fixIncorrectVisualizations(residentialArea, numpyGrid)
-
-                # Re-calculate extra free area for this old situation
-                recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+                revertSingleHouse(randomHouse, oldCoordinates, residentialArea,
+                numpyGrid)
 
                 # Run hillMoves again
                 hillMovesMove(hillMovesResults, oldScore)
@@ -502,17 +491,8 @@ def hillMovesMove(hillMovesResults, oldScore):
         else:
 
             # Revert to old coordinates and fix numpyGrid
-            # Remove houses from numpyGrid and map
-            randomHouse.removeFromGridAndMap(numpyGrid)
-
-            # Revert to old coordinates
-            updateCoordinates(randomHouse, oldCoordinates)
-
-            # Clean-up some bugs and plot old location back
-            fixIncorrectVisualizations(residentialArea, numpyGrid)
-
-            # Re-calculate extra free area for this old situation
-            recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+            revertSingleHouse(randomHouse, oldCoordinates, residentialArea,
+            numpyGrid)
 
             # Run hillMoves again
             hillMovesMove(hillMovesResults, oldScore)
@@ -654,17 +634,8 @@ def simAnnealing(simAnnealingResults, oldScore):
                     round,"|| Temp:",temperature)
 
                     # Revert to old coordinates and fix numpyGrid
-                    # Remove houses from numpyGrid and map
-                    randomHouse.removeFromGridAndMap(numpyGrid)
-
-                    # Revert to old coordinates
-                    updateCoordinates(randomHouse, oldCoordinates)
-
-                    # Clean-up some bugs and plot old location back
-                    fixIncorrectVisualizations(residentialArea, numpyGrid)
-
-                    # Re-calculate extra free area for this old situation
-                    recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+                    revertSingleHouse(randomHouse, oldCoordinates,
+                    residentialArea, numpyGrid)
 
             # Update temperature and round
             temperature *= 1 - cooling
@@ -673,19 +644,14 @@ def simAnnealing(simAnnealingResults, oldScore):
         else:
 
             # Revert to old coordinates and fix numpyGrid
-            # Remove houses from numpyGrid and map
-            randomHouse.removeFromGridAndMap(numpyGrid)
-
-            # Revert to old coordinates
-            updateCoordinates(randomHouse, oldCoordinates)
-
-            # Clean-up some bugs and plot old location back
-            fixIncorrectVisualizations(residentialArea, numpyGrid)
-
-            # Re-calculate extra free area for this old situation
-            recalculateAllExtraFreeArea(residentialArea, numpyGrid)
+            revertSingleHouse(randomHouse, oldCoordinates, residentialArea,
+            numpyGrid)
 
     else:
+
+        # Update rounds
+        simAnnealingResults.rounds = round
+        
         return simAnnealingResults
 
 def acceptProbability(oldScore, newScore, temperature):
@@ -701,9 +667,6 @@ def acceptProbability(oldScore, newScore, temperature):
 
     # Calculate the acceptance probability
     acceptanceProb = math.exp(delta / temperature)
-
-    print(random0to1)
-    print(acceptanceProb)
 
     # If acceptance probability is higher than random number, accept lower score
     if acceptanceProb >= random0to1:

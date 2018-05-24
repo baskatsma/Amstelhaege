@@ -14,7 +14,7 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize amount of rounds
-    rounds = 100
+    rounds = 200
 
     # Initialize algorithms results sheets
     randomTemplate = Results(**resultsTemplate)

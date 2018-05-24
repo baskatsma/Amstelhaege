@@ -542,22 +542,19 @@ def fixIncorrectVisualizations(residentialArea, numpyGrid):
         visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
                         numpyGrid, drawNumber)
 
-def revertSituation(randomHouse1, randomHouse2, oldCoordinates1, \
-    oldCoordinates2, numpyGrid, residentialArea):
-    """
-    This function COMMENNTTTTTTTTT
-    """
+def revertSingleHouse(randomHouse, oldCoordinates, residentialArea, numpyGrid):
 
     # Remove houses from numpyGrid and map
-    randomHouse1.removeFromGridAndMap(numpyGrid)
-    randomHouse2.removeFromGridAndMap(numpyGrid)
+    randomHouse.removeFromGridAndMap(numpyGrid)
 
     # Revert to old coordinates
-    updateCoordinates(randomHouse1, oldCoordinates1)
-    updateCoordinates(randomHouse2, oldCoordinates2)
+    updateCoordinates(randomHouse, oldCoordinates)
 
     # Clean-up some bugs and plot old location back
     fixIncorrectVisualizations(residentialArea, numpyGrid)
+
+    # Re-calculate extra free area for this old situation
+    recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
 def deleteOldImages():
 
