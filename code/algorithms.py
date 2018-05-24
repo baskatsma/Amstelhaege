@@ -536,7 +536,9 @@ def hillMovesMove(hillMovesTemplate, oldScore):
 def simAnnealing(hillMovesTemplate, oldScore):
     """
     This algorithm creates a simulated annealing solution to organize a
-    residental area.
+    residental area. It loops and searches for solutions until minimum
+    temperature has been reached. When minimum has been reached, it keeps the
+    solution with the best score found.
     """
 
     # Set up temperature, minimum temperature, cooling and counter for rounds
@@ -696,6 +698,9 @@ def simAnnealing(hillMovesTemplate, oldScore):
         return hillMovesTemplate
 
 def acceptProbability(oldScore, newScore, temperature):
+    """
+    Computes acceptance probability that will be used by simulated annealing.
+    """
 
     # Get a random float number between 0 and 1
     random0to1 = rd.uniform(0,1)
@@ -709,10 +714,11 @@ def acceptProbability(oldScore, newScore, temperature):
     print(random0to1)
     print(acceptanceProb)
 
-    #
+    # If acceptance probability is higher than random number, accept lower score
     if acceptanceProb >= random0to1:
         return True
 
+    # If not, do not accept lower score
     else:
         return False
 
