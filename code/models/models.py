@@ -72,10 +72,10 @@ class House(object):
 
         # Check for grid border problems
         if \
-        (self.yEnd + self.freeArea) > self.gridYLength or \
-        (self.xEnd + self.freeArea) > self.gridXLength or \
-        (self.xBegin - self.freeArea) <= 0 or \
-        (self.yBegin - self.freeArea) <= 0:
+        (self.yEnd + self.freeArea + self.extraFreeArea) > self.gridYLength or \
+        (self.xEnd + self.freeArea + self.extraFreeArea) > self.gridXLength or \
+        (self.xBegin - self.freeArea - self.extraFreeArea) <= 0 or \
+        (self.yBegin - self.freeArea - self.extraFreeArea) <= 0:
             return False
 
         # No grid border problems, continuing
@@ -115,8 +115,8 @@ class Results(object):
     """
 
     def __init__(self, algorithm, maxHouses, rounds, roundsCounter, swaps, moves,
-    allScores, currentScore, highestScore, highestScoreMap, numpyGrid, lowestScore, averageScore,
-    fastestRuntime, slowestRuntime, totalRuntime):
+    allScores, currentScore, highestScore, highestScoreMap, numpyGrid,
+    lowestScore, scoreDifference, fastestRuntime, slowestRuntime, totalRuntime):
         self.algorithm = algorithm
         self.maxHouses = maxHouses
         self.rounds = rounds
@@ -129,7 +129,7 @@ class Results(object):
         self.highestScoreMap = highestScoreMap
         self.numpyGrid = numpyGrid
         self.lowestScore = lowestScore
-        self.averageScore = averageScore
+        self.scoreDifference = highestScore - lowestScore
         self.fastestRuntime = fastestRuntime
         self.slowestRuntime = slowestRuntime
         self.totalRuntime = totalRuntime

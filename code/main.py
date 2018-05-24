@@ -26,6 +26,9 @@ def main():
     hillMovesTemplate = Results(**resultsTemplate)
     hillMovesTemplate.rounds = int(rounds)
 
+    simAnnealingTemplate = Results(**resultsTemplate)
+    simAnnealingTemplate.rounds = int(rounds)
+
     # Check whether user inputs the correct amount of arguments
     if len(sys.argv) < 3:
         print("You must provide the number of houses and the algorithm!")
@@ -57,7 +60,7 @@ def main():
 
     elif str(sys.argv[2]) == "hillMoves":
 
-        # Run hilly "rounds" amount of times and display best results
+        # Run hillMoves "rounds" amount of times and display best results
         hillMovesResults = hillMovesAlgorithm(hillMovesTemplate, \
         "hillMoves")
 
@@ -69,7 +72,7 @@ def main():
     elif str(sys.argv[2]) == "simAnnealing":
 
         # Run simAnnealing "rounds" amount of times and display best results
-        simAnnealingResults = hillMovesAlgorithm(hillMovesTemplate, \
+        simAnnealingResults = hillMovesAlgorithm(simAnnealingTemplate, \
         "simAnnealing")
 
         # Visualize grid with matplotlib

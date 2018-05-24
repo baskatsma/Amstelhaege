@@ -741,6 +741,7 @@ def writeResults(results):
             "rounds",
             "highest score",
             "lowest score",
+            "score difference",
             "swaps",
             "moves",
             "total runtime (sec)"
@@ -758,6 +759,7 @@ def writeResults(results):
             "rounds": results.rounds,
             "highest score": results.highestScore,
             "lowest score": results.lowestScore,
+            "score difference": results.scoreDifference,
             "swaps": results.swaps,
             "moves": results.moves,
             "total runtime (sec)": results.totalRuntime
