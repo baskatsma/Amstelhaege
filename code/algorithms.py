@@ -702,8 +702,8 @@ def acceptProbability(oldScore, newScore, temperature):
     # Calculate the acceptance probability
     acceptanceProb = math.exp(delta / temperature)
 
-    print(random0to1)
-    print(acceptanceProb)
+    print("Random:", random0to1)
+    print("Acceptance probability:", acceptanceProb)
 
     # If acceptance probability is higher than random number, accept lower score
     if acceptanceProb >= random0to1:
