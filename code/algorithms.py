@@ -638,7 +638,7 @@ def simAnnealing(hillMovesTemplate, oldScore):
                 # Update score to compare against
                 oldScore = newScore
 
-                # keep track of best solution found
+                # Keep track of best solution found
                 if newScore > bestScore:
                     bestScore = newScore
                     print ("BEST SCORE =", bestScore)
@@ -646,11 +646,8 @@ def simAnnealing(hillMovesTemplate, oldScore):
             # Else, score is lower
             else:
 
-                # if determineAcception(oldScore, newScore,
-                # startTValues, hillyTemplate) == True:
-                if computeProb(oldScore, newScore, temperature) == True:
+                if acceptProbability(oldScore, newScore, temperature) == True:
 
-                    print("random0to1 <= acceptProbability")
                     print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
                     round,"|| Temp:",temperature)
 
@@ -703,7 +700,7 @@ def simAnnealing(hillMovesTemplate, oldScore):
         print ("BEST SCORE = ", bestScore)
         return hillMovesTemplate
 
-def computeProb(oldScore, newScore, temperature):
+def acceptProbability(oldScore, newScore, temperature):
 
     # Get a random float number between 0 and 1
     random0to1 = rd.uniform(0,1)

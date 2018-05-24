@@ -1,12 +1,3 @@
-"""
-models.py
-
-CODERS      Amy van der Gun     10791760
-            Bas Katsma          10787690
-            Felicia van Gastel  11096187
-
-USAGE       to-do
-"""
 import random as rd
 import math as mt
 import numpy as np
@@ -18,15 +9,13 @@ class Water(object):
 
     def __init__(self, type, freeArea, extraFreeArea, gridXLength, gridYLength,
                 xBegin, xEnd, yBegin, yEnd, uniqueID):
-        #self.totalSquareArea = 0.2 * int(gridXLength) * int(gridYLength)
+        self.totalSquareArea = 0.2 * int(gridXLength) * int(gridYLength)
         self.type = type
         self.freeArea = freeArea
         self.extraFreeArea = extraFreeArea
         self.gridXLength = gridXLength
         self.gridYLength = gridYLength
-        self.objectDimensions = (int(23040/296), 296)
-        # self.objectDimensions = (int(mt.sqrt(self.totalSquareArea)),
-        #                         int(mt.sqrt(self.totalSquareArea)))
+        self.objectDimensions = (int(self.totalSquareArea/296), 296)
         self.xBegin = xBegin
         self.xEnd = xEnd
         self.yBegin = yBegin
@@ -83,18 +72,11 @@ class House(object):
 
         # Check for grid border problems
         if \
-        (self.yEnd + self.freeArea + self.extraFreeArea) > self.gridYLength or \
-        (self.xEnd + self.freeArea + self.extraFreeArea) > self.gridXLength or \
-        (self.xBegin - self.freeArea - self.extraFreeArea) <= 0 or \
-        (self.yBegin - self.freeArea - self.extraFreeArea) <= 0:
+        (self.yEnd + self.freeArea) > self.gridYLength or \
+        (self.xEnd + self.freeArea) > self.gridXLength or \
+        (self.xBegin - self.freeArea) <= 0 or \
+        (self.yBegin - self.freeArea) <= 0:
             return False
-        # # Check for grid border problems
-        # if \
-        # (self.yEnd + self.freeArea) > self.gridYLength or \
-        # (self.xEnd + self.freeArea) > self.gridXLength or \
-        # (self.xBegin - self.freeArea) <= 0 or \
-        # (self.yBegin - self.freeArea) <= 0:
-        #     return False
 
         # No grid border problems, continuing
         else:
