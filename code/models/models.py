@@ -115,8 +115,9 @@ class Results(object):
     """
 
     def __init__(self, algorithm, maxHouses, rounds, roundsCounter, swaps, moves,
-    allScores, currentScore, highestScore, highestScoreMap, numpyGrid,
-    lowestScore, scoreDifference, fastestRuntime, slowestRuntime, totalRuntime):
+    allScores, currentScore, currentScoreMap, highestScore, highestScoreMap,
+    numpyGrid, lowestScore, scoreDifference, fastestRuntime, slowestRuntime,
+    totalRuntime):
         self.algorithm = algorithm
         self.maxHouses = maxHouses
         self.rounds = rounds
@@ -125,6 +126,7 @@ class Results(object):
         self.moves = moves
         self.allScores = allScores
         self.currentScore = currentScore
+        self.currentScoreMap = currentScoreMap
         self.highestScore = highestScore
         self.highestScoreMap = highestScoreMap
         self.numpyGrid = numpyGrid

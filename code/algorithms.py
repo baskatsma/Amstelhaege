@@ -362,6 +362,7 @@ def hillMovesAlgorithm(hillMovesResults, choice):
     hillMovesResults.lowestScore = hillMovesResults.highestScore
     hillMovesResults.maxHouses = maxHouses
     hillMovesResults.highestScoreMap = residentialArea
+    hillMovesResults.currentScoreMap = hillMovesResults.highestScoreMap
     hillMovesResults.numpyGrid = numpyGrid
 
     # Define score to compare against
@@ -565,7 +566,7 @@ def simAnnealing(hillMovesResults, oldScore):
     while temperature >= minimumTemperature:
 
         # Extract map and results
-        residentialArea = hillMovesResults.highestScoreMap
+        residentialArea = hillMovesResults.currentScoreMap
         numpyGrid = hillMovesResults.numpyGrid
 
         # Get residentialArea without water (avoiding problems)
@@ -644,7 +645,7 @@ def simAnnealing(hillMovesResults, oldScore):
 
                 # Update scores and maps
                 hillMovesResults.currentScore = newScore
-                hillMovesResults.highestScoreMap = residentialArea
+                hillMovesResults.currentScoreMap = residentialArea
                 hillMovesResults.numpyGrid = numpyGrid
                 hillMovesResults.moves += 1
 
@@ -654,6 +655,7 @@ def simAnnealing(hillMovesResults, oldScore):
                 # Keep track of best solution found
                 if newScore > hillMovesResults.highestScore:
                     hillMovesResults.highestScore = newScore
+                    hillMovesResults.highestScoreMap = residentialArea
 
                     print ("NEW BEST SCORE =", hillMovesResults.highestScore)
 
@@ -667,7 +669,7 @@ def simAnnealing(hillMovesResults, oldScore):
 
                     # Update scores and maps
                     hillMovesResults.currentScore = newScore
-                    hillMovesResults.highestScoreMap = residentialArea
+                    hillMovesResults.currentScoreMap = residentialArea
                     hillMovesResults.numpyGrid = numpyGrid
                     hillMovesResults.swaps += 1
 
