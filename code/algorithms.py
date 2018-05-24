@@ -651,7 +651,7 @@ def simAnnealing(simAnnealingResults, oldScore):
 
         # Update rounds
         simAnnealingResults.rounds = round
-        
+
         return simAnnealingResults
 
 def acceptProbability(oldScore, newScore, temperature):
@@ -667,6 +667,9 @@ def acceptProbability(oldScore, newScore, temperature):
 
     # Calculate the acceptance probability
     acceptanceProb = math.exp(delta / temperature)
+
+    print("Random:", random0to1)
+    print("Acceptance probability:", acceptanceProb)
 
     # If acceptance probability is higher than random number, accept lower score
     if acceptanceProb >= random0to1:
