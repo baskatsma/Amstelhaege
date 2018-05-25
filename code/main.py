@@ -1,3 +1,15 @@
+# Authors:
+# Amy van der Gun (10791760)
+# Bas Katsma (10787690)
+# Felicia van Gastel (11096187)
+#
+# Amstelhaege
+# Programmeertheorie
+#
+# main.py
+# Main file that calls the algorithms and gives the output for a chosen number
+# of houses.
+
 from algorithms import *
 from functions import *
 from models.templates import *
