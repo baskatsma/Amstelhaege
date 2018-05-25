@@ -11,6 +11,7 @@
 
 import csv
 import glob
+import math
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
@@ -607,9 +608,6 @@ def acceptProbability(oldScore, newScore, temperature):
 
     # Calculate the acceptance probability
     acceptanceProb = math.exp(delta / temperature)
-
-    print("Random:", random0to1)
-    print("Acceptance probability:", acceptanceProb)
 
     # If acceptance probability is higher than random number, accept lower score
     if acceptanceProb >= random0to1:

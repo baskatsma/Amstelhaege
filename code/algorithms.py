@@ -207,7 +207,7 @@ def hillSwapsCore(hillSwapsResults, oldScore):
             # Else, score is lower
             else:
 
-                print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
+                print("   Score:", newScore, "vs.", oldScore, "|| Round:",
                 hillSwapsResults.roundsCounter)
 
                 # Revert to old coordinates and fix numpyGrid
@@ -501,7 +501,7 @@ def hillMovesCore(hillMovesResults, oldScore):
             # Else, score is lower
             else:
 
-                print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
+                print("   Score:", newScore, "vs.", oldScore, "|| Round:",
                 hillMovesResults.roundsCounter)
 
                 # Revert to old coordinates and fix numpyGrid
@@ -632,8 +632,6 @@ def simAnnealing(simAnnealingResults, oldScore):
                     simAnnealingResults.highestScore = newScore
                     simAnnealingResults.highestScoreMap = residentialArea
 
-                    print ("NEW BEST SCORE =", simAnnealingResults.highestScore)
-
             # Else, score is lower
             else:
 
@@ -653,7 +651,7 @@ def simAnnealing(simAnnealingResults, oldScore):
 
                 else:
 
-                    print("-- Score:", newScore, "vs.", oldScore, "|| Round:",
+                    print("  Score:", newScore, "vs.", oldScore, "|| Round:",
                     round,"|| Temp:",temperature)
 
                     # Revert to old coordinates and fix numpyGrid

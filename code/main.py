@@ -22,6 +22,15 @@ def main():
     containing 20, 40 or 60 houses.
     """
 
+    # Ask user to visualize the algorithm
+    print("")
+    print("Would you like to visualize the algorithm? It can take a while.")
+    print("Enter [1] for YES, or [2] for NO")
+    FFmpegChoice = input("")
+    if FFmpegChoice != "1" and FFmpegChoice != "2":
+        print("Valid input ([1] or [2]), please.")
+        exit(0)
+
     # Avoid recursion errors
     sys.setrecursionlimit(5000)
 
@@ -81,31 +90,23 @@ def main():
         return simAnnealingResults
 
     else:
-        print("Not a valid algorithm! Choose among: random, hillSwaps, \
-        hillMoves or simAnnealing")
+        print("Not a valid algorithm! Choose among: random, hillSwaps,"
+        " hillMoves or simAnnealing")
 
 if __name__ == "__main__":
 
-    # Ask user to visualize the algorithm
-    print("")
-    print("Would you like to visualize the algorithm? It can take a while.")
-    print("Enter [1] for YES, or [2] for NO")
-    FFmpegChoice = input("")
-    if FFmpegChoice != "1" and FFmpegChoice != "2":
-        print("Valid input ([1] or [2]), please.")
-        exit(0)
-
     results = main()
 
-    # Visualize algorithm
-    if results.FFmpegChoice == 1:
-        FFmpeg()
-
-    # Visualize map with matplotlib
-    residentialArea = results.highestScoreMap
-    choice = "printPlot"
-    matplotlibCore(residentialArea, choice, 0, results)
-
-    # Write results in scores.csv
     if results != None:
+
+        # Visualize algorithm
+        if results.FFmpegChoice == 1:
+            FFmpeg()
+
+        # Visualize map with matplotlib
+        residentialArea = results.highestScoreMap
+        choice = "printPlot"
+        matplotlibCore(residentialArea, choice, 0, results)
+
+        # Write results in scores.csv
         writeResults(results)
