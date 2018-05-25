@@ -101,7 +101,7 @@ if __name__ == "__main__":
     if results != None:
 
         # Visualize algorithm
-        if results.FFmpegChoice == 1:
+        if results.FFmpegChoice == "1":
             FFmpeg()
 
         # Visualize map with matplotlib
