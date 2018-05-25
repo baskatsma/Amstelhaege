@@ -194,7 +194,7 @@ def hillSwapsCore(hillSwapsResults, oldScore):
                 oldScore = newScore
 
                 # Create image of current map
-                if hillSwapsResults.FFmpegChoice == 1:
+                if hillSwapsResults.FFmpegChoice == "1":
                     createImage("hillSwaps", residentialArea, hillSwapsResults)
 
                 # Run hillSwaps again
@@ -492,7 +492,7 @@ def hillMovesCore(hillMovesResults, oldScore):
                 oldScore = newScore
 
                 # Create image of current map
-                if hillMovesResults.FFmpegChoice == 1:
+                if hillMovesResults.FFmpegChoice == "1":
                     createImage("hillMoves", residentialArea, hillMovesResults)
 
                 # Run hillMoves again
@@ -628,7 +628,7 @@ def simAnnealing(simAnnealingResults, oldScore):
                 oldScore = newScore
 
                 # Create image of current map
-                if simAnnealingResults.FFmpegChoice == 1:
+                if simAnnealingResults.FFmpegChoice == "1":
                     createImage("simAnnealing", residentialArea,
                     simAnnealingResults)
 
@@ -655,7 +655,7 @@ def simAnnealing(simAnnealingResults, oldScore):
                     oldScore = newScore
 
                     # Create image of current map
-                    if simAnnealingResults.FFmpegChoice == 1:
+                    if simAnnealingResults.FFmpegChoice == "1":
                         createImage("simAnnealing", residentialArea,
                         simAnnealingResults)
 
