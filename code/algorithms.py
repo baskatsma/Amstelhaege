@@ -180,6 +180,13 @@ def hillSwapsCore(hillSwapsResults, oldScore):
                 # Update score to compare against
                 oldScore = newScore
 
+                # Create image of current map
+                if hillSwapsResults.FFmpegChoice == 1:
+                    choice = "hillSwaps"
+                    GIFIndex = hillSwapsResults.GIFIndex
+                    GIFCore(residentialArea, choice, GIFIndex, hillSwapsResults)
+                    hillSwapsResults.GIFIndex += 1
+
                 # Run hillSwaps again
                 hillSwapsCore(hillSwapsResults, oldScore)
 

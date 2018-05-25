@@ -80,5 +80,7 @@ resultsTemplate = {
     "numpyGrid": 0,
     "lowestScore": 1000000000,
     "scoreDifference": 0,
-    "totalRuntime": 0
+    "totalRuntime": 0,
+    "FFmpegChoice": 0,
+    "GIFIndex": 0
 }

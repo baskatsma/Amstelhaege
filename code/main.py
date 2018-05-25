@@ -10,6 +10,14 @@ def main():
     containing 20, 40 or 60 houses.
     """
 
+    # Ask user to visualize the algorithm
+    print("")
+    print("Would you like to visualize the algorithm? It can take a while.")
+    print("Enter [1] for YES, or [2] for NO")
+    FFmpegChoice = int(input(""))
+    if FFmpegChoice == None:
+        exit(0)
+
     # Avoid recursion errors
     sys.setrecursionlimit(5000)
 
@@ -17,17 +25,18 @@ def main():
     rounds = 1000
 
     # Initialize algorithms results sheets
+    templates = []
     randomTemplate = Results(**resultsTemplate)
-    randomTemplate.rounds = int(rounds)
-
     hillSwapsTemplate = Results(**resultsTemplate)
-    hillSwapsTemplate.rounds = int(rounds)
-
     hillMovesTemplate = Results(**resultsTemplate)
-    hillMovesTemplate.rounds = int(rounds)
-
     simAnnealingTemplate = Results(**resultsTemplate)
-    simAnnealingTemplate.rounds = int(rounds)
+    templates.extend([randomTemplate, hillSwapsTemplate, hillMovesTemplate,
+    simAnnealingTemplate])
+
+    # Update rounds & visualization preference
+    for template in templates:
+        template.rounds = int(rounds)
+        template.FFmpegChoice = FFmpegChoice
 
     # Check whether user inputs the correct amount of arguments
     if len(sys.argv) < 3:
@@ -39,7 +48,9 @@ def main():
         randomResults = randomAlgorithm(randomTemplate)
 
         # Visualize grid with matplotlib
-        #getVideo(randomResults.highestScoreMap)
+        if FFmpegChoice == 1:
+            getVideo(randomResults, "random")
+
         printPlot(randomResults)
 
         return randomResults
@@ -54,6 +65,9 @@ def main():
         randomResults)
 
         # Visualize grid with matplotlib
+        if FFmpegChoice == 1:
+            FFmpeg()
+
         printPlot(hillSwapsResults)
 
         return hillSwapsResults
