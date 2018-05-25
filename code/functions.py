@@ -658,6 +658,17 @@ def FFmpeg():
     os.system("ffmpeg -framerate 1/0.15 -i tmp/%03d.png "+
     "-c:v libx264 -r 30 tmp/__output.mp4")
 
+def createImage(choice, residentialArea, results):
+
+    # Extract index number
+    GIFIndex = results.GIFIndex
+
+    # Create matplotlib map and save it
+    matplotlibCore(residentialArea, choice, GIFIndex, results)
+
+    # Update index
+    results.GIFIndex += 1
+
 def matplotlibCore(residentialArea, choice, GIFindex, results):
     """
     This function creates a matplotlib figure of the residential area and
