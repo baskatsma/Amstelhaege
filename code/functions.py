@@ -464,7 +464,7 @@ def switchCoordinates(residentialArea, numpyGrid):
     randomHouse2.removeFromGridAndMap(numpyGrid)
 
     # Fix rough free area removal
-    fixIncorrectVisualizations(residentialArea, numpyGrid)
+    redrawGrid(residentialArea, numpyGrid)
 
     # Update coordinates
     changeCoordinates(randomHouse1, newCoordinates1)
@@ -523,12 +523,20 @@ def placeOnHillGrid(currentObject, numpyGrid):
     visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
                     numpyGrid, drawNumber)
 
-def fixIncorrectVisualizations(residentialArea, numpyGrid):
+def redrawGrid(residentialArea, numpyGrid):
     """
-    This function loops over all houses and re-draws the free area and the house
-    on the numpy grid. Missing free area values in the numpy grid (which
-    happens after removing an other house from the grid) will be restored.
+    This function loops over all objects and re-draws the free area, the
+    house, and water on the numpy grid. Missing free area values in the numpy
+    grid (which happens after removing an other house from the grid) will be
+    restored.
     """
+
+    # Re-draw water
+    waterObject = residentialArea[0]
+    coord = coordinateVariables(waterObject)
+    drawNumber = 3
+    visualizeOnGrid(coord[0], coord[1], coord[2], coord[3],
+                    numpyGrid, drawNumber)
 
     # Create list without water to avoid problems
     residentialAreaNew = residentialArea[1:len(residentialArea)]
@@ -568,7 +576,7 @@ def revertSingleHouse(randomHouse, oldCoordinates, residentialArea, numpyGrid):
     changeCoordinates(randomHouse, oldCoordinates)
 
     # Clean-up some bugs and plot old location back
-    fixIncorrectVisualizations(residentialArea, numpyGrid)
+    redrawGrid(residentialArea, numpyGrid)
 
     # Re-calculate extra free area for this old situation
     recalculateAllExtraFreeArea(residentialArea, numpyGrid)

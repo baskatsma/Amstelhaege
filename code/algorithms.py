@@ -413,7 +413,7 @@ def hillMovesMove(hillMovesResults, oldScore):
 
         # Remove old position and fix the mess it left behind
         randomHouse.removeFromGridAndMap(numpyGrid)
-        fixIncorrectVisualizations(residentialArea, numpyGrid)
+        redrawGrid(residentialArea, numpyGrid)
 
         # Update house coordinates 2m in that orientation
         if orientation == 0:      # Go 2m to the left
@@ -544,7 +544,7 @@ def simAnnealing(simAnnealingResults, oldScore):
 
         # Remove old position and fix the mess it left behind
         randomHouse.removeFromGridAndMap(numpyGrid)
-        fixIncorrectVisualizations(residentialArea, numpyGrid)
+        redrawGrid(residentialArea, numpyGrid)
 
         # Update house coordinates 2m in that orientation
         if orientation == 0:      # Go 2m to the left

@@ -22,7 +22,7 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize amount of rounds
-    rounds = 1000
+    rounds = 100
 
     # Initialize algorithms results sheets
     templates = []
