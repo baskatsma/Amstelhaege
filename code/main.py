@@ -29,6 +29,7 @@ def main():
     FFmpegChoice = input("")
     if FFmpegChoice != "1" and FFmpegChoice != "2":
         print("Valid input ([1] or [2]), please.")
+        print("")
         exit(0)
 
     # Avoid recursion errors
