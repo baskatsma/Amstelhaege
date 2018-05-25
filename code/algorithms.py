@@ -195,11 +195,7 @@ def hillSwapsCore(hillSwapsResults, oldScore):
 
                 # Create image of current map
                 if hillSwapsResults.FFmpegChoice == 1:
-                    choice = "hillSwaps"
-                    GIFIndex = hillSwapsResults.GIFIndex
-                    matplotlibCore(residentialArea, choice, GIFIndex,
-                    hillSwapsResults)
-                    hillSwapsResults.GIFIndex += 1
+                    createImage("hillSwaps", residentialArea, hillSwapsResults)
 
                 # Run hillSwaps again
                 hillSwapsCore(hillSwapsResults, oldScore)
@@ -495,6 +491,10 @@ def hillMovesCore(hillMovesResults, oldScore):
                 # Update score to compare against
                 oldScore = newScore
 
+                # Create image of current map
+                if hillMovesResults.FFmpegChoice == 1:
+                    createImage("hillMoves", residentialArea, hillMovesResults)
+
                 # Run hillMoves again
                 hillMovesCore(hillMovesResults, oldScore)
 
@@ -627,6 +627,11 @@ def simAnnealing(simAnnealingResults, oldScore):
                 # Update score to compare against
                 oldScore = newScore
 
+                # Create image of current map
+                if simAnnealingResults.FFmpegChoice == 1:
+                    createImage("simAnnealing", residentialArea,
+                    simAnnealingResults)
+
                 # Keep track of best solution found
                 if newScore > simAnnealingResults.highestScore:
                     simAnnealingResults.highestScore = newScore
@@ -649,9 +654,14 @@ def simAnnealing(simAnnealingResults, oldScore):
                     # Update score to compare against
                     oldScore = newScore
 
+                    # Create image of current map
+                    if simAnnealingResults.FFmpegChoice == 1:
+                        createImage("simAnnealing", residentialArea,
+                        simAnnealingResults)
+
                 else:
 
-                    print("  Score:", newScore, "vs.", oldScore, "|| Round:",
+                    print("   Score:", newScore, "vs.", oldScore, "|| Round:",
                     round,"|| Temp:",temperature)
 
                     # Revert to old coordinates and fix numpyGrid
