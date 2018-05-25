@@ -1,3 +1,14 @@
+# Authors:
+# Amy van der Gun (10791760)
+# Bas Katsma (10787690)
+# Felicia van Gastel (11096187)
+#
+# Amstelhaege
+# Programmeertheorie
+#
+# models.py
+# File that contains the objects used to make the map and save the scores
+
 import random as rd
 import math as mt
 import numpy as np

@@ -8,7 +8,7 @@
 #
 # main.py
 # Main file that calls the algorithms and gives the output for a chosen number
-# of houses.
+# of houses
 
 from algorithms import *
 from functions import *

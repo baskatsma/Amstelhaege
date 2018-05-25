@@ -1,3 +1,14 @@
+# Authors:
+# Amy van der Gun (10791760)
+# Bas Katsma (10787690)
+# Felicia van Gastel (11096187)
+#
+# Amstelhaege
+# Programmeertheorie
+#
+# functions.py
+# File that contains functions used by the algorithms in algorithms.py
+
 import csv
 import glob
 import matplotlib.patches as patches

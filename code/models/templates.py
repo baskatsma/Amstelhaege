@@ -1,3 +1,14 @@
+# Authors:
+# Amy van der Gun (10791760)
+# Bas Katsma (10787690)
+# Felicia van Gastel (11096187)
+#
+# Amstelhaege
+# Programmeertheorie
+#
+# templates.py
+# File that contains the data for the several objects used to make the map
+
 # Grid dimensions in meters
 gridXLength = 180 * 2
 gridYLength = 160 * 2
