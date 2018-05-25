@@ -33,6 +33,8 @@ Deze packages zijn te installeren door het runnen van het volgende commando:
 pip3 install -r requirements.txt
 ```
 
+Verder is [**FFmpeg 4.x**](https://ffmpeg.org/download.html) nodig voor de visualisatie functie.
+
 ## Gebruik
 De code wordt uitgevoerd door het runnen van het volgende commando:
 ```
