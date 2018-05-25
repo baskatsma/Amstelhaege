@@ -22,7 +22,7 @@ def main():
     sys.setrecursionlimit(5000)
 
     # Initialize amount of rounds
-    rounds = 1000
+    rounds = 100
 
     # Initialize algorithms results sheets
     templates = []
@@ -47,12 +47,6 @@ def main():
         # Run random "rounds" amount of times and display best results
         randomResults = randomAlgorithm(randomTemplate)
 
-        # Visualize grid with matplotlib
-        if FFmpegChoice == 1:
-            getVideo(randomResults, "random")
-
-        printPlot(randomResults)
-
         return randomResults
 
     elif str(sys.argv[2]) == "hillSwaps":
@@ -64,42 +58,40 @@ def main():
         hillSwapsResults = hillSwapsAlgorithm(hillSwapsTemplate, \
         randomResults)
 
-        # Visualize grid with matplotlib
-        if FFmpegChoice == 1:
-            FFmpeg()
-
-        printPlot(hillSwapsResults)
-
         return hillSwapsResults
 
     elif str(sys.argv[2]) == "hillMoves":
 
         # Run hillMoves "rounds" amount of times and display best results
-        hillMovesResults = hillMovesAlgorithm(hillMovesTemplate, \
+        hillMovesResults = hillMovesAlgorithm(hillMovesTemplate,
         "hillMoves")
-
-        # Visualize grid with matplotlib
-        printPlot(hillMovesResults)
 
         return hillMovesResults
 
     elif str(sys.argv[2]) == "simAnnealing":
 
         # Run simAnnealing "rounds" amount of times and display best results
-        simAnnealingResults = hillMovesAlgorithm(simAnnealingTemplate, \
+        simAnnealingResults = hillMovesAlgorithm(simAnnealingTemplate,
         "simAnnealing")
-
-        # Visualize grid with matplotlib
-        printPlot(simAnnealingResults)
 
         return simAnnealingResults
 
     else:
-        print("Not a valid algorithm! Choose among: random, hillSwaps," \
-        " hillMoves or simAnnealing")
+        print("Not a valid algorithm! Choose among: random, hillSwaps, \
+        hillMoves or simAnnealing")
 
 if __name__ == "__main__":
     results = main()
 
+    # Visualize algorithm
+    if results.FFmpegChoice == 1:
+        FFmpeg()
+
+    # Visualize map with matplotlib
+    residentialArea = results.highestScoreMap
+    choice = "printPlot"
+    matplotlibCore(residentialArea, choice, 0, results)
+
+    # Write results in scores.csv
     if results != None:
         writeResults(results)

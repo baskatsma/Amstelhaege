@@ -12,9 +12,9 @@ from timeit import default_timer as timer
 
 def initializeRandomMap():
     """
-    This function creates an array for the residential area and places
-    the houses within the array on the grid. It calculates the corresponding
-    score. The function returns the current results.
+    This function creates a random residential area with 20, 40 or 60 houses
+    places. It calculates the corresponding score.
+    The function returns the map, score, and performance.
     """
 
     # Measure algorithm time
@@ -39,7 +39,7 @@ def initializeRandomMap():
         if currentObject.type == "water":
 
             # Set its coordinates and update uniqueID
-            updateCoordinates(currentObject, (0, 0))
+            changeCoordinates(currentObject, (0, 0))
             currentObject.uniqueID = 200
 
             # Define the number in the numpy grid
@@ -90,6 +90,11 @@ def initializeRandomMap():
     return currentResult
 
 def setUpResidentialAreaPlusGrid():
+    """
+    This function creates an array for the residential area and places
+    the defined amount of houses within the array on the grid.
+    The function returns the residential area, numpy grid, and #houses.
+    """
 
     # Get maxHouses
     maxHouses = defineSettings()
@@ -149,10 +154,10 @@ def defineSettings():
 
     return maxHouses
 
-def getCoordinates(currentObject):
+def getRandomCoordinates(currentObject):
     """
     This function generates random coordinates for the current object in the
-    residential area.
+    residential area and updates it in self.
     """
 
     # Set new begin coordinates (y, x tuple) and save them in self
@@ -160,23 +165,12 @@ def getCoordinates(currentObject):
     currentObject.xBegin = rd.randrange(currentObject.gridXLength)
     beginCoordinates = (currentObject.yBegin, currentObject.xBegin)
 
-    # Extract object dimension (x, y tuple) values
-    objectYLength = currentObject.objectDimensions[1]
-    objectXLength = currentObject.objectDimensions[0]
+    # Update end coordinates
+    changeCoordinates(currentObject, beginCoordinates)
 
-    # Define end coordinates (y, x tuple)
-    endCoordinates = (beginCoordinates[0] + objectYLength,
-                      beginCoordinates[1] + objectXLength)
-
-    # Update coordinates
-    currentObject.yBegin = beginCoordinates[0]
-    currentObject.yEnd = endCoordinates[0]
-    currentObject.xBegin = beginCoordinates[1]
-    currentObject.xEnd = endCoordinates[1]
-
-def updateCoordinates(currentObject, coordinates):
+def changeCoordinates(currentObject, coordinates):
     """
-    This function generates the coordinates in a (y, x) tuple.
+    This function updates the given (y, x) coordinates in self.
     """
 
     # Extract object dimension (x, y tuple) values
@@ -195,7 +189,8 @@ def updateCoordinates(currentObject, coordinates):
 
 def coordinateVariables(currentObject):
     """
-    This function adjusts the coordinates for the free area and returns them.
+    This function grabs the coordinates, adds the minimum free area and
+    returns all the variables.
     """
 
     # Define coordinate variables
@@ -221,7 +216,7 @@ def placeOnGrid(currentObject, numpyGrid):
     """
 
     # Get random coordinates and update in self
-    getCoordinates(currentObject)
+    getRandomCoordinates(currentObject)
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
@@ -235,9 +230,9 @@ def placeOnGrid(currentObject, numpyGrid):
 
         # Check for house and free area overlap
         check1 = checkOverlap(coord[0], coord[1], coord[2], coord[3], \
-        numpyGrid, "excludingFreeArea")
+        numpyGrid, "doNotAllowAnyOverlap")
         check2 = checkOverlap(coord[5], coord[6], coord[7], coord[8], \
-        numpyGrid, "includingFreeArea")
+        numpyGrid, "allowFreeAreaOverlap")
 
         if check1 == True and check2 == True:
 
@@ -259,14 +254,17 @@ def placeOnGrid(currentObject, numpyGrid):
 
 def createhillMovesGrid(currentObject, numpyGrid, dimensions, houseCounter):
     """
-    This function creates the grid for the hillclimber-moves algorithm.
+    This function creates the specific grid for the hillclimber-moves algorithm.
     """
+
+    YPosition = 300
+    waterWidth = int(23040/296)
 
     # Specify drawNumbers
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
-    # Define variables
+    # Define the maximum number of houses that can be placed on one row
     maxHousesOnRow = houseCounter[3]
 
     if currentObject.type == "eengezinswoning":
@@ -274,44 +272,46 @@ def createhillMovesGrid(currentObject, numpyGrid, dimensions, houseCounter):
 
         # Put eengezinswoningen on the first row
         if houseCounter[0] < maxHousesOnRow:
-            coordinates = (300, currentObject.freeArea
+            coordinates = (YPosition, currentObject.freeArea
                             + dimensions * houseCounter[0])
 
         # Put eengezinswoningen on the second row
         elif houseCounter[1] < maxHousesOnNextRows:
-            coordinates = (300 - dimensions, int(23040/296) +
+            coordinates = (YPosition - dimensions, waterWidth +
             currentObject.freeArea + dimensions * houseCounter[1])
 
         # Put eengezinswoningen on the third row
         elif houseCounter[2] < maxHousesOnNextRows:
-            coordinates = (300 - dimensions * 2, int(23040/296) +
+            coordinates = (YPosition - dimensions * 2, waterWidth +
             currentObject.freeArea + dimensions * houseCounter[2])
 
     else:
 
-        # Put bungalows on the map
+        # Put bungalows on the first row
         if houseCounter[0] < maxHousesOnRow:
             coordinates = (currentObject.freeArea,
-            int(23040/296) + currentObject.freeArea + dimensions * \
+            waterWidth + currentObject.freeArea + dimensions * \
             houseCounter[0])
 
+        # Put bungalows on the second row
         elif houseCounter[1] < maxHousesOnRow:
             coordinates = (currentObject.freeArea + dimensions,
-            int(23040/296) + currentObject.freeArea + dimensions * \
+            waterWidth + currentObject.freeArea + dimensions * \
             houseCounter[1])
 
+        # Put bungalows on the third row
         elif houseCounter[2] < maxHousesOnRow:
             coordinates = (currentObject.freeArea + dimensions * 2,
-            int(23040/296) + currentObject.freeArea + dimensions * \
+            waterWidth + currentObject.freeArea + dimensions * \
             houseCounter[2])
 
     # Update coordinats in self
-    updateCoordinates(currentObject, coordinates)
+    changeCoordinates(currentObject, coordinates)
 
     # Get coordinate variables
     coord = coordinateVariables(currentObject)
 
-    # The area is viable: draw free area first
+    # The area is clear, so we can immediately draw the free area
     visualizeOnGrid(coord[5], coord[6], coord[7], coord[8],
                     numpyGrid, fADrawNumber)
 
@@ -322,7 +322,8 @@ def createhillMovesGrid(currentObject, numpyGrid, dimensions, houseCounter):
 def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, \
     drawNumber):
     """
-    This function COMMENNTTTTTTTTT
+    This function selects a specific area on the numpy grid, and fills that
+    with the specified drawNumber.
     """
 
     # Select a specific grid area and fill it
@@ -330,25 +331,24 @@ def visualizeOnGrid(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, \
 
 def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
     """
-    This function COMMENNTTTTTTTTT
+    This function checks whether a certain area is clear (EVERY value in the
+    numpy grid should be 0), or allows free area overlap (ALL values in the
+    numpy grid should be 0 or 1). It returns True or False,
+    depending on the result.
     """
 
-    # ALLES moet hier 0 zijn in dit gebied om een huis te plaatsen,
-    # dus IETS wat ook maar geen 0 is (aka niet leeg), wordt gelijk gecanceld.
-    if choice == "excludingFreeArea":
+    # Every value in the grid should be 0, which means it is empty
+    if choice == "doNotAllowAnyOverlap":
 
-        # Check house dimension area if it"s completely empty
+        # Check house area if it's completely empty
         if np.any(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] != 0):
             return False
 
         else:
             return True
 
-    # We willen kijken of dit gebied OF helemaal 0 (leeg) is, OF helemaal 1
-    # (inclusief vrijstand dus, want die mag overlappen)
-    # OF een mix van 0 en 1 (leeg + vrijstand)
-    # In ieder geval geen 3, 4, 5, etc. of uniqueID waarde.
-    if choice == "includingFreeArea":
+    # Check whether this area is completely clear (0) or contains free area (1)
+    if choice == "allowFreeAreaOverlap":
         if np.all(numpyGrid[newYBegin:newYEnd,newXBegin:newXEnd] <= 1):
             return True
 
@@ -357,7 +357,8 @@ def checkOverlap(newYBegin, newYEnd, newXBegin, newXEnd, numpyGrid, choice):
 
 def recalculateAllExtraFreeArea(residentialArea, numpyGrid):
     """
-    This function COMMENNTTTTTTTTT
+    This function loops over all houses in the residential area, removes old
+    worth, and calculates the new extra free area.
     """
 
     # After placing all houses, loop over them
@@ -378,7 +379,10 @@ def recalculateAllExtraFreeArea(residentialArea, numpyGrid):
 
 def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
     """
-    This function COMMENNTTTTTTTTT
+    This function takes the numpy grid, selects a specific house area and
+    increases that area each time this function is called. That widened area
+    must not overlap other houses, but it is allowed to have free area overlap.
+    By doing this, the maximum amount of free area is calculated.
     """
 
     # Remove all (increase) modifications before (re)starting
@@ -391,7 +395,7 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
     drawNumber = currentObject.uniqueID
     fADrawNumber = 1
 
-    # Change uniqueID drawnumber to 1"s for this method to work
+    # Change uniqueID drawnumber to 1's for this method to work
     numpyGrid[coord[0]:coord[1],coord[2]:coord[3]] = fADrawNumber
 
     # Check if new area contains only empty-values or free area-values
@@ -416,16 +420,20 @@ def checkAllFreeArea(currentObject, increase, numpyGrid, numpyGridOriginal):
 
 def getHouse(residentialArea):
     """
-    This function COMMENNTTTTTTTTT
+    This function selects a random house from the residential area.
+    It returns the chosen house.
     """
 
     # Select and return a random house
     oneRandomHouse = residentialArea[rd.randrange(len(residentialArea))]
+
     return oneRandomHouse
 
 def switchCoordinates(residentialArea, numpyGrid):
     """
-    This function COMMENNTTTTTTTTT
+    This function randomly selects two unique houses from the residential area
+    that are not of the same type, swaps their coordinates and updates those
+    in self. It returns the two houses and their old coordinates.
     """
 
     # Get residentialArea without water (avoiding problems)
@@ -459,15 +467,17 @@ def switchCoordinates(residentialArea, numpyGrid):
     fixIncorrectVisualizations(residentialArea, numpyGrid)
 
     # Update coordinates
-    updateCoordinates(randomHouse1, newCoordinates1)
-    updateCoordinates(randomHouse2, newCoordinates2)
+    changeCoordinates(randomHouse1, newCoordinates1)
+    changeCoordinates(randomHouse2, newCoordinates2)
 
     # Return valid random selected houses
     return randomHouse1, randomHouse2, oldCoordinates1, oldCoordinates2
 
 def checkAvailableArea(currentObject, numpyGrid, residentialArea):
     """
-    This function COMMENNTTTTTTTTT
+    This function checks whether the current house (with newly updated
+    coordinates) can be placed on the grid and not cause overlap issues.
+    It returns True or False, depending on the result.
     """
 
     # Get coordinate variables
@@ -479,9 +489,9 @@ def checkAvailableArea(currentObject, numpyGrid, residentialArea):
         # Check for house and free area overlap
         if \
         checkOverlap(coord[0], coord[1], coord[2], coord[3], numpyGrid,
-                    "excludingFreeArea") == True and \
+                    "doNotAllowAnyOverlap") == True and \
         checkOverlap(coord[5], coord[6], coord[7], coord[8], numpyGrid,
-                    "includingFreeArea") == True:
+                    "allowFreeAreaOverlap") == True:
 
             return True
 
@@ -495,7 +505,7 @@ def checkAvailableArea(currentObject, numpyGrid, residentialArea):
 
 def placeOnHillGrid(currentObject, numpyGrid):
     """
-    This function COMMENNTTTTTTTTT
+    This function draws the free area and house on the numpy grid.
     """
 
     # Get coordinate variables
@@ -515,7 +525,9 @@ def placeOnHillGrid(currentObject, numpyGrid):
 
 def fixIncorrectVisualizations(residentialArea, numpyGrid):
     """
-    This function COMMENNTTTTTTTTT
+    This function loops over all houses and re-draws the free area and the house
+    on the numpy grid. Missing free area values in the numpy grid (which
+    happens after removing an other house from the grid) will be restored.
     """
 
     # Create list without water to avoid problems
@@ -543,12 +555,17 @@ def fixIncorrectVisualizations(residentialArea, numpyGrid):
                         numpyGrid, drawNumber)
 
 def revertSingleHouse(randomHouse, oldCoordinates, residentialArea, numpyGrid):
+    """
+    This function removes the selected house from the numpy grid and map,
+    restores its old coordinates, fixes any missing free area because of the
+    removal, and recalculates the extra free area.
+    """
 
     # Remove houses from numpyGrid and map
     randomHouse.removeFromGridAndMap(numpyGrid)
 
     # Revert to old coordinates
-    updateCoordinates(randomHouse, oldCoordinates)
+    changeCoordinates(randomHouse, oldCoordinates)
 
     # Clean-up some bugs and plot old location back
     fixIncorrectVisualizations(residentialArea, numpyGrid)
@@ -557,6 +574,9 @@ def revertSingleHouse(randomHouse, oldCoordinates, residentialArea, numpyGrid):
     recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
 def deleteOldImages():
+    """
+    This function removes the visualization images.
+    """
 
     # Remove all .png's
     for png in glob.glob("tmp/*.png"):
@@ -568,7 +588,7 @@ def deleteOldImages():
 
 def getVideo(results, choice):
     """
-    This function COMMENNTTTTTTTTT
+    This function creates a visualization of the results of the algorithm.
     """
 
     # Extract variable
@@ -577,34 +597,52 @@ def getVideo(results, choice):
     # Get video output
     if choice == "random":
         for GIFindex in range(len(residentialArea)):
-            GIFCore(residentialArea, choice, GIFindex, results)
+            matplotlibCore(residentialArea, choice, GIFindex, results)
             GIFindex += 1
 
     else:
-        GIFCore(residentialArea, choice, GIFindex, results)
+        matplotlibCore(residentialArea, choice, GIFindex, results)
 
     # Create video output
     FFmpeg()
 
 def FFmpeg():
+    """
+    This function executes the necessary command to turn pictures into a video.
+    """
+
     os.system("ffmpeg -framerate 1/0.15 -i tmp/%03d.png "+
     "-c:v libx264 -r 30 tmp/__output.mp4")
 
-def GIFCore(residentialArea, choice, GIFindex, results):
+def matplotlibCore(residentialArea, choice, GIFindex, results):
     """
-    This function COMMENNTTTTTTTTT
+    This function creates a matplotlib figure of the residential area and
+    either shows it, or saves it.
     """
 
     # Initialize matplotlib and figure
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    # Get score and visualize houses and water
-    newScore = getPlotObjects(residentialArea, choice, GIFindex, fig, ax)
+    if choice == "printPlot":
 
-    # Add current score title
+        # Extract highest score
+        score = results.highestScore
+
+        # Loop over all objects
+        for object in residentialArea:
+
+            # Draw water, houses and free area
+            drawPlotObjects(residentialArea, object, ax)
+
+    else:
+
+        # Get score and visualize houses and water
+        score = getPlotObjects(residentialArea, choice, GIFindex, fig, ax)
+
+    # Add score title
     title = results.algorithm + " — " + str(results.maxHouses) + \
-    " houses: " + str(newScore) + " euro"
+    " houses: " + str(score) + " euro"
     plt.title(title)
 
     # Set figure dimensions
@@ -613,12 +651,24 @@ def GIFCore(residentialArea, choice, GIFindex, results):
     plt.ylim([0, gridYLength])
     plt.ylabel("height")
 
-    # Save pic
-    pictureName = "{:03}".format(GIFindex)
-    plt.savefig("tmp/"+pictureName, dpi=135, bbox_inches="tight")
+    if choice == "printPlot":
+
+        # Show matplotlib
+        plt.show()
+
+    else:
+
+        # Save pic
+        pictureName = "{:03}".format(GIFindex)
+        plt.savefig("tmp/"+pictureName, dpi=125, bbox_inches="tight")
+
     plt.close(fig)
 
 def getPlotObjects(residentialArea, choice, GIFindex, fig, ax):
+    """
+    This function creates matplotlib objects of water and all houses and
+    calculates the score. It returns the score of the residential area.
+    """
 
     # Display score
     newScore = 0
@@ -651,42 +701,9 @@ def getPlotObjects(residentialArea, choice, GIFindex, fig, ax):
 
     return newScore
 
-def printPlot(allResults):
-    """
-    This function COMMENNTTTTTTTTT
-    """
-
-    residentialArea = allResults.highestScoreMap
-    totalScore = allResults.highestScore
-
-    # Initialize matplotlib and figure
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-
-    # Add score title
-    title = allResults.algorithm + " — " + str(allResults.maxHouses) + \
-    " houses: " + str(totalScore) + " euro"
-    plt.title(title)
-
-    # Loop over all objects
-    for object in residentialArea:
-
-        # Draw water, houses and free area
-        drawPlotObjects(residentialArea, object, ax)
-
-    # Set figure dimensions
-    plt.xlim([0, gridXLength])
-    plt.xlabel("width")
-    plt.ylim([0, gridYLength])
-    plt.ylabel("height")
-
-    # Show matplotlib
-    plt.show()
-    plt.close(fig)
-
 def drawPlotObjects(residentialArea, object, ax):
     """
-    This function COMMENNTTTTTTTTT
+    This function visualizes the dimensions of water and all houses on the map.
     """
 
     # Initialize variables
@@ -753,7 +770,7 @@ def drawPlotObjects(residentialArea, object, ax):
 
 def updateResults(currentResult, allResults):
     """
-    This function COMMENNTTTTTTTTT
+    This function updates the results in its template. It returns the template.
     """
 
     # Update all results
@@ -777,7 +794,7 @@ def updateResults(currentResult, allResults):
 
 def writeResults(results):
     """
-    This function COMMENNTTTTTTTTT
+    This function writes the statistics of the algorithm in scores.csv.
     """
 
     # Open scores.csv

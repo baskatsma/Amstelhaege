@@ -184,7 +184,7 @@ def hillSwapsCore(hillSwapsResults, oldScore):
                 if hillSwapsResults.FFmpegChoice == 1:
                     choice = "hillSwaps"
                     GIFIndex = hillSwapsResults.GIFIndex
-                    GIFCore(residentialArea, choice, GIFIndex, hillSwapsResults)
+                    matplotlibCore(residentialArea, choice, GIFIndex, hillSwapsResults)
                     hillSwapsResults.GIFIndex += 1
 
                 # Run hillSwaps again
@@ -255,7 +255,7 @@ def hillMovesAlgorithm(hillMovesResults, choice):
         if currentObject.type == "water":
 
             # Set its coordinates and update uniqueID
-            updateCoordinates(currentObject, (0, 0))
+            changeCoordinates(currentObject, (0, 0))
             currentObject.uniqueID = 200
 
             # Define the number in the numpy grid
@@ -433,7 +433,7 @@ def hillMovesMove(hillMovesResults, oldScore):
             xBegin = oldCoordinates[1]
 
         # Update new coordinates in self
-        updateCoordinates(randomHouse, (yBegin, xBegin))
+        changeCoordinates(randomHouse, (yBegin, xBegin))
 
         # Check restrictions
         if checkAvailableArea(randomHouse, numpyGrid, residentialArea) == True:
@@ -564,7 +564,7 @@ def simAnnealing(simAnnealingResults, oldScore):
             xBegin = oldCoordinates[1]
 
         # Update new coordinates in self
-        updateCoordinates(randomHouse, (yBegin, xBegin))
+        changeCoordinates(randomHouse, (yBegin, xBegin))
 
         # Check restrictions
         if checkAvailableArea(randomHouse, numpyGrid, residentialArea) == True:
