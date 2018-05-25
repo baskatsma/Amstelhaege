@@ -581,6 +581,33 @@ def revertSingleHouse(randomHouse, oldCoordinates, residentialArea, numpyGrid):
     # Re-calculate extra free area for this old situation
     recalculateAllExtraFreeArea(residentialArea, numpyGrid)
 
+def acceptProbability(oldScore, newScore, temperature):
+    """
+    This function computes the acceptance probability that will be used by
+    simulated annealing. It returns True if the acceptance probability is
+    higher than a random number, and False if not.
+    """
+
+    # Get a random float number between 0 and 1
+    random0to1 = rd.uniform(0,1)
+
+    # Compute difference between old score and new score
+    delta = (newScore - oldScore) / 100000
+
+    # Calculate the acceptance probability
+    acceptanceProb = math.exp(delta / temperature)
+
+    print("Random:", random0to1)
+    print("Acceptance probability:", acceptanceProb)
+
+    # If acceptance probability is higher than random number, accept lower score
+    if acceptanceProb >= random0to1:
+        return True
+
+    # If not, do not accept lower score
+    else:
+        return False
+
 def deleteOldImages():
     """
     This function removes the visualization images.

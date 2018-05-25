@@ -13,7 +13,7 @@ from timeit import default_timer as timer
 # Run random algorithm
 def randomAlgorithm(randomResults):
     """
-    This algorithm creates a random solution to organize a residental area.
+    This algorithm creates a random solution to organize a residential area.
     """
 
     # Update results sheet
@@ -63,7 +63,7 @@ def randomAlgorithm(randomResults):
 def hillSwapsAlgorithm(hillSwapsResults, randomResults):
     """
     This algorithm creates an hillclimber solution to organize a
-    residental area.
+    residential area.
     """
 
     # Measure algorithm time
@@ -113,7 +113,9 @@ def hillSwapsAlgorithm(hillSwapsResults, randomResults):
 
 def hillSwapsCore(hillSwapsResults, oldScore):
     """
-    THIS FUNCTION GEEN IDEE XXX
+    This function picks two random houses, swaps their coordinates, and
+    validates whether this is a legit swap. It calculates the score and if it is
+    higher, the swap will not revert. It returns the results of the run.
     """
 
     # Extract map and grid
@@ -184,7 +186,8 @@ def hillSwapsCore(hillSwapsResults, oldScore):
                 if hillSwapsResults.FFmpegChoice == 1:
                     choice = "hillSwaps"
                     GIFIndex = hillSwapsResults.GIFIndex
-                    matplotlibCore(residentialArea, choice, GIFIndex, hillSwapsResults)
+                    matplotlibCore(residentialArea, choice, GIFIndex,
+                    hillSwapsResults)
                     hillSwapsResults.GIFIndex += 1
 
                 # Run hillSwaps again
@@ -223,7 +226,7 @@ def hillSwapsCore(hillSwapsResults, oldScore):
 def hillMovesAlgorithm(hillMovesResults, choice):
     """
     This algorithm creates an heuristic hillclimber solution to organize a
-    residental area.
+    residential area.
     """
 
     # Measure algorithm time
@@ -349,7 +352,7 @@ def hillMovesAlgorithm(hillMovesResults, choice):
 
         # Update template
         hillMovesResults.algorithm = "hillMoves"
-        hillMovesMove(hillMovesResults, oldScore)
+        hillMovesCore(hillMovesResults, oldScore)
 
     elif choice == "simAnnealing":
 
@@ -382,9 +385,11 @@ def hillMovesAlgorithm(hillMovesResults, choice):
 
     return hillMovesResults
 
-def hillMovesMove(hillMovesResults, oldScore):
+def hillMovesCore(hillMovesResults, oldScore):
     """
-    THIS FUNCTION GEEEEEEN IDEEEEEEE
+    This function picks a random house and random direction to move in, and
+    validates whether this is a legit move. It calculates the score and if it is
+    higher, the move will not revert. It returns the results of the run.
     """
 
     # Update round
@@ -480,7 +485,7 @@ def hillMovesMove(hillMovesResults, oldScore):
                 oldScore = newScore
 
                 # Run hillMoves again
-                hillMovesMove(hillMovesResults, oldScore)
+                hillMovesCore(hillMovesResults, oldScore)
 
             # Else, score is lower
             else:
@@ -493,7 +498,7 @@ def hillMovesMove(hillMovesResults, oldScore):
                 numpyGrid)
 
                 # Run hillMoves again
-                hillMovesMove(hillMovesResults, oldScore)
+                hillMovesCore(hillMovesResults, oldScore)
 
         else:
 
@@ -502,7 +507,7 @@ def hillMovesMove(hillMovesResults, oldScore):
             numpyGrid)
 
             # Run hillMoves again
-            hillMovesMove(hillMovesResults, oldScore)
+            hillMovesCore(hillMovesResults, oldScore)
 
     else:
         return hillMovesResults
@@ -510,7 +515,7 @@ def hillMovesMove(hillMovesResults, oldScore):
 def simAnnealing(simAnnealingResults, oldScore):
     """
     This algorithm creates a simulated annealing solution to organize a
-    residental area. It loops and searches for solutions until minimum
+    residential area. It loops and searches for solutions until minimum
     temperature has been reached. When minimum has been reached, it keeps the
     solution with the best score found.
     """
@@ -660,47 +665,3 @@ def simAnnealing(simAnnealingResults, oldScore):
         simAnnealingResults.rounds = round
 
         return simAnnealingResults
-
-def acceptProbability(oldScore, newScore, temperature):
-    """
-    Computes acceptance probability that will be used by simulated annealing.
-    """
-
-    # Get a random float number between 0 and 1
-    random0to1 = rd.uniform(0,1)
-
-    # Compute difference between old score and new score
-    delta = (newScore - oldScore) / 100000
-
-    # Calculate the acceptance probability
-    acceptanceProb = math.exp(delta / temperature)
-
-    print("Random:", random0to1)
-    print("Acceptance probability:", acceptanceProb)
-
-    # If acceptance probability is higher than random number, accept lower score
-    if acceptanceProb >= random0to1:
-        return True
-
-    # If not, do not accept lower score
-    else:
-        return False
-
-"""
-Temp. variabelen initializeren +++++++
-We loopen net zo lang totdat de minimum temperatuur is bereikt +++++++
-
-    We pakken een random maison +++++++
-    We pakken een random richting (0 - 3) +++++++
-    Moven we dit maison in die richting +++++++
-    Checks uitvoeren of dit mogelijk is +++++++
-        Ja: score berekenen +++++++
-            Als de newScore hoger of gelijk is dan de oldScore: accepteren +++++++
-            Als de newScore lager is dan de oldScore: acceptProbability() +++++++
-                if aP returns True: +++++++
-                    plaatsen +++++++
-                else +++++++
-                    terugplaatsen +++++++
-                Temperatuur updaten +++++++
-        Nee: terugplaatsen +++++++
-"""
