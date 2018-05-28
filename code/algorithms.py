@@ -68,6 +68,11 @@ def randomAlgorithm(randomResults):
         print("Total runtime (sec):", randomResults.totalRuntime)
         print("")
 
+        # Get visualization
+        if randomResults.FFmpegChoice == "1":
+            print("Creating visualization. This may take a while...")
+            getVideo(randomResults, "random")
+
     return randomResults
 
 # Run hillSwaps algorithm
@@ -133,9 +138,6 @@ def hillSwapsCore(hillSwapsResults, oldScore):
     residentialArea = hillSwapsResults.highestScoreMap
     numpyGrid = hillSwapsResults.numpyGrid
 
-    # Update round
-    hillSwapsResults.roundsCounter += 1
-
     # Only run "rounds" amount of times
     if hillSwapsResults.roundsCounter <= hillSwapsResults.rounds:
 
@@ -151,6 +153,9 @@ def hillSwapsCore(hillSwapsResults, oldScore):
 
         # Check restrictions
         if check1 == True and check2 == True:
+
+            # Update round
+            hillSwapsResults.roundsCounter += 1
 
             # Place houses on numpyGrid
             placeOnHillGrid(randomHouse1, numpyGrid)
@@ -197,6 +202,24 @@ def hillSwapsCore(hillSwapsResults, oldScore):
                 if hillSwapsResults.FFmpegChoice == "1":
                     createImage("hillSwaps", residentialArea, hillSwapsResults)
 
+                # Open HS-60houses.csv
+                with open("HS-60houses.csv", "a", newline="") as csvfile:
+                    fieldnames = [
+                        "rounds",
+                        "score"
+                        ]
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                    # Only write headers if file is empty
+                    if os.stat("HS-60houses.csv").st_size == 0:
+                        writer.writeheader()
+
+                    # Write the rest
+                    writer.writerow({
+                        "rounds": hillSwapsResults.roundsCounter,
+                        "score": hillSwapsResults.highestScore
+                        })
+
                 # Run hillSwaps again
                 hillSwapsCore(hillSwapsResults, oldScore)
 
@@ -211,6 +234,24 @@ def hillSwapsCore(hillSwapsResults, oldScore):
                 residentialArea, numpyGrid)
                 revertSingleHouse(randomHouse2, oldCoordinates2,
                 residentialArea, numpyGrid)
+
+                # Open HS-60houses.csv
+                with open("HS-60houses.csv", "a", newline="") as csvfile:
+                    fieldnames = [
+                        "rounds",
+                        "score"
+                        ]
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                    # Only write headers if file is empty
+                    if os.stat("HS-60houses.csv").st_size == 0:
+                        writer.writeheader()
+
+                    # Write the rest
+                    writer.writerow({
+                        "rounds": hillSwapsResults.roundsCounter,
+                        "score": hillSwapsResults.highestScore
+                        })
 
                 # Run hillSwaps again
                 hillSwapsCore(hillSwapsResults, oldScore)
@@ -495,6 +536,24 @@ def hillMovesCore(hillMovesResults, oldScore):
                 if hillMovesResults.FFmpegChoice == "1":
                     createImage("hillMoves", residentialArea, hillMovesResults)
 
+                # Open HM-60houses.csv
+                with open("HM-60houses.csv", "a", newline="") as csvfile:
+                    fieldnames = [
+                        "rounds",
+                        "score"
+                        ]
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                    # Only write headers if file is empty
+                    if os.stat("HM-60houses.csv").st_size == 0:
+                        writer.writeheader()
+
+                    # Write the rest
+                    writer.writerow({
+                        "rounds": hillMovesResults.roundsCounter,
+                        "score": hillMovesResults.highestScore
+                        })
+
                 # Run hillMoves again
                 hillMovesCore(hillMovesResults, oldScore)
 
@@ -507,6 +566,24 @@ def hillMovesCore(hillMovesResults, oldScore):
                 # Revert to old coordinates and fix numpyGrid
                 revertSingleHouse(randomHouse, oldCoordinates, residentialArea,
                 numpyGrid)
+
+                # Open HM-60houses.csv
+                with open("HM-60houses.csv", "a", newline="") as csvfile:
+                    fieldnames = [
+                        "rounds",
+                        "score"
+                        ]
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                    # Only write headers if file is empty
+                    if os.stat("HM-60houses.csv").st_size == 0:
+                        writer.writeheader()
+
+                    # Write the rest
+                    writer.writerow({
+                        "rounds": hillMovesResults.roundsCounter,
+                        "score": hillMovesResults.highestScore
+                        })
 
                 # Run hillMoves again
                 hillMovesCore(hillMovesResults, oldScore)
@@ -667,6 +744,26 @@ def simAnnealing(simAnnealingResults, oldScore):
                     # Revert to old coordinates and fix numpyGrid
                     revertSingleHouse(randomHouse, oldCoordinates,
                     residentialArea, numpyGrid)
+
+            # Open SA-60houses.csv
+            with open("SA-60houses.csv", "a", newline="") as csvfile:
+                fieldnames = [
+                    "rounds",
+                    "score",
+                    "temperature"
+                    ]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+                # Only write headers if file is empty
+                if os.stat("SA-60houses.csv").st_size == 0:
+                    writer.writeheader()
+
+                # Write the rest
+                writer.writerow({
+                    "rounds": round,
+                    "score": simAnnealingResults.currentScore,
+                    "temperature": temperature
+                    })
 
             # Update temperature and round
             temperature *= 1 - cooling

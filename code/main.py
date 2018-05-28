@@ -72,6 +72,13 @@ def main():
         hillSwapsResults = hillSwapsAlgorithm(hillSwapsTemplate, \
         randomResults)
 
+        # # Start with a random map
+        # randomResult = initializeRandomMap()
+        #
+        # # Run hillclimber "rounds" amount of times and display best results
+        # hillSwapsResults = hillSwapsAlgorithm(hillSwapsTemplate, \
+        # randomResult)
+
         return hillSwapsResults
 
     elif str(sys.argv[2]) == "hillMoves":
@@ -101,7 +108,7 @@ if __name__ == "__main__":
     if results != None:
 
         # Visualize algorithm
-        if results.FFmpegChoice == "1":
+        if results.FFmpegChoice == "1" and results.algorithm != "random":
             FFmpeg()
 
         # Visualize map with matplotlib
